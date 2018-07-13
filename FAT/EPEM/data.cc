@@ -89,18 +89,18 @@ namespace PATData {
   Int_t insideEm1S0;
   Int_t insideEm1S1;
   Int_t insideEm2S0;
-   Int_t insideEm2S1;
+  Int_t insideEm2S1;
 
-   Int_t insideEp1S0;
-   Int_t insideEp1S1;
-   Int_t insideEp2S0;
-   Int_t insideEp2S1;
+  Int_t insideEp1S0;
+  Int_t insideEp1S1;
+  Int_t insideEp2S0;
+  Int_t insideEp2S1;
 
-   const double D2R = 1.74532925199432955e-02;
-   const double R2D = 57.2957795130823229;
+  const double D2R = 1.74532925199432955e-02;
+  const double R2D = 57.2957795130823229;
 
 
-   /************************* M E T H O D S *************************************/
+  /************************* M E T H O D S *************************************/
 
   double openingangle(const TLorentzVector& a, const TLorentzVector& b)
   {

@@ -87,7 +87,7 @@ bool HGraphCut::graphCut(HParticle *pPart)
       if (em_cut) return em_cut->IsInside( beta, mom );
       break;
       
-    case 8: if ( sqrt(mass) < 800 )
+    case 8: if ( sqrt(mass) < 240 && sqrt(mass)>40 )
 	return true;
       else return false;
       return true;
@@ -97,7 +97,7 @@ bool HGraphCut::graphCut(HParticle *pPart)
       //if ( mass > 5000. && mass < 30000. ) return true; else return false;
       break;
       
-    case 9: if ( sqrt(mass) < 800 ) return true; else return false;
+    case 9: if ( sqrt(mass) < 240 && sqrt(mass)>40 ) return true; else return false;
       //return true;
       //if (pip_cut) return ( mass > 4000. && pip_cut->IsInside( mom, mass ) ); // same for pi-
       //cout << "9 masa: " << mass << "    ";
@@ -106,7 +106,7 @@ bool HGraphCut::graphCut(HParticle *pPart)
       //if (pim_cut) return pim_cut->IsInside( mom, mass ); 
       break;
       
-    case 14: if ( sqrt(mass) > 800 )
+    case 14: if ( sqrt(mass) > 750 && sqrt(mass) <1027 )
 	{
 	  //	  cout<<endl<<"true proton"<<endl;
 	  return true;

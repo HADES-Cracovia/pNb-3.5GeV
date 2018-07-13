@@ -35,7 +35,7 @@ submmissionbase=/lustre/nyx/hades/user/knowakow/PNB
 submissiondir=${submmissionbase}/PAT_ppim
  nFilesPerJob=1                               # number of files to be analyzed by 1 job (default==1)
     jobscript=${submissiondir}/jobScript_SL.sh     # exec script (full path, call without dot, set it executable!)
-    outputdir=/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat/    # outputdir for files AND logFiles
+    outputdir=/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/    # outputdir for files AND logFiles
     #outputdir=/lustre/nyx/hades/user/przygoda/PAT2/out/sim/PI0/800     # outputdir for files AND logFiles
 pathoutputlog=${outputdir}/out                    # protocol from batch farm for each file
      filename=testrun                           # filename of log file if nFilesPerJob > 1 (partnumber will be appended)
@@ -50,7 +50,7 @@ resources="--mem=2000 --time=0-2:00:00"                        # runtime < 10h, 
 
 jobarrayFile="pion_pat_jobarray.dat"
 
-filelist=${currentDir}/xaa  # file list in local dir! not in submissiondir!!!
+filelist=${currentDir}/day280.list  # file list in local dir! not in submissiondir!!!
 
 nFiles=$( cat $filelist | wc -l)
 

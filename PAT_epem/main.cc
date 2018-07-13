@@ -83,7 +83,7 @@ int main(Int_t argc, Char_t **argv)
 
   //*******************************************
   //*******************************************
-  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list3/";
+  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/day280";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PION/FILES/288_time/";
   //*******************************************
   //*******************************************

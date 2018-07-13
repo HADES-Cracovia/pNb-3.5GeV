@@ -37,22 +37,22 @@ void PPim::Loop()
       r1.SetXYZ(sin(D2R*p_theta_rich)*cos(D2R*p_phi_rich),sin(D2R*p_theta_rich)*sin(D2R*p_phi_rich),cos(D2R*p_theta_rich));
       r2.SetXYZ(sin(D2R*pim_theta_rich)*cos(D2R*pim_phi_rich),sin(D2R*pim_theta_rich)*sin(D2R*pim_phi_rich),cos(D2R*pim_theta_rich));
 
-      e1->SetVectM( v2, 0.51099906 );
-      e2->SetVectM( v3, 0.51099906 );
+      p->SetVectM( v2, 938.272013 );
+      pi->SetVectM( v3, 139.57018 );
 
-      *gammae1e2 = *e1 + *e2;
-      *e1e2 = *e1 + *e2;
-      *e1_delta = *e1;
-      *e2_delta = *e2;
-      *e1e2_miss = *beam - *e1 - *e2;
+      *gammappi = *p + *pi;
+      *ppi = *p + *pi;
+      *p_delta = *p;
+      *pi_delta = *pi;
+      *ppi_miss = *beam - *p - *pi;
 
-      double m2_inv_e1e2 = gammae1e2->M2();
-      double m_inv_e1e2 = gammae1e2->M();
-      double oa = R2D * openingangle(*e1, *e2);
+      double m2_inv_ppi = gammappi->M2();
+      double m_inv_ppi = gammappi->M();
+      double oa = R2D * openingangle(*p, *pi);
       double oa_rich = R2D * openingangle(r1, r2);
 
-      double e1_mass = p_p*p_p * (  1. / (p_beta*p_beta)  - 1. ) ;
-      double e2_mass = pim_p*pim_p * (  1. / (pim_beta*pim_beta)  - 1. ) ;
+      double p_mass = p_p*p_p * (  1. / (p_beta*p_beta)  - 1. ) ;
+      double pi_mass = pim_p*pim_p * (  1. / (pim_beta*pim_beta)  - 1. ) ;
 
       //	  cout << "opening angle = " << oa << endl;
 
@@ -60,12 +60,12 @@ void PPim::Loop()
       EFF = 1.;
 
 
-      gammae1e2->Boost(0., 0., -(beam->Beta()));
-      e1_delta->Boost(0., 0., -(beam->Beta()));
-      e2_delta->Boost(0., 0., -(beam->Beta()));
+      gammappi->Boost(0., 0., -(beam->Beta()));
+      p_delta->Boost(0., 0., -(beam->Beta()));
+      pi_delta->Boost(0., 0., -(beam->Beta()));
 
-      e1_delta->Boost( -gammae1e2->Px()/gammae1e2->E(), -gammae1e2->Py()/gammae1e2->E(), -gammae1e2->Pz()/gammae1e2->E());
-      e2_delta->Boost( -gammae1e2->Px()/gammae1e2->E(), -gammae1e2->Py()/gammae1e2->E(), -gammae1e2->Pz()/gammae1e2->E());
+      p_delta->Boost( -gammappi->Px()/gammappi->E(), -gammappi->Py()/gammappi->E(), -gammappi->Pz()/gammappi->E());
+      pi_delta->Boost( -gammappi->Px()/gammappi->E(), -gammappi->Py()/gammappi->E(), -gammappi->Pz()/gammappi->E());
 
       //cout << "Poczatek obliczen..." << endl;
 
@@ -80,10 +80,10 @@ void PPim::Loop()
 
 
 #ifdef FLANCH
-      insidePimS0 = (pPimS0 == 0) ? 0 : pPimS0->IsInside(pim_z,pim_theta);
-      insidePimS1 = (pPimS1 == 0) ? 0 : pPimS1->IsInside(pim_z,pim_theta);
-      insideEpS0 = (pPS0 == 0) ? 0 : pPS0->IsInside(p_z,p_theta);
-      insidePS1 = (pPS1 == 0) ? 0 : pPS1->IsInside(p_z,p_theta);
+      //insidePimS0 = (pPimS0 == 0) ? 0 : pPimS0->IsInside(pim_z,pim_theta);
+      //insidePimS1 = (pPimS1 == 0) ? 0 : pPimS1->IsInside(pim_z,pim_theta);
+      //insideEpS0 = (pPS0 == 0) ? 0 : pPS0->IsInside(p_z,p_theta);
+      //insidePS1 = (pPS1 == 0) ? 0 : pPS1->IsInside(p_z,p_theta);
       //insidePimS0 = (pPimS0 == 0) ? 0 : pPimS0->IsInside(eVert_z,pim_theta);
       //insidePimS1 = (pPimS1 == 0) ? 0 : pPimS1->IsInside(eVert_z,pim_theta);
       //insidePS0 = (pPS0 == 0) ? 0 : pPS0->IsInside(eVert_z,p_theta);
@@ -93,35 +93,39 @@ void PPim::Loop()
       insideTarget = 1;
 
 #ifdef RECTANG
-      insidePimS0 = (pim_theta > 50 && pim_z < -50 /* && pim_p<200.*/) ? 1 : 0;
-      insidePimS1 = (pim_theta > 50 && pim_z < -50 /* && pim_p<200.*/) ? 1 : 0;
-      insidePS0 = (p_theta > 50 && p_z < -50 /* && p_p<200.*/) ? 1 : 0;
-      insidePS1 = (p_theta > 50 && p_z < -50 /* && p_p<200.*/) ? 1 : 0;
+      //insidePimS0 = (pim_theta > 50 && pim_z < -50 /* && pim_p<200.*/) ? 1 : 0;
+      //insidePimS1 = (pim_theta > 50 && pim_z < -50 /* && pim_p<200.*/) ? 1 : 0;
+      //insidePS0 = (p_theta > 50 && p_z < -50 /* && p_p<200.*/) ? 1 : 0;
+      //insidePS1 = (p_theta > 50 && p_z < -50 /* && p_p<200.*/) ? 1 : 0;
 #endif
 
       //#ifdef NOCUT
-      insidePimS0 = 0;
-      insidePimS1 = 0;
-      insidePS0 = 0;
-      insidePS1 = 0;
+      //insidePimS0 = 0;
+      //insidePimS1 = 0;
+      //insidePS0 = 0;
+      //insidePS1 = 0;
       //#endif
 
 
-      NoLeptonE1 = !((p_oa_lept< close_cut&&p_oa_lept>0.0) &&p_oa_lept>nonfit_close_cut );
-      NoHadronE1 = !(p_oa_hadr< close_cut &&p_oa_hadr>nonfit_close_cut );
-      NoLeptonE2 = !((pim_oa_lept< close_cut&&pim_oa_lept>0.0) &&pim_oa_lept>nonfit_close_cut );
-      NoHadronE2 = !(pim_oa_hadr< close_cut &&pim_oa_hadr>nonfit_close_cut );
-      NoHadronE1 = 1;
-      NoHadronE2 = 1;
+      NoLeptonP = !((p_oa_lept< close_cut&&p_oa_lept>0.0) &&p_oa_lept>nonfit_close_cut );
+      NoHadronP = !(p_oa_hadr< close_cut &&p_oa_hadr>nonfit_close_cut );
+      NoLeptonPI = !((pim_oa_lept< close_cut&&pim_oa_lept>0.0) &&pim_oa_lept>nonfit_close_cut );
+      NoHadronPI = !(pim_oa_hadr< close_cut &&pim_oa_hadr>nonfit_close_cut );
+      NoHadronP = 1;
+      NoHadronPI = 1;
 
       /*
-	NoLeptonE1 = 1;
-	NoHadronE1 = 1;
-	NoLeptonE2 = 1;
-	NoHadronE2 = 1;
+	NoLeptonP = 1;
+	NoHadronP = 1;
+	NoLeptonPI = 1;
+	NoHadronPI = 1;
       */
-
-
+      if(isBest==1)
+	{
+	  p_p_beta->Fill(p_p,p_beta_new);
+	  pim_p_beta->Fill(pim_p,pim_beta_new);
+	  p_pim_mass->Fill(m_inv_ppi);
+	}
 
     } // end of main loop
 } // eof Loop 
@@ -134,17 +138,17 @@ PPim::PPim(TTree *tree)
   // if parameter tree is not specified (or zero), connect the file
   // used to generate this class and read the Tree.
 
-  pim_acc = pim_acc_err = p_acc = p_acc_err = 0.;
-  pim_eff = pim_eff_err = p_eff = p_eff_err = 0.;
+  //pim_acc = pim_acc_err = p_acc = p_acc_err = 0.;
+  //pim_eff = pim_eff_err = p_eff = p_eff_err = 0.;
 
   if (tree == 0) {
 	  
     TChain * chain = new TChain("PPim_ID","");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list5/sum5.root/PPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list4/sum4.root/PPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list3/sum3.root/PPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list2/sum2.root/PPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list1/sum1.root/PPim_ID");
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list5/sum5.root/PPim_ID");
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list4/sum4.root/PPim_ID");
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list3/sum3.root/PPim_ID");
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list2/sum2.root/PPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/hadron.root/PPim_ID");
   
     tree = chain; 
   }
