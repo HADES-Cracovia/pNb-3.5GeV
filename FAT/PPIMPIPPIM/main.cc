@@ -1,5 +1,5 @@
-#include "PPim.h"
-//#include "PPimPipPim.h"
+//#include "PPim.h"
+#include "PPimPipPim.h"
 //#include "EpEp.h"
 //#include "EmEm.h"
 #include "data.h"
@@ -112,22 +112,41 @@ int main()
   p_p_beta=new TH2F("p_p_beta","Momentum vs. beta for protons",p_n,p_min,p_max,beta_n,beta_min,beta_max);
   pim_p_beta=new TH2F("pim_p_beta","Momentum vs. beta for #pi^{-}",p_n,p_min,p_max,beta_n,beta_min,beta_max);
   p_pim_mass=new TH1F("p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);									       
-  D_p_pim_mass=new TH1F("D_p_pim_mass","Invariant mass #pi^{-} p after distance cut",2000,500,2500);
-  
+  p_pim1_mass=new TH1F("p_pim1_mass","Invariant mass #pi_{1}^{-} p",2000,500,2500);
+  p_pim2_mass=new TH1F("p_pim2_mass","Invariant mass #pi_{2}^{-} p",2000,500,2500);
+  pim_pip_mass=new TH1F("pim_pip_mass","Invariant mass #pi^{-} #pi^{+} ",2000,200,1500);
+  pim2_pip_mass=new TH1F("pim2_pip_mass","Invariant mass #pi_{2}^{-} #pi^{+} ",2000,200,1500);
+  pim1_pip_mass=new TH1F("pim1_pip_mass","Invariant mass #pi_{1}^{-} #pi^{+} ",2000,200,1500);
+  p_pim_pip_pim_mass=new TH1F("p_pim_pip_pim_mass","Invariant mass #pi^{-} #pi^{+} p #pi^{-}",2000,1000,2000);
+
+  dist_p_pim_pim_pip=new TH2F("dist_p_pim_pim_pip","dist_p_pim_pim_pip",300,0,300,300,0,300);
   dist_p_pim=new TH1F("dist_p_pim","dist_p_pim",1000,0,300);
+  dist_pim_pip=new TH1F("dist_pip_pim","dist_pip_pim",1000,0,300);
+
   
+  L_p_pim_mass=new TH1F("L_p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);						       
+  L_p_pim1_mass=new TH1F("L_p_pim1_mass","L_Invariant mass #pi_{1}^{-} p",2000,500,2500);
+  L_p_pim2_mass=new TH1F("L_p_pim2_mass","L_Invariant mass #pi_{2}^{-} p",2000,500,2500);
+  L_pim_pip_mass=new TH1F("L_pim_pip_mass","L_Invariant mass #pi^{-} #pi^{+} ",2000,200,1500);
+  L_pim2_pip_mass=new TH1F("L_pim2_pip_mass","L_Invariant mass #pi_{2}^{-} #pi^{+} ",2000,200,1500);
+  L_pim1_pip_mass=new TH1F("L_pim1_pip_mass","L_Invariant mass #pi_{1}^{-} #pi^{+} ",2000,200,1500);
+  L_p_pim_pip_pim_mass=new TH1F("L_p_pim_pip_pim_mass","L_Invariant mass #pi^{-} #pi^{+} p #pi^{-}",2000,1000,2000);
+
+  L_dist_p_pim_pim_pip=new TH2F("L_dist_p_pim_pim_pip","L_dist_p_pim_pim_pip",300,0,300,300,0,300);
+  L_dist_p_pim=new TH1F("L_dist_p_pim","L_dist_p_pim",1000,0,300);
+  L_dist_pim_pip=new TH1F("L_dist_pip_pim","L_dist_pip_pim",1000,0,300);
   
   /**************************** M A I N   P A R T ****************************************/
 
-  PPim t;
-  //PPimPipPim t2;
-  cout << "START PPIM!" << endl;
-  t.Loop();
-  cout << "STOP PPIM!" << endl;
+  //PPim t;
+  PPimPipPim t2;
+  //cout << "START PPIM!" << endl;
+  //t.Loop();
+  //cout << "STOP PPIM!" << endl;
 
-  //cout << "START PPimPipPim!" << endl;
-  //t2.Loop();
-  //cout << "STOP PPimPipPim!!" << endl;
+  cout << "START PPimPipPim!" << endl;
+  t2.Loop();
+  cout << "STOP PPimPipPim!!" << endl;
   
   /*EpEp t_back1;
     t_back1.Loop();
@@ -150,10 +169,33 @@ int main()
   p_p_beta->Write();
   pim_p_beta->Write();
   p_pim_mass->Write();
-  
+  p_pim1_mass->Write();
+  p_pim2_mass->Write();
+  pim_pip_mass->Write();
+  pim2_pip_mass->Write();
+  pim1_pip_mass->Write();
+  p_pim_pip_pim_mass->Write();
+
+  dist_p_pim_pim_pip->Write();
+  dist_pim_pip->Write();
   dist_p_pim->Write();
-  D_p_pim_mass->Write();
-  
+
+  L_p_pim_mass->Write();
+  L_p_pim1_mass->Write();
+  L_p_pim2_mass->Write();
+  L_pim_pip_mass->Write();
+  L_pim2_pip_mass->Write();
+  L_pim1_pip_mass->Write();
+  L_p_pim_pip_pim_mass->Write();
+
+  L_dist_p_pim_pim_pip->Write();
+  L_dist_pim_pip->Write();
+  L_dist_p_pim->Write();
+  //p_mass->Write();
+  //pim_mass->Write();
+ 
+  //myfile.close();
+
   outFileData->Close();
 }
 

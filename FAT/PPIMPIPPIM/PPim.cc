@@ -54,7 +54,7 @@ void PPim::Loop()
       double p_mass = p_p*p_p * (  1. / (p_beta*p_beta)  - 1. ) ;
       double pi_mass = pim_p*pim_p * (  1. / (pim_beta*pim_beta)  - 1. ) ;
 
-      double d_p_pim=trackDistance(p_r,p_z,r1,pim_r,pim_z,r2);
+      double dist_p_pim=trackDistance(p_r,p_z,r1,pim_r,pim_z,r2);
       //	  cout << "opening angle = " << oa << endl;
 
       ACC = 1.;
@@ -121,16 +121,11 @@ void PPim::Loop()
 	NoLeptonPI = 1;
 	NoHadronPI = 1;
       */
-      if(isBest==1)
+      if(isBest==1 && dist_p_pim<20)
 	{
 	  p_p_beta->Fill(p_p,p_beta_new);
 	  pim_p_beta->Fill(pim_p,pim_beta_new);
 	  p_pim_mass->Fill(m_inv_ppi);
-	  dist_p_pim->Fill(d_p_pim);
-	}
-      if(isBest==1 && d_p_pim<20)
-	{
-	  D_p_pim_mass->Fill(m_inv_ppi);
 	}
 
     } // end of main loop

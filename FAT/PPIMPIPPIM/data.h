@@ -21,15 +21,19 @@ namespace PATData {
   extern HNtuple *tlo;
   extern HFilter *filter;
   extern float EFF, ACC;
-  //PPim*******************************
+  //PPimPipPim*******************************
   extern TH2F *p_p_beta, *pim_p_beta;
   extern TH1F *p_pim_mass, *p_mass, *pim_mass;
-  extern TH1F *D_p_pim_mass;
+
   
   extern TH1F *p_pim1_mass, *p_pim2_mass, *pim_pip_mass,*pim1_pip_mass,*pim2_pip_mass, *p_pim_pip_pim_mass;
   extern TH2F *dist_p_pim_pim_pip;
   extern TH1F *dist_p_pim, *dist_pim_pip;
-    //*****************************************  
+  extern TH1F *L_p_pim1_mass, *L_p_pim2_mass, *L_pim_pip_mass,*L_pim1_pip_mass,*L_pim2_pip_mass, *L_p_pim_pip_pim_mass;
+  extern TH1F *L_dist_p_pim, *L_dist_pim_pip;
+  extern TH2F *L_dist_p_pim_pim_pip;
+  extern TH1F *L_p_pim_mass, *L_p_mass, *L_pim_mass;
+  //*****************************************  
 
   extern TCutG *pEpS0, *pEpS1, *pEmS0, *pEmS1;
   extern TCutG *pEm1S0, *pEm1S1, *pEm2S0, *pEm2S1;
