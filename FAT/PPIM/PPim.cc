@@ -9,7 +9,7 @@
 using namespace std;
 using namespace PATData;
 
-void PPim::Loop()
+void PPim::Loop(double min_dist /*=50*/)
 {
   static long licznik = 0;
 
@@ -75,6 +75,7 @@ void PPim::Loop()
 
       double close_cut = 9.;
       double nonfit_close_cut = -4.;
+
       //double close_cut = 0.;
       //double nonfit_close_cut = 0.;
       //double close_cut = 4.;
@@ -128,10 +129,96 @@ void PPim::Loop()
 	  p_pim_mass->Fill(m_inv_ppi);
 	  dist_p_pim->Fill(d_p_pim);
 	}
-      if(isBest==1 && d_p_pim<20)
+      if(isBest==1 && d_p_pim<min_dist)
 	{
 	  D_p_pim_mass->Fill(m_inv_ppi);
 	}
+
+    } // end of main loop
+} // eof Loop 
+
+void PPim::Loop(double min_dist /*=50*/,int n)
+{
+  static long licznik = 0;
+
+  if (fChain == 0) return;
+
+  Long64_t nentries = fChain->GetEntries();
+
+  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry=0; jentry<nentries;jentry++)
+    {
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) break;
+      nb = fChain->GetEntry(jentry);   nbytes += nb;
+
+      ++licznik;
+      if ((licznik % 100000)==0) cout << "Events: " << licznik << endl;
+
+
+      double F = 1.006;
+      TVector3 v1, v2, v3;
+      v2.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+      v3.SetXYZ(F*pim_p*sin(D2R*pim_theta)*cos(D2R*pim_phi),F*pim_p*sin(D2R*pim_theta)*sin(D2R*pim_phi),F*pim_p*cos(D2R*pim_theta));
+
+      TVector3 r1, r2;
+      r1.SetXYZ(sin(D2R*p_theta_rich)*cos(D2R*p_phi_rich),sin(D2R*p_theta_rich)*sin(D2R*p_phi_rich),cos(D2R*p_theta_rich));
+      r2.SetXYZ(sin(D2R*pim_theta_rich)*cos(D2R*pim_phi_rich),sin(D2R*pim_theta_rich)*sin(D2R*pim_phi_rich),cos(D2R*pim_theta_rich));
+
+      p->SetVectM( v2, 938.272013 );
+      pi->SetVectM( v3, 139.57018 );
+
+      *gammappi = *p + *pi;
+      *ppi = *p + *pi;
+      *p_delta = *p;
+      *pi_delta = *pi;
+      *ppi_miss = *beam - *p - *pi;
+
+      double m2_inv_ppi = gammappi->M2();
+      double m_inv_ppi = gammappi->M();
+      double oa = R2D * openingangle(*p, *pi);
+      double oa_rich = R2D * openingangle(r1, r2);
+
+      double p_mass = p_p*p_p * (  1. / (p_beta*p_beta)  - 1. ) ;
+      double pi_mass = pim_p*pim_p * (  1. / (pim_beta*pim_beta)  - 1. ) ;
+
+      double d_p_pim=trackDistance(p_r,p_z,r1,pim_r,pim_z,r2);
+      //	  cout << "opening angle = " << oa << endl;
+
+      ACC = 1.;
+      EFF = 1.;
+
+
+      gammappi->Boost(0., 0., -(beam->Beta()));
+      p_delta->Boost(0., 0., -(beam->Beta()));
+      pi_delta->Boost(0., 0., -(beam->Beta()));
+
+      p_delta->Boost( -gammappi->Px()/gammappi->E(), -gammappi->Py()/gammappi->E(), -gammappi->Pz()/gammappi->E());
+      pi_delta->Boost( -gammappi->Px()/gammappi->E(), -gammappi->Py()/gammappi->E(), -gammappi->Pz()/gammappi->E());
+
+      //cout << "Poczatek obliczen..." << endl;
+     
+      //double ang_cut = 0.;
+      double ang_cut = 9.;
+
+      double close_cut = 9.;
+      double nonfit_close_cut = -4.;
+
+      if(isBest==1 && d_p_pim<min_dist)
+	{
+	  D_p_pim_mass_array[n]->Fill(m_inv_ppi);
+	  if(n!=10)
+	    continue;
+	  D_p_pim_mass->Fill(m_inv_ppi);
+	}
+      
+      if(isBest==1)
+	{
+	  p_p_beta->Fill(p_p,p_beta_new);
+	  pim_p_beta->Fill(pim_p,pim_beta_new);
+	  p_pim_mass->Fill(m_inv_ppi);
+	  dist_p_pim->Fill(d_p_pim);
+	}	
 
     } // end of main loop
 } // eof Loop 
@@ -399,3 +486,6 @@ Int_t PPim::Cut(Long64_t entry)
   // returns -1 otherwise.
   return 1;
 }
+
+
+

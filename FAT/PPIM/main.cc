@@ -113,6 +113,13 @@ int main()
   pim_p_beta=new TH2F("pim_p_beta","Momentum vs. beta for #pi^{-}",p_n,p_min,p_max,beta_n,beta_min,beta_max);
   p_pim_mass=new TH1F("p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);									       
   D_p_pim_mass=new TH1F("D_p_pim_mass","Invariant mass #pi^{-} p after distance cut",2000,500,2500);
+
+  char hname[40];
+  for(int jj=0; jj<25;jj++)
+    {
+      sprintf(hname,"h_mass_after_distance_cut_%d",(jj+1)*2);
+      D_p_pim_mass_array[jj] = new TH1F(hname,"distance",2000,500,2500);
+    }
   
   dist_p_pim=new TH1F("dist_p_pim","dist_p_pim",1000,0,300);
   
@@ -122,9 +129,16 @@ int main()
   PPim t;
   //PPimPipPim t2;
   cout << "START PPIM!" << endl;
-  t.Loop();
-  cout << "STOP PPIM!" << endl;
-
+  //t.Loop();
+  //cout << "STOP PPIM!" << endl;
+  for(int jj=0;jj<25;jj++)
+    {
+      cout<<"***************************"<<endl;
+      cout<< "distance cut no."<<jj<<endl;
+      cout<<"***************************"<<endl;
+      t.Loop((jj+1)*2,jj);
+    }
+  
   //cout << "START PPimPipPim!" << endl;
   //t2.Loop();
   //cout << "STOP PPimPipPim!!" << endl;
@@ -153,6 +167,16 @@ int main()
   
   dist_p_pim->Write();
   D_p_pim_mass->Write();
+
+
+  TCanvas *c2=new TCanvas("c2","c2");
+  c2->Divide(5,5);
+  for(int z=0;z<25;z++)
+    {
+      c2->cd(z+1);
+      D_p_pim_mass_array[z]->Draw();
+    }
+  c2->Write();
   
   outFileData->Close();
 }
