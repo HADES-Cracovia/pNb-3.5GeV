@@ -113,14 +113,20 @@ int main()
   pim_p_beta=new TH2F("pim_p_beta","Momentum vs. beta for #pi^{-}",p_n,p_min,p_max,beta_n,beta_min,beta_max);
   p_pim_mass=new TH1F("p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);									       
   D_p_pim_mass=new TH1F("D_p_pim_mass","Invariant mass #pi^{-} p after distance cut",2000,500,2500);
+  ZD_p_pim_mass=new TH1F("ZD_p_pim_mass","Invariant mass #pi^{-} p after geometric cuts",2000,500,2500);
 
   char hname[40];
   char htitle[40];
+  char zname[40];
+  char ztitle[40];
   for(int jj=1; jj<=25;jj++)
     {
       sprintf(hname,"D_p_pim_mass_%d",(jj)*2);
       sprintf(htitle,"mass_after_distance_cut_%d",(jj)*2);
+      sprintf(zname,"Z_p_pim_mass_%d",(jj)*2);
+      sprintf(ztitle,"mass_after_Z-vertex_coordinate_cut_%d",(jj)*2-10);
       D_p_pim_mass_array[jj-1] = new TH1F(hname,htitle,2000,500,2500);
+      Z_p_pim_mass_array[jj-1] = new TH1F(zname,ztitle,2000,500,2500);
     }
   
   dist_p_pim=new TH1F("dist_p_pim","dist_p_pim",1000,0,300);
@@ -162,18 +168,28 @@ int main()
   
   dist_p_pim->Write();
   D_p_pim_mass->Write();
-
+  ZD_p_pim_mass->Write();
+  
   vertex_z_r->Write();
   
-  TCanvas *c2=new TCanvas("c2","c2");
+  TCanvas *c2=new TCanvas("c2","Cut on distance");
   c2->Divide(5,5);
+
+  TCanvas *c3=new TCanvas("c3","Cut on Z axis");
+  c3->Divide(5,5);
+
   for(int z=0;z<25;z++)
     {
       c2->cd(z+1);
       D_p_pim_mass_array[z]->Draw();
       D_p_pim_mass_array[z]->Write();
+
+      c3->cd(z+1);
+      Z_p_pim_mass_array[z]->Draw();
+      Z_p_pim_mass_array[z]->Write();
     }
   c2->Write();
+  c3->Write();
   
   outFileData->Close();
 }

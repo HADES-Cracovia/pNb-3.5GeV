@@ -79,6 +79,7 @@ void PPim::Loop()
       double close_cut = 9.;
       double nonfit_close_cut = -4.;
       double min_dist=30;
+      double min_z=4;
       //double close_cut = 0.;
       //double nonfit_close_cut = 0.;
       //double close_cut = 4.;
@@ -137,11 +138,23 @@ void PPim::Loop()
 	  D_p_pim_mass->Fill(m_inv_ppi);
 	  vertex_z_r->Fill(ver.Z(),TMath::Sqrt(ver.X()*ver.X()+ver.Y()*ver.Y()));
 	}
+      
+      if(isBest==1 && d_p_pim<min_dist && ver.Z()>min_z)
+	{
+	  ZD_p_pim_mass->Fill(m_inv_ppi);
+	  //vertex_z_r->Fill(ver.Z(),TMath::Sqrt(ver.X()*ver.X()+ver.Y()*ver.Y()));
+	}
+
       for(int ll=1;ll<=25;ll++)
 	{
-	  if(isBest==1 && d_p_pim<ll*2)
+	  if(isBest>=1 && d_p_pim<ll*2)
 	    {
 	      D_p_pim_mass_array[ll-1]->Fill(m_inv_ppi);
+	    }
+	  if(isBest>=1 && d_p_pim<50)
+	    {
+	      if(ver.Z()>(ll*2)-10)
+		Z_p_pim_mass_array[ll-1]->Fill(m_inv_ppi);
 	    }
 	}
     } // end of main loop

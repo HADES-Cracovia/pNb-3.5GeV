@@ -25,10 +25,15 @@ namespace PATData
   TH2F *dist_p_pim_pim_pip;
   TH1F *dist_p_pim, *dist_pim_pip;
 
-  TH1F *L_p_pim1_mass, *L_p_pim2_mass, *L_pim_pip_mass,*L_pim1_pip_mass,*L_pim2_pip_mass, *L_p_pim_pip_pim_mass;
-  TH1F *L_dist_p_pim, *L_dist_pim_pip;
-  TH2F *L_dist_p_pim_pim_pip;
-  TH1F *L_p_pim_mass, *L_p_mass, *L_pim_mass;
+  TH1F *DL_p_pim1_mass, *DL_p_pim2_mass, *DL_pim_pip_mass,*DL_pim1_pip_mass,*DL_pim2_pip_mass, *DL_p_pim_pip_pim_mass;
+  TH1F *DL_dist_p_pim, *DL_dist_pim_pip;
+  TH2F *DL_dist_p_pim_pim_pip;
+  TH1F *DL_p_pim_mass, *DL_p_mass, *DL_pim_mass;
+
+  TH1F *DML_p_pim1_mass, *DML_p_pim2_mass, *DML_pim_pip_mass,*DML_pim1_pip_mass,*DML_pim2_pip_mass, *DML_p_pim_pip_pim_mass;
+  TH1F *DML_dist_p_pim, *DML_dist_pim_pip;
+  TH2F *DML_dist_p_pim_pim_pip;
+  TH1F *DML_p_pim_mass, *DML_p_mass, *DML_pim_mass;
   //***************************************** 
 
   TFile *filp_cuts, *filpi_cuts;

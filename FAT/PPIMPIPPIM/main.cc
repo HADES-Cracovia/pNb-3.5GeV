@@ -124,17 +124,30 @@ int main()
   dist_pim_pip=new TH1F("dist_pip_pim","dist_pip_pim",1000,0,300);
 
   
-  L_p_pim_mass=new TH1F("L_p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);						       
-  L_p_pim1_mass=new TH1F("L_p_pim1_mass","L_Invariant mass #pi_{1}^{-} p",2000,500,2500);
-  L_p_pim2_mass=new TH1F("L_p_pim2_mass","L_Invariant mass #pi_{2}^{-} p",2000,500,2500);
-  L_pim_pip_mass=new TH1F("L_pim_pip_mass","L_Invariant mass #pi^{-} #pi^{+} ",2000,200,1500);
-  L_pim2_pip_mass=new TH1F("L_pim2_pip_mass","L_Invariant mass #pi_{2}^{-} #pi^{+} ",2000,200,1500);
-  L_pim1_pip_mass=new TH1F("L_pim1_pip_mass","L_Invariant mass #pi_{1}^{-} #pi^{+} ",2000,200,1500);
-  L_p_pim_pip_pim_mass=new TH1F("L_p_pim_pip_pim_mass","L_Invariant mass #pi^{-} #pi^{+} p #pi^{-}",2000,1000,2000);
+  DL_p_pim_mass=new TH1F("DL_p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);						       
+  DL_p_pim1_mass=new TH1F("DL_p_pim1_mass","DL_Invariant mass #pi_{1}^{-} p",2000,500,2500);
+  DL_p_pim2_mass=new TH1F("DL_p_pim2_mass","DL_Invariant mass #pi_{2}^{-} p",2000,500,2500);
+  DL_pim_pip_mass=new TH1F("DL_pim_pip_mass","DL_Invariant mass #pi^{-} #pi^{+} ",2000,200,1500);
+  DL_pim2_pip_mass=new TH1F("DL_pim2_pip_mass","DL_Invariant mass #pi_{2}^{-} #pi^{+} ",2000,200,1500);
+  DL_pim1_pip_mass=new TH1F("DL_pim1_pip_mass","DL_Invariant mass #pi_{1}^{-} #pi^{+} ",2000,200,1500);
+  DL_p_pim_pip_pim_mass=new TH1F("DL_p_pim_pip_pim_mass","DL_Invariant mass #pi^{-} #pi^{+} p #pi^{-}",2000,1000,2000);
 
-  L_dist_p_pim_pim_pip=new TH2F("L_dist_p_pim_pim_pip","L_dist_p_pim_pim_pip",300,0,300,300,0,300);
-  L_dist_p_pim=new TH1F("L_dist_p_pim","L_dist_p_pim",1000,0,300);
-  L_dist_pim_pip=new TH1F("L_dist_pip_pim","L_dist_pip_pim",1000,0,300);
+  DL_dist_p_pim_pim_pip=new TH2F("DL_dist_p_pim_pim_pip","DL_dist_p_pim_pim_pip",300,0,300,300,0,300);
+  DL_dist_p_pim=new TH1F("DL_dist_p_pim","DL_dist_p_pim",1000,0,300);
+  DL_dist_pim_pip=new TH1F("DL_dist_pip_pim","DL_dist_pip_pim",1000,0,300);
+
+  DML_p_pim_mass=new TH1F("DML_p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);						       
+  DML_p_pim1_mass=new TH1F("DML_p_pim1_mass","DML_Invariant mass #pi_{1}^{-} p",2000,500,2500);
+  DML_p_pim2_mass=new TH1F("DML_p_pim2_mass","DML_Invariant mass #pi_{2}^{-} p",2000,500,2500);
+  DML_pim_pip_mass=new TH1F("DML_pim_pip_mass","DML_Invariant mass #pi^{-} #pi^{+} ",2000,200,1500);
+  DML_pim2_pip_mass=new TH1F("DML_pim2_pip_mass","DML_Invariant mass #pi_{2}^{-} #pi^{+} ",2000,200,1500);
+  DML_pim1_pip_mass=new TH1F("DML_pim1_pip_mass","DML_Invariant mass #pi_{1}^{-} #pi^{+} ",2000,200,1500);
+  DML_p_pim_pip_pim_mass=new TH1F("DML_p_pim_pip_pim_mass","DML_Invariant mass #pi^{-} #pi^{+} p #pi^{-}",2000,1000,2000);
+
+  DML_dist_p_pim_pim_pip=new TH2F("DML_dist_p_pim_pim_pip","DML_dist_p_pim_pim_pip",300,0,300,300,0,300);
+  DML_dist_p_pim=new TH1F("DML_dist_p_pim","DML_dist_p_pim",1000,0,300);
+  DML_dist_pim_pip=new TH1F("DML_dist_pip_pim","DML_dist_pip_pim",1000,0,300);
+
   
   /**************************** M A I N   P A R T ****************************************/
 
@@ -180,17 +193,29 @@ int main()
   dist_pim_pip->Write();
   dist_p_pim->Write();
 
-  L_p_pim_mass->Write();
-  L_p_pim1_mass->Write();
-  L_p_pim2_mass->Write();
-  L_pim_pip_mass->Write();
-  L_pim2_pip_mass->Write();
-  L_pim1_pip_mass->Write();
-  L_p_pim_pip_pim_mass->Write();
+  DL_p_pim_mass->Write();
+  DL_p_pim1_mass->Write();
+  DL_p_pim2_mass->Write();
+  DL_pim_pip_mass->Write();
+  DL_pim2_pip_mass->Write();
+  DL_pim1_pip_mass->Write();
+  DL_p_pim_pip_pim_mass->Write();
 
-  L_dist_p_pim_pim_pip->Write();
-  L_dist_pim_pip->Write();
-  L_dist_p_pim->Write();
+  DL_dist_p_pim_pim_pip->Write();
+  DL_dist_pim_pip->Write();
+  DL_dist_p_pim->Write();
+
+  DML_p_pim_mass->Write();
+  DML_p_pim1_mass->Write();
+  DML_p_pim2_mass->Write();
+  DML_pim_pip_mass->Write();
+  DML_pim2_pip_mass->Write();
+  DML_pim1_pip_mass->Write();
+  DML_p_pim_pip_pim_mass->Write();
+
+  DML_dist_p_pim_pim_pip->Write();
+  DML_dist_pim_pip->Write();
+  DML_dist_p_pim->Write();
   //p_mass->Write();
   //pim_mass->Write();
  
