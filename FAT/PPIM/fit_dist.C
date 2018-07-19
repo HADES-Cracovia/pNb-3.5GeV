@@ -9,7 +9,7 @@ int fit_dist()
   c2->Divide(2);
   
   TH1F *hists[25];
-  f.ls();
+  f->ls();
   char hname[40];
   char new_name[40];
   char f_bg[40];
@@ -55,7 +55,7 @@ int fit_dist()
       bg[j]->SetLineColor(kBlue);
 
       signal[j]=new TF1(f_sg,"gaus(0)+pol1(4)",1110,1120);
-      signal[j]->SetLineColor(kGreen);
+      signal[j]->SetLineColor(kMagenta);
 
       all[j]=new TF1(f_al,"pol4(0)+gaus(5)",1080,1150);
       all[j]->SetLineColor(kGreen);
@@ -67,7 +67,10 @@ int fit_dist()
       bg_cp[j]->SetLineColor(kBlue);
       
       hists[j]->Fit(bg[j],"R");
-      signal[j]->SetParameters(1500,1115,5,4000);
+      double start_base=0.5*(hists[j]->GetBinContent(hists[j]->FindBin(1110))+hists[j]->GetBinContent(hists[j]->FindBin(1120)));
+      double start_high=hists[j]->GetBinContent(hists[j]->FindBin(1115))-start_base;
+      cout<<"starting parameters "<<start_base<<" "<<start_high<<endl;
+      signal[j]->SetParameters(start_high,1115,5,start_base);
       hists[j]->Fit(signal[j],"R");
       
       all[j]->SetParameter(0,bg[j]->GetParameter(0));

@@ -37,7 +37,7 @@ int fit_Z_cut()
       sprintf(new_name,"mass_%d",(n*2)-10);
       hists[n-1]=new TH1F("new_name","new_name",2000,500,2500);
       hists[n-1]=(TH1F*)f->Get(hname);
-      d_cut[n-1]=2*n;
+      d_cut[n-1]=(2*n)-10;
     }
   //fit histograms
   for(int j=0;j<25;j++)
@@ -45,11 +45,11 @@ int fit_Z_cut()
       c1->cd(j+1);
       hists[j]->GetXaxis()->SetRange(hists[j]->FindFixBin(1070),hists[j]->FindFixBin(1200));
       hists[j]->Draw();
-      sprintf(f_bg,"background_%d",(n+1)*2);
-      sprintf(f_sg,"signal_%d",(n+1)*2);
-      sprintf(f_al,"all_%d",(n+1)*2);
-      sprintf(f_sc,"signal_copy_%d",(n+1)*2);
-      sprintf(f_bc,"background_copy_%d",(n+1)*2);
+      sprintf(f_bg,"background_%d",(n+1)*2-10);
+      sprintf(f_sg,"signal_%d",(n+1)*2-10);
+      sprintf(f_al,"all_%d",(n+1)*2-10);
+      sprintf(f_sc,"signal_copy_%d",(n+1)*2-10);
+      sprintf(f_bc,"background_copy_%d",(n+1)*2-10);
       
       bg[j]=new TF1(f_bg,"pol4",1080,1180);
       bg[j]->SetLineColor(kBlue);
@@ -67,7 +67,10 @@ int fit_Z_cut()
       bg_cp[j]->SetLineColor(kBlue);
       
       hists[j]->Fit(bg[j],"R");
-      signal[j]->SetParameters(1500,1115,5,4000);
+      double start_base=0.5*(hists[j]->GetBinContent(hists[j]->FindBin(1110))+hists[j]->GetBinContent(hists[j]->FindBin(1120)));
+      double start_high=hists[j]->GetBinContent(hists[j]->FindBin(1115))-start_base;
+      cout<<"starting parameters "<<start_base<<" "<<start_high<<endl;
+      signal[j]->SetParameters(start_high,1115,5,start_base);
       hists[j]->Fit(signal[j],"R");
       
       all[j]->SetParameter(0,bg[j]->GetParameter(0));
