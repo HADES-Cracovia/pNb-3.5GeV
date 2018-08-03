@@ -121,7 +121,7 @@ void PPim::Loop()
 	NoLeptonPI = 1;
 	NoHadronPI = 1;
       */
-      if(isBest==1 && dist_p_pim<20)
+      if(isBest==1 && dist_p_pim<15)
 	{
 	  p_p_beta->Fill(p_p,p_beta_new);
 	  pim_p_beta->Fill(pim_p,pim_beta_new);
