@@ -67,11 +67,11 @@ bool HGraphCut::graphCut(HParticle *pPart)
   // double mass = mom / ( beta * TMath::Sqrt( 1. / ( 1. - (beta*beta) ) ) );
   double mass = mom*mom * (  1. / (beta*beta)  - 1. ) ; // mass squared !!!
   /*
-  cout<<endl;
-  cout<<"particle id: "<<id<<endl;
-  cout<<"particle p: "<<mom<<endl;
-  cout<<"particle beta: "<<beta<<endl;
-  cout<<"particle mass: "<<sqrt(mass);
+    cout<<endl;
+    cout<<"particle id: "<<id<<endl;
+    cout<<"particle p: "<<mom<<endl;
+    cout<<"particle beta: "<<beta<<endl;
+    cout<<"particle mass: "<<sqrt(mass);
   */
   switch ( id )
     {

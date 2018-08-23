@@ -189,6 +189,10 @@ void PPimPipPim::Loop()
 	  DL_dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim2);
 	  DL_dist_p_pim->Fill(dist_p_pim1);
 	  DL_dist_pim_pip->Fill(dist_pip_pim2);
+
+	  DL_target_z->Fill(pip_z);
+	  DL_target_z->Fill(pim1_z);
+	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim1_z));
 	}
       if(isBest==1 && dist2)
 	{
@@ -200,6 +204,10 @@ void PPimPipPim::Loop()
 	  DL_dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim1);
 	  DL_dist_p_pim->Fill(dist_p_pim2);
 	  DL_dist_pim_pip->Fill(dist_pip_pim1);
+
+	  DL_target_z->Fill(pip_z);
+	  DL_target_z->Fill(pim2_z);
+	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim2_z));	  	  
 	}
       if(isBest==1 && dist1 && c_mass1)
 	{
@@ -243,14 +251,14 @@ PPimPipPim::PPimPipPim(TTree *tree)
   if (tree == 0) {
 	  
     TChain * chain = new TChain("PPimPipPim_ID","");
-    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/hadron.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron00.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron01.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron02.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron03.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron04.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron05.root/PPimPipPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron06.root/PPimPipPim_ID");
+    /*
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron06.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron07.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron08.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron09.root/PPimPipPim_ID");
@@ -280,8 +288,8 @@ PPimPipPim::PPimPipPim(TTree *tree)
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron33.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");
-  
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");  
+    */    
     tree = chain; 
   }
 

@@ -34,6 +34,8 @@ namespace PATData
   TH1F *DML_dist_p_pim, *DML_dist_pim_pip;
   TH2F *DML_dist_p_pim_pim_pip;
   TH1F *DML_p_pim_mass, *DML_p_mass, *DML_pim_mass;
+
+  TH1F *DL_target_z, *DL_target_z_diff;
   //***************************************** 
 
   TFile *filp_cuts, *filpi_cuts;

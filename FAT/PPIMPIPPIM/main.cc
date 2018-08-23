@@ -86,7 +86,7 @@ int main()
   ppi_miss = new TLorentzVector(0,0,0,0);
 
   /************************************** O U T P U T   F I L E ******************************************/
-  outFileData = new TFile("pNb_ppimpippim_full_stat.root","recreate");
+  outFileData = new TFile("pNb_ppimpippim_temp.root","recreate");
   //ofstream myfile;
   //myfile.open ("raport.txt",ios::trunc);
   //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");
@@ -136,6 +136,9 @@ int main()
   DL_dist_p_pim=new TH1F("DL_dist_p_pim","DL_dist_p_pim",1000,0,300);
   DL_dist_pim_pip=new TH1F("DL_dist_pip_pim","DL_dist_pip_pim",1000,0,300);
 
+  DL_target_z=new TH1F("DL_target_z","Z position of target",150,-100,50);
+  DL_target_z_diff=new TH1F("DL_target_z_diff","Diffference between z of vertex for #pi^{-} and #pi^{+}",100,-1,1);
+  
   DML_p_pim_mass=new TH1F("DML_p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);						       
   DML_p_pim1_mass=new TH1F("DML_p_pim1_mass","DML_Invariant mass #pi_{1}^{-} p",2000,500,2500);
   DML_p_pim2_mass=new TH1F("DML_p_pim2_mass","DML_Invariant mass #pi_{2}^{-} p",2000,500,2500);
@@ -205,6 +208,9 @@ int main()
   DL_dist_pim_pip->Write();
   DL_dist_p_pim->Write();
 
+  DL_target_z_diff->Write();
+  DL_target_z->Write();
+  
   DML_p_pim_mass->Write();
   DML_p_pim1_mass->Write();
   DML_p_pim2_mass->Write();
