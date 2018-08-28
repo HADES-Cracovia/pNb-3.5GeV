@@ -204,7 +204,7 @@ void PPimPipPim::Loop()
 	  DL_pim_pip_z->Fill(ver_pip_pim2.Z());
 	  DL_pip_z->Fill(pip_z);
 
-	  if(ver_pip_l.Z()<0 && ver_pip_l.Z()>-40 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<40)
+	  if(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20)
 	    {
 	      DL_in_target->Fill(m_inv_ppim1);
 	    }
@@ -231,7 +231,7 @@ void PPimPipPim::Loop()
 	  DL_pim_pip_z->Fill(ver_pip_pim1.Z());
 	  DL_pip_z->Fill(pip_z);
 
-	  if(ver_pip_l.Z()<0 && ver_pip_l.Z()>-40 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<40)
+	  if(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20)
 	    {
 	      DL_in_target->Fill(m_inv_ppim2);
 	    }
@@ -279,7 +279,7 @@ PPimPipPim::PPimPipPim(TTree *tree)
 	  
     TChain * chain = new TChain("PPimPipPim_ID","");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron00.root/PPimPipPim_ID");
-    /*
+    ///*
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron01.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron02.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron03.root/PPimPipPim_ID");
@@ -316,7 +316,7 @@ PPimPipPim::PPimPipPim(TTree *tree)
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");  
-    */    
+    //*/    
     tree = chain; 
   }
 
