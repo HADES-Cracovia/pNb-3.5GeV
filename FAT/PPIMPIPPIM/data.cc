@@ -23,19 +23,21 @@ namespace PATData
   
   TH1F *p_pim1_mass, *p_pim2_mass, *pim_pip_mass,*pim1_pip_mass,*pim2_pip_mass, *p_pim_pip_pim_mass;
   TH2F *dist_p_pim_pim_pip;
+  TH2F *ver_pip_lambda;
   TH1F *dist_p_pim, *dist_pim_pip;
 
   TH1F *DL_p_pim1_mass, *DL_p_pim2_mass, *DL_pim_pip_mass,*DL_pim1_pip_mass,*DL_pim2_pip_mass, *DL_p_pim_pip_pim_mass;
   TH1F *DL_dist_p_pim, *DL_dist_pim_pip;
   TH2F *DL_dist_p_pim_pim_pip;
-  TH1F *DL_p_pim_mass, *DL_p_mass, *DL_pim_mass;
+  TH1F *DL_p_pim_mass, *DL_p_mass, *DL_pim_mass, *DL_in_target;
 
   TH1F *DML_p_pim1_mass, *DML_p_pim2_mass, *DML_pim_pip_mass,*DML_pim1_pip_mass,*DML_pim2_pip_mass, *DML_p_pim_pip_pim_mass;
   TH1F *DML_dist_p_pim, *DML_dist_pim_pip;
   TH2F *DML_dist_p_pim_pim_pip;
   TH1F *DML_p_pim_mass, *DML_p_mass, *DML_pim_mass;
 
-  TH1F *DL_target_z, *DL_target_z_diff;
+  TH1F *DL_target_z, *DL_target_z_diff, *DL_pip_z;
+  TH1F *DL_pim_pip_z;
   //***************************************** 
 
   TFile *filp_cuts, *filpi_cuts;
@@ -164,6 +166,23 @@ namespace PATData
     dist=p_tool.calculateMinimumDistance(base_1,dir_1,base_2,dir_2);
 
     return dist;
+  }
+
+  TVector3 trackToPoint(TVector3 base,TVector3 dir, TVector3 point)
+  {
+    HGeomVector point1, dir1, base1, res;
+    TVector3 res1;
+    point1.setXYZ(point.X(), point.Y(), point.Z());
+    dir1.setXYZ(dir.X(), dir.Y(), dir.Z());
+    base1.setXYZ(base.X(), base.Y(), base.Z());
+
+    //cout<<"direction vec: "<<dir1.X()<<" "<<dir1.Y()<<" "<<dir1.Z()<<" "<<endl;
+    HParticleTool p_tool;
+    res=p_tool.calculatePointOfClosestApproachStraightToPoint(base1, dir1, point1);
+    //cout<<res.X()<<" "<<res.Z()<<endl;
+    res1.SetXYZ(res.X(),res.Y(),res.Z());
+    return res1;
+
   }
 
   TVector3 vertex(double z1,double r1,TVector3 vec1, double z2,double r2,TVector3 vec2)

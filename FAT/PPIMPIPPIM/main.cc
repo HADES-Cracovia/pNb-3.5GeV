@@ -131,13 +131,18 @@ int main()
   DL_pim2_pip_mass=new TH1F("DL_pim2_pip_mass","DL_Invariant mass #pi_{2}^{-} #pi^{+} ",2000,200,1500);
   DL_pim1_pip_mass=new TH1F("DL_pim1_pip_mass","DL_Invariant mass #pi_{1}^{-} #pi^{+} ",2000,200,1500);
   DL_p_pim_pip_pim_mass=new TH1F("DL_p_pim_pip_pim_mass","DL_Invariant mass #pi^{-} #pi^{+} p #pi^{-}",2000,1000,2000);
-
+  DL_in_target=new TH1F("DL_in_target","DL_Invariant mass #pi^{-} #pi^{+} p #pi^{-} for events from target",2000,1000,2000);
+  
   DL_dist_p_pim_pim_pip=new TH2F("DL_dist_p_pim_pim_pip","DL_dist_p_pim_pim_pip",300,0,300,300,0,300);
   DL_dist_p_pim=new TH1F("DL_dist_p_pim","DL_dist_p_pim",1000,0,300);
   DL_dist_pim_pip=new TH1F("DL_dist_pip_pim","DL_dist_pip_pim",1000,0,300);
 
   DL_target_z=new TH1F("DL_target_z","Z position of target",150,-100,50);
-  DL_target_z_diff=new TH1F("DL_target_z_diff","Diffference between z of vertex for #pi^{-} and #pi^{+}",100,-1,1);
+  DL_target_z_diff=new TH1F("DL_target_z_diff","Diffference between z of vertex for #pi^{-} and #pi^{+}",100,1,-1);
+  DL_pim_pip_z=new TH1F("DL_pim_pip_z","Poinf of closest approach between #pi^{-} & #pi^{+}",150,-100,50);
+  DL_pip_z=new TH1F("DL_pip_z","Z position of target according to #pi^{+}",150,-100,50);
+
+  ver_pip_lambda=new TH2F("ver_pip_lambda","Point of the closest approach between #pi^{+} and #Lambda",200,1,-1,100,1,-1);
   
   DML_p_pim_mass=new TH1F("DML_p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);						       
   DML_p_pim1_mass=new TH1F("DML_p_pim1_mass","DML_Invariant mass #pi_{1}^{-} p",2000,500,2500);
@@ -203,13 +208,18 @@ int main()
   DL_pim2_pip_mass->Write();
   DL_pim1_pip_mass->Write();
   DL_p_pim_pip_pim_mass->Write();
-
+  DL_in_target->Write();
+  
   DL_dist_p_pim_pim_pip->Write();
   DL_dist_pim_pip->Write();
   DL_dist_p_pim->Write();
 
   DL_target_z_diff->Write();
   DL_target_z->Write();
+  DL_pim_pip_z->Write();
+  DL_pip_z->Write();
+
+  ver_pip_lambda->Write();
   
   DML_p_pim_mass->Write();
   DML_p_pim1_mass->Write();

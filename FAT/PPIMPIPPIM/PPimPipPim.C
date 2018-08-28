@@ -79,8 +79,7 @@ void PPimPipPim::Loop()
       TVector3 ver_p_pim1=vertex(p_r,p_z,v2,pim1_r,pim1_z,v3);
       TVector3 ver_p_pim2=vertex(p_r,p_z,v2,pim2_r,pim2_z,v5);
       TVector3 ver_pip_pim1=vertex(pip_r,pip_z,v4,pim1_r,pim1_z,v3);
-      TVector3 ver_pip_pim2=vertex(pip_r,pip_z,v4,pim2_r,pim2_z,v5);
-      
+      TVector3 ver_pip_pim2=vertex(pip_r,pip_z,v4,pim2_r,pim2_z,v5);  
       //	  cout << "opening angle = " << oa << endl;
 
       ACC = 1.;
@@ -150,8 +149,12 @@ void PPimPipPim::Loop()
       bool c_mass1=(m_inv_ppim1<1120 &&m_inv_ppim1>1110);
       bool c_mass2=(m_inv_ppim2<1120 &&m_inv_ppim2>1110);
 
-      bool dist1=(dist_p_pim1<15 && ver_p_pim1.Z()>0);
-      bool dist2=(dist_p_pim2<15 && ver_p_pim2.Z()>0);
+      bool dist1=(dist_p_pim1<15
+		  && ver_p_pim1.Z()>0
+		  && dist_p_pim1<dist_p_pim2);
+      bool dist2=(dist_p_pim2<15
+		  && ver_p_pim2.Z()>0
+		  && dist_p_pim1>dist_p_pim2);
       
       if(isBest==1)
 	{
@@ -181,6 +184,11 @@ void PPimPipPim::Loop()
 	}
       if(isBest==1 && dist1)
 	{
+	  TVector3 pip_ver(0,0,pip_z);
+	  TVector3 ver_pip_l=trackToPoint(ver_p_pim1,gammappim1->Vect(),pip_ver);
+	  //cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
+	  ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
+  	  
 	  DL_p_pim_mass->Fill(m_inv_ppim1);
 	  DL_p_pim1_mass->Fill(m_inv_ppim1);
 	  DL_pim_pip_mass->Fill(m_inv_pippim2);
@@ -191,11 +199,23 @@ void PPimPipPim::Loop()
 	  DL_dist_pim_pip->Fill(dist_pip_pim2);
 
 	  DL_target_z->Fill(pip_z);
-	  DL_target_z->Fill(pim1_z);
-	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim1_z));
+	  DL_target_z->Fill(pim2_z);
+	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim2_z));
+	  DL_pim_pip_z->Fill(ver_pip_pim2.Z());
+	  DL_pip_z->Fill(pip_z);
+
+	  if(ver_pip_l.Z()<0 && ver_pip_l.Z()>-40 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<40)
+	    {
+	      DL_in_target->Fill(m_inv_ppim1);
+	    }
 	}
       if(isBest==1 && dist2)
 	{
+	  TVector3 pip_ver(0,0,pip_z);
+	  TVector3 ver_pip_l=trackToPoint(ver_p_pim2,gammappim2->Vect(),pip_ver);
+	  //cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
+	  ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
+	  
 	  DL_p_pim_mass->Fill(m_inv_ppim2);
 	  DL_p_pim2_mass->Fill(m_inv_ppim2);
 	  DL_pim_pip_mass->Fill(m_inv_pippim1);
@@ -206,8 +226,15 @@ void PPimPipPim::Loop()
 	  DL_dist_pim_pip->Fill(dist_pip_pim1);
 
 	  DL_target_z->Fill(pip_z);
-	  DL_target_z->Fill(pim2_z);
-	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim2_z));	  	  
+	  DL_target_z->Fill(pim1_z);
+	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim1_z));
+	  DL_pim_pip_z->Fill(ver_pip_pim1.Z());
+	  DL_pip_z->Fill(pip_z);
+
+	  if(ver_pip_l.Z()<0 && ver_pip_l.Z()>-40 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<40)
+	    {
+	      DL_in_target->Fill(m_inv_ppim2);
+	    }
 	}
       if(isBest==1 && dist1 && c_mass1)
 	{
@@ -252,13 +279,13 @@ PPimPipPim::PPimPipPim(TTree *tree)
 	  
     TChain * chain = new TChain("PPimPipPim_ID","");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron00.root/PPimPipPim_ID");
+    /*
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron01.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron02.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron03.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron04.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron05.root/PPimPipPim_ID");
-    /*
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron06.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron06.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron07.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron08.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron09.root/PPimPipPim_ID");

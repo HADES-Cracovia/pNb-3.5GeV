@@ -28,19 +28,22 @@ namespace PATData {
   
   extern TH1F *p_pim1_mass, *p_pim2_mass, *pim_pip_mass,*pim1_pip_mass,*pim2_pip_mass, *p_pim_pip_pim_mass;
   extern TH2F *dist_p_pim_pim_pip;
+  extern TH2F *ver_pip_lambda;
   extern TH1F *dist_p_pim, *dist_pim_pip;
 
   extern TH1F *DL_p_pim1_mass, *DL_p_pim2_mass, *DL_pim_pip_mass,*DL_pim1_pip_mass,*DL_pim2_pip_mass, *DL_p_pim_pip_pim_mass;
   extern TH1F *DL_dist_p_pim, *DL_dist_pim_pip;
   extern TH2F *DL_dist_p_pim_pim_pip;
-  extern TH1F *DL_p_pim_mass, *DL_p_mass, *DL_pim_mass;
+  extern TH1F *DL_p_pim_mass, *DL_p_mass, *DL_pim_mass, *DL_in_target;
+
   
   extern TH1F *DML_p_pim1_mass, *DML_p_pim2_mass, *DML_pim_pip_mass,*DML_pim1_pip_mass,*DML_pim2_pip_mass, *DML_p_pim_pip_pim_mass;
   extern TH1F *DML_dist_p_pim, *DML_dist_pim_pip;
   extern TH2F *DML_dist_p_pim_pim_pip;
   extern TH1F *DML_p_pim_mass, *DML_p_mass, *DML_pim_mass;
 
-  extern TH1F *DL_target_z, *DL_target_z_diff;
+  extern TH1F *DL_target_z, *DL_target_z_diff, *DL_pip_z;
+  extern TH1F *DL_pim_pip_z;
   //*****************************************  
 
   extern TCutG *pEpS0, *pEpS1, *pEmS0, *pEmS1;
@@ -112,6 +115,7 @@ namespace PATData {
   double parametrization(double y);
   double trackDistance(double r1, double z1, TVector3 v1, double r2, double z2, TVector3 v2);
   TVector3 vertex(double z1,double r1,TVector3 vec1, double z2,double r2,TVector3 vec2);
+  TVector3 trackToPoint(TVector3 base,TVector3 dir, TVector3 point);
 }
 
 /*********************************************************************************************/
