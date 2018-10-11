@@ -1,7 +1,7 @@
 
 int fit_Z_cut()
 {
-  TFile *f = new TFile("pNb_ppim_280.root");
+  TFile *f = new TFile("pNb_ppim_all.root");
   TCanvas* c1=new TCanvas("c1","c1");
   TCanvas* c2=new TCanvas("c2","c2");
 

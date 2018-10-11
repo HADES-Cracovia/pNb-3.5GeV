@@ -204,7 +204,7 @@ void PPimPipPim::Loop()
 	  DL_pim_pip_z->Fill(ver_pip_pim2.Z());
 	  DL_pip_z->Fill(pip_z);
 
-	  if(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20)
+	  if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
 	    {
 	      DL_in_target->Fill(m_inv_ppim1);
 	    }
@@ -231,7 +231,7 @@ void PPimPipPim::Loop()
 	  DL_pim_pip_z->Fill(ver_pip_pim1.Z());
 	  DL_pip_z->Fill(pip_z);
 
-	  if(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20)
+	  if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
 	    {
 	      DL_in_target->Fill(m_inv_ppim2);
 	    }

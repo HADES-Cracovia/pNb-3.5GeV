@@ -86,7 +86,8 @@ int main()
   ppi_miss = new TLorentzVector(0,0,0,0);
 
   /************************************** O U T P U T   F I L E ******************************************/
-  outFileData = new TFile("pNb_ppim_280.root","recreate");
+  //outFileData = new TFile("pNb_ppim_280.root","recreate");
+  outFileData = new TFile("pNb_ppim_all_opt.root","recreate");
   //ofstream myfile;
   //myfile.open ("raport.txt",ios::trunc);
   //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");
@@ -119,6 +120,9 @@ int main()
   char htitle[40];
   char zname[40];
   char ztitle[40];
+  char dzname[60];
+  char dztitle[60]; 
+  
   for(int jj=1; jj<=25;jj++)
     {
       sprintf(hname,"D_p_pim_mass_%d",(jj)*2);
@@ -127,6 +131,13 @@ int main()
       sprintf(ztitle,"mass_after_Z-vertex_coordinate_cut_%d",(jj)*2-10);
       D_p_pim_mass_array[jj-1] = new TH1F(hname,htitle,2000,500,2500);
       Z_p_pim_mass_array[jj-1] = new TH1F(zname,ztitle,2000,500,2500);
+
+      for(int kk=1; kk<=25;kk++)
+	{
+	  sprintf(dzname,"DZ_p_pim_mass_%d_%d",(jj)*2,kk*2);
+	  sprintf(dztitle,"mass_after_distance_cut_%d_z_cut_%d",jj,(kk)*2-10);
+	  DZ_p_pim_mass_array[jj-1][kk-1]=new TH1F(dzname,dztitle,2000,500,2500);
+	} 
     }
   
   dist_p_pim=new TH1F("dist_p_pim","dist_p_pim",1000,0,300);
@@ -187,6 +198,11 @@ int main()
       c3->cd(z+1);
       Z_p_pim_mass_array[z]->Draw();
       Z_p_pim_mass_array[z]->Write();
+
+      for(int x=0;x<25;x++)
+	{
+	  DZ_p_pim_mass_array[z][x]->Write();
+	}  
     }
   c2->Write();
   c3->Write();
