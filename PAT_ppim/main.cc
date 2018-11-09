@@ -83,7 +83,7 @@ int main(Int_t argc, Char_t **argv)
 
   //*******************************************
   //*******************************************
-  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/";
+  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PION/FILES/288_time/";
   //*******************************************
@@ -147,8 +147,6 @@ int main(Int_t argc, Char_t **argv)
   //HHypPool myHyps( &outputFile );
   //HHypPool myHyps( &outputFile2 );
 #ifdef LEPTONS
-  myHyps.add("Lp",eLeptonPos);
-  myHyps.add("Lm",eLeptonNeg);
   //***------------------------------------------------
   myHyps.add("Lp",eLeptonPos);
   myHyps.add("Lm",eLeptonNeg);
@@ -156,18 +154,15 @@ int main(Int_t argc, Char_t **argv)
   myHyps.add("LpLp",eLeptonPos,eLeptonPos);
   myHyps.add("LmLm",eLeptonNeg,eLeptonNeg);
   myHyps.add("LpLmLpLm",eLeptonPos,eLeptonNeg,eLeptonPos,eLeptonNeg);
+  myHyps.add("HpHmLpLm", eHadronPos,eHadronNeg,eLeptonPos,eLeptonNeg);
+  myHyps.add("HpHmLpLp", eHadronPos,eHadronNeg,eLeptonPos,eLeptonPos);
+  myHyps.add("HpHmLmLm", eHadronPos,eHadronNeg,eLeptonNeg,eLeptonNeg);
 #endif 
   //***------- hadron stuff ---------------------------
 #ifdef HADRONS
-
-
-  //myHyps.add("Hp", eHadronPos);
-  //myHyps.add("Hm", eHadronNeg);
-  //myHyps.add("HpHp", eHadronPos,eHadronPos);
   myHyps.add("HpHm", eHadronPos,eHadronNeg);
   myHyps.add("HpHmHpHm", eHadronPos,eHadronNeg,eHadronPos,eHadronNeg);
-  myHyps.add("HpHmLpLm", eHadronPos,eHadronNeg,eLeptonPos,eLeptonNeg);
-  //myHyps.add("HpLpLm", eHadronPos,eLeptonPos,eLeptonNeg);
+  myHyps.add("HpHmHp", eHadronPos,eHadronNeg,eHadronPos);  
 #endif
   //*************************************************** 
 #ifdef LEPTONS 
@@ -187,18 +182,15 @@ int main(Int_t argc, Char_t **argv)
   myPids.add("LpLp", "EpEp",ePositron,ePositron);
   myPids.add("LmLm", "EmEm",eElectron,eElectron);
   myPids.add("LpLmLpLm", "EpEmEpEm",ePositron,eElectron,ePositron,eElectron);
+  myPids.add("HpHmLpLm", "PPimEpEm",eProton,ePiMinus,ePositron,eElectron);
+  myPids.add("HpHmLpLp", "PPimEpEp",eProton,ePiMinus,ePositron,ePositron);
+  myPids.add("HpHmLmLm", "PPimEmEm",eProton,ePiMinus,eElectron,eElectron);
 #endif 
   //***------- hadron stuff ---------------------------
 #ifdef HADRONS
-  //myPids2.add("HpHp", "PP",eProton,eProton);
-
-
-  //myPids2.add("HpHp", "PPip",eProton,ePiPlus);
-  //myPids2.add("HpHm", "PipPim",ePiPlus,ePiMinus);
   myPids2.add("HpHm", "PPim",eProton,ePiMinus);
   myPids2.add("HpHmHpHm", "PPimPipPim",eProton,ePiMinus,ePiPlus,ePiMinus);
-  myPids2.add("HpHmLpLm", "PPimEpEm",eProton,ePiMinus,ePositron,eElectron);
-  //myPids2.add("HpLpLm", "PEpEm",eProton,ePositron,eElectron);
+  myPids2.add("HpHmHp", "PPimPip",eProton,ePiMinus,ePiPlus);
 #endif
   //*************************************************** 
 #ifdef LEPTONS 
@@ -217,17 +209,16 @@ int main(Int_t argc, Char_t **argv)
   myPids_A.add("LpLp", "EpEp_ID",ePositron,ePositron);
   myPids_A.add("LmLm", "EmEm_ID",eElectron,eElectron);
   myPids_A.add("LpLmLpLm", "EpEmEpEm_ID",ePositron,eElectron,ePositron,eElectron);
+  myPids_A.add("HpHmLpLm", "PPimEpEm_ID",eProton,ePiMinus,ePositron,eElectron);
+  myPids_A.add("HpHmLpLp", "PPimEpEp_ID",eProton,ePiMinus,ePositron,ePositron);
+  myPids_A.add("HpHmLmLm", "PPimEmEm_ID",eProton,ePiMinus,eElectron,eElectron);
 #endif 
   //***------- hadron stuff ---------------------------
 #ifdef HADRONS
-
-
-  //myPids_A2.add("HpHp", "PP_ID",eProton,eProton);
-  //myPids_A2.add("HpHp", "PPip_ID",eProton,ePiPlus);
-  //myPids_A2.add("HpHm", "PipPim_ID",ePiPlus,ePiMinus);
   myPids_A2.add("HpHm", "PPim_ID",eProton,ePiMinus);
   myPids_A2.add("HpHmHpHm", "PPimPipPim_ID",eProton,ePiMinus,ePiPlus,ePiMinus);
-  myPids_A2.add("HpHmLpLm", "PPimEpEm_ID",eProton,ePiMinus,ePositron,eElectron);
+  myPids_A2.add("HpHmHp", "PPimPip_ID",eProton,ePiMinus,ePiPlus);
+
   //myPids_A2.add("HpLpLm", "PEpEm_ID",eProton,ePositron,eElectron);
 #endif
 

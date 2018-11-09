@@ -1,4 +1,4 @@
-#include "EmEm.h"
+#include "PPimEmEm.h"
 #include "data.h"
 #include <iostream>
 #include <TLorentzVector.h>
@@ -9,7 +9,7 @@ using namespace std;
 using namespace PATData;
 
 
-void EmEm::Loop()
+void PPimEmEm::Loop()
 {
    static long licznik = 0;
 
@@ -74,7 +74,7 @@ void EmEm::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
 
       ++licznik;
-	  if ((licznik % 100000)==0) cout << "EmEm Events: " << licznik << endl;
+	  if ((licznik % 100000)==0) cout << "PPimEmEm Events: " << licznik << endl;
 
   
       double F = 1.006;
@@ -420,7 +420,7 @@ void EmEm::Loop()
 
 
 
-EmEm::EmEm(TTree *tree)
+PPimEmEm::PPimEmEm(TTree *tree)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -430,7 +430,7 @@ EmEm::EmEm(TTree *tree)
 
    if (tree == 0) {
 
-     TChain * chain = new TChain("EmEm_ID","");
+     TChain * chain = new TChain("PPimEmEm_ID","");
      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/288/day288.root/EmEm_ID");
      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/288_new/lepton288new.root/EmEm_ID");
      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/288_new_pcut/lepton288new_p.root/EmEm_ID");
@@ -441,125 +441,6 @@ EmEm::EmEm(TTree *tree)
      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list3/sum3.root/EmEm_ID");
      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list2/sum2.root/EmEm_ID");
      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list1/sum1.root/EmEm_ID");
-
-     //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/lepton656.root/EmEm_ID");
-     //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/lepton690.root/EmEm_ID");
-     //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/lepton748.root/EmEm_ID");
-     //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/lepton800.root/EmEm_ID");
-
-
-      // -- PE 690 ----------------------------------------
-      /* 
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/196/lepton196.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/197/lepton197.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/198/lepton198.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/232/lepton232.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/233/lepton233.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/234/lepton234.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/235/lepton235.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/236/lepton236.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/237/lepton237.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/238/lepton238.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/239/lepton239.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/240/lepton240.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/241/lepton241.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/242/lepton242.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/243/lepton243.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/244/lepton244.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/245/lepton245.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/246/lepton246.root/EmEm_ID");
-      */ 
-/*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/196/lepton196.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/197/lepton197.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/198/lepton198.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/232/lepton232.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/233/lepton233.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/234/lepton234.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/235/lepton235.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/236/lepton236.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/237/lepton237.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/238/lepton238.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/239/lepton239.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/240/lepton240.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/241/lepton241.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/242/lepton242.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/243/lepton243.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/244/lepton244.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/245/lepton245.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/246/lepton246.root/EmEm_ID");
-*/
-      // -- PE 656 ----------------------------------------
-      /*
-       chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/247/656/lepton247_656.root/EmEm_ID");
-       chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/248/656/lepton248_656.root/EmEm_ID");
-       chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/249/656/lepton249_656.root/EmEm_ID");
-      */
-/*
-       chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/247/656/lepton247_656.root/EmEm_ID");
-       chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/248/656/lepton248_656.root/EmEm_ID");
-       chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/249/656/lepton249_656.root/EmEm_ID");
-*/
-      // -- PE 748 ----------------------------------------
-      /*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/246/748/lepton246_748.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/247/748/lepton247_748.root/EmEm_ID");
-      */
-/*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/246/748/lepton246_748.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/247/748/lepton247_748.root/EmEm_ID");
-*/
-      // -- PE 800 ----------------------------------------
-      /*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/249/800/lepton249_800.root/EmEm_ID");
-      */
-/*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/249/800/lepton249_800.root/EmEm_ID");
-*/
-      // --  C 656 ----------------------------------------
-      /*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/252/656/lepton252_656.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/253/656/lepton253_656.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/254/656/lepton254_656.root/EmEm_ID");
-      */
-/*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/252/656/lepton252_656.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/253/656/lepton253_656.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/254/656/lepton254_656.root/EmEm_ID");
-*/
-      // --  C 690 ----------------------------------------
-      /*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/195/lepton195.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/250/lepton250.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/251/lepton251.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/254/lepton254.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/255/lepton255.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/256/lepton256.root/EmEm_ID");
-      */
-
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/195/lepton195.root/EmEm_ID");
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/250/lepton250.root/EmEm_ID");
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/251/lepton251.root/EmEm_ID");
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/254/lepton254.root/EmEm_ID");
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/255/lepton255.root/EmEm_ID");
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/256/lepton256.root/EmEm_ID");
-
-      // --  C 748 ----------------------------------------
-      /*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/252/748/lepton252_748.root/EmEm_ID");
-      */
-/*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/252/748/lepton252_748.root/EmEm_ID");
-*/
-      // --  C 800 ----------------------------------------
-      
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/251/800/lepton251_800.root/EmEm_ID");
-      //chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/LEPTONS/252/800/lepton252_800.root/EmEm_ID");
-      
-      /*
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/251/800/lepton251_800.root/EmEm_ID");
-      chain->Add("/hera/hades/user/przygoda/PAT2/out/exp/gen1/252/800/lepton252_800.root/EmEm_ID");
-      */
       
       tree = chain;
 
@@ -569,14 +450,14 @@ EmEm::EmEm(TTree *tree)
 
 
 // --------------------------------------------------------------------------------------------
-EmEm::~EmEm()
+PPimEmEm::~PPimEmEm()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
 // --------------------------------------------------------------------------------------------
-Int_t EmEm::GetEntry(Long64_t entry)
+Int_t PPimEmEm::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
@@ -584,7 +465,7 @@ Int_t EmEm::GetEntry(Long64_t entry)
 }
 
 // --------------------------------------------------------------------------------------------
-Long64_t EmEm::LoadTree(Long64_t entry)
+Long64_t PPimEmEm::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -598,7 +479,7 @@ Long64_t EmEm::LoadTree(Long64_t entry)
 }
 
 // --------------------------------------------------------------------------------------------
-void EmEm::Init(TTree *tree)
+void PPimEmEm::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -909,7 +790,7 @@ void EmEm::Init(TTree *tree)
 }
 
 // --------------------------------------------------------------------------------------------
-Bool_t EmEm::Notify()
+Bool_t PPimEmEm::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -921,7 +802,7 @@ Bool_t EmEm::Notify()
 }
 
 // --------------------------------------------------------------------------------------------
-void EmEm::Show(Long64_t entry)
+void PPimEmEm::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
@@ -930,7 +811,7 @@ void EmEm::Show(Long64_t entry)
 }
 
 // --------------------------------------------------------------------------------------------
-Int_t EmEm::Cut(Long64_t entry)
+Int_t PPimEmEm::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.

@@ -1,11 +1,11 @@
-#ifndef EpEp_h
-#define EpEp_h
+#ifndef PPimEpEp_h
+#define PPimEpEp_h
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
 
-class EpEp {
+class PPimEpEp {
 
 public :
 
@@ -600,8 +600,8 @@ public :
    TBranch        *b_trigdownscale;   //!
    TBranch        *b_trigdownscaleflag;   //!
 
-   EpEp(TTree *tree=0);
-   virtual ~EpEp();
+   PPimEpEp(TTree *tree=0);
+   virtual ~PPimEpEp();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);

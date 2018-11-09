@@ -1,7 +1,7 @@
 CC=g++
 TARGET=analpp
-OBJS=main.o data.o EpEm.o EpEp.o EmEm.o
-HEADERS=data.h EpEm.h EpEp.h EmEm.h
+OBJS=main.o data.o PPimEpEm.o PPimEpEp.o PPimEmEm.o
+HEADERS=data.h PPimEpEm.h PPimEpEp.h PPimEmEm.h
 ROOTLIBS=`root-config  --libs` -lTuple -lHFilter
 
 CPPFLAGS+=-g -L/u/przygoda/HNTUPLE64 -L/u/przygoda/HFILTER64 -L/u/przygoda/PLUTO64/ -Wl,--no-as-needed 

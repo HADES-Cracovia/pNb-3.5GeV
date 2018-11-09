@@ -1,6 +1,6 @@
-#include "EpEm.h"
-#include "EpEp.h"
-#include "EmEm.h"
+#include "PPimEpEm.h"
+#include "PPimEpEp.h"
+#include "PPimEmEm.h"
 #include "data.h"
 #include <TH2.h>
 #include <TStyle.h>
@@ -250,13 +250,13 @@ int main()
      }
    /**************************** M A I N   P A R T ****************************************/
 
-   EpEm t;
+   PPimEpEm t;
    t.Loop();
    cout << "START EPEM!" << endl;
-   EpEp t_back1;
+   PPimEpEp t_back1;
    t_back1.Loop();
    cout << "START EPEP!" << endl;
-   EmEm t_back2;
+   PPimEmEm t_back2;
    t_back2.Loop();   
    cout << "START EMEM!" << endl;
    cout << "FINALIZING!" << endl;

@@ -1,11 +1,11 @@
-#ifndef EmEm_h
-#define EmEm_h
+#ifndef PPimEmEm_h
+#define PPimEmEm_h
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
 
-class EmEm {
+class PPimEmEm {
 
 public :
 
@@ -600,8 +600,8 @@ public :
    TBranch        *b_trigdownscale;   //!
    TBranch        *b_trigdownscaleflag;   //!
 
-   EmEm(TTree *tree=0);
-   virtual ~EmEm();
+   PPimEmEm(TTree *tree=0);
+   virtual ~PPimEmEm();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);

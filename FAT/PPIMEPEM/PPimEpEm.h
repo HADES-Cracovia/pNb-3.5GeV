@@ -1,5 +1,5 @@
-#ifndef EpEm_h
-#define EpEm_h
+#ifndef PPimEpEm_h
+#define PPimEpEm_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -8,7 +8,7 @@
 using namespace std;
 
 /*********************************************************************************************/
-class EpEm {
+class PPimEpEm {
 
 public :
 
@@ -337,8 +337,8 @@ public :
    TBranch        *b_trigdownscale;   //!
    TBranch        *b_trigdownscaleflag;   //!
 
-   EpEm(TTree *tree=0);
-   virtual ~EpEm();
+   PPimEpEm(TTree *tree=0);
+   virtual ~PPimEpEm();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
