@@ -426,7 +426,7 @@ void PPimEpEm::Loop()
 	      momentum_spectrum_bt->Fill(em_p*(-1));
 	      momentum_spectrum_bt->Fill(ep_p);
 
-
+	      /*
 	      (*tlo)["em_btChargeRing"] = em_btChargeRing;
 	      (*tlo)["em_btChargeSum"] = em_btChargeSum;
 	      (*tlo)["em_btChi2"] = em_btChi2;
@@ -501,8 +501,9 @@ void PPimEpEm::Loop()
 	      (*tlo)["eVertReco_z"] = eVertReco_z;
 	      (*tlo)["eVertReco_x"] = eVertReco_x;
 	      (*tlo)["eVertReco_y"] = eVertReco_y;
-
+	      
 	      tlo->fill();
+	      */
 	    }
 
 	if(m_inv_e1e2>140.)  miss_all->Fill(e1e2_miss->M()/1000., EFF );
@@ -547,12 +548,48 @@ PPimEpEm::PPimEpEm(TTree *tree)
       //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/288/day288.root/EpEm_ID");
       //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/288_new/lepton288new.root/EpEm_ID");
       //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/288_new_pcut/lepton288new_p.root/EpEm_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list5/sum5.root/EpEm_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list4/sum4.root/EpEm_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list3/sum3.root/EpEm_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list2/sum2.root/EpEm_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_epem/FILES/sep08_all/list1/sum1.root/EpEm_ID");
- 
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton00.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton01.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton02.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton03.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton04.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton05.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton06.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton07.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton08.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton09.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton10.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton11.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton12.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton13.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton14.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton15.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton16.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton17.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton18.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton19.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton20.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton21.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton22.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton23.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton24.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton25.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton26.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton27.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton28.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton29.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton30.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton31.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton32.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton33.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton34.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton35.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton36.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton37.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton38.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton39.root/PPimEpEm_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/lepton40.root/PPimEpEm_ID");
+      
       tree = chain; 
    }
 

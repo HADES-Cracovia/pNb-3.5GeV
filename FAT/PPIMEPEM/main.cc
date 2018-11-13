@@ -251,14 +251,17 @@ int main()
    /**************************** M A I N   P A R T ****************************************/
 
    PPimEpEm t;
+   cout<<"START PPimEpEm!"<<endl;
    t.Loop();
-   cout << "START EPEM!" << endl;
+   
    PPimEpEp t_back1;
+   cout << "START PPimEpEp!" << endl;
    t_back1.Loop();
-   cout << "START EPEP!" << endl;
+   
    PPimEmEm t_back2;
+   cout << "START PPimEmEm!" << endl;
    t_back2.Loop();   
-   cout << "START EMEM!" << endl;
+   
    cout << "FINALIZING!" << endl;
 
 

@@ -50,7 +50,7 @@ resources="--mem=2000 --time=0-2:00:00"                        # runtime < 10h, 
 
 jobarrayFile="pion_pat_jobarray.dat"
 
-filelist=${currentDir}/xaa  # file list in local dir! not in submissiondir!!!
+filelist=${currentDir}/xad  # file list in local dir! not in submissiondir!!!
 
 nFiles=$( cat $filelist | wc -l)
 
