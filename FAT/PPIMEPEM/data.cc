@@ -1,19 +1,18 @@
 #include "data.h"
+#include <TVector3.h>
+#include <hgeomvector.h>
+#include <hparticletool.h>
 
 /**************************** global histograms repository ***********************************/
 
-namespace PATData {
-
+namespace PATData
+{
   TFile         *outFileData;
-
   HNtuple       *tlo;
-
   HFilter       *filter;
   float         EFF, ACC;
-
   TH1F          *oa_corr;
   TH1F          *em_mom, *em_mom_bt,*ep_mom, *ep_mom_bt;
-  
   TH1F          *SIGNAL, *CB, *SIGNIFICANCE;
   TH1F          *sig_all, *sig_all_bt, *sig_all_back1, *sig_all_back2, *sig_OK, *sig_bt_OK;
   TH1F          *miss_all, *miss_all_back1, *miss_all_back2, *miss_OK;
@@ -37,13 +36,15 @@ namespace PATData {
   TH1F          *sig_rf_and_bt_var,*sig_rf_and_bt_OK_var,*sig_rf_and_bt_back1_var,*sig_rf_and_bt_back2_var;
   TH1F          *sig_sum,*sig_sum_var;
   TH1F      *sig_all_var_back, *sig_all_var_bt_back, *pureBT_signal_back_var;
+
+  TH1F *dist_pim_p, *m_pim_p ;
+
   TH1I          *bt_rf_stat, *bt_rf_stat_pi,*bt_rf_stat_back1, *bt_rf_stat_back2, *bt_rf_stat_OK,*bt_rf_stat_pi_back1, *bt_rf_stat_pi_back2, *bt_rf_stat_pi_OK;
   TH3F      *rf_freedom;
   TH2F      *rf_f_dtheta, *rf_f_dphi;
   TH2F      *q_vs_p_leptons_RF,*q_vs_p_leptons_BT; 
-
   TH2F *phi_theta_rich[9];
-  
+ 
   TFile *file1_cuts, *file2_cuts;
 
   TCutG *pEpS0, *pEpS1, *pEmS0, *pEmS1;
@@ -78,7 +79,10 @@ namespace PATData {
   TLorentzVector *e1e2_miss;
   TLorentzVector *e1_delta;
   TLorentzVector *e2_delta;
-
+  TLorentzVector *l_proton;
+  TLorentzVector *l_pion;
+  TLorentzVector *gamma_protonpion;
+  
   Int_t insideTarget;
 
   Int_t insideEmS0;
@@ -151,6 +155,35 @@ namespace PATData {
     //return (a*y + b);
     return (-40.0-(0.0583*y)+(0.000208333*y*y));
   }
+  double trackDistance(double r1, double z1, TVector3 v1, double r2, double z2, TVector3 v2)
+  {
+    double dist;
+    HGeomVector base_1, base_2, dir_1, dir_2;
+    HParticleTool p_tool;
+
+    p_tool.calcSegVector(z1,r1,v1.Phi(),v1.Theta(),base_1,dir_1);
+    p_tool.calcSegVector(z2,r2,v2.Phi(),v2.Theta(),base_2,dir_2);
+
+    dist=p_tool.calculateMinimumDistance(base_1,dir_1,base_2,dir_2);
+
+    return dist;
+  }
+
+  TVector3 vertex(double z1,double r1,TVector3 vec1, double z2,double r2,TVector3 vec2)
+  {
+    TVector3 out;
+    HGeomVector ver;
+    HGeomVector base_1, base_2, dir_1, dir_2;
+    HParticleTool p_tool;
+
+    p_tool.calcSegVector(z1,r1,vec1.Phi(),vec1.Theta(),base_1,dir_1);
+    p_tool.calcSegVector(z2,r2,vec2.Phi(),vec2.Theta(),base_2,dir_2);
+    ver=p_tool.calcVertexAnalytical(base_1,dir_1,base_2,dir_2);
+    out.SetXYZ(ver.X(),ver.Y(),ver.Z());
+    return out; 
+  }
+
+
 
 }
 

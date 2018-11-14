@@ -75,7 +75,7 @@ int main()
    e1e2_miss = new TLorentzVector(0,0,0,0);
 
 /************************************** O U T P U T   F I L E ******************************************/
-   outFileData = new TFile("pNb_epem_all_ver2.root","recreate");
+   outFileData = new TFile("pNb_ppimepem_all_ver1.root","recreate");
    ofstream myfile;
    myfile.open ("raport.txt",ios::trunc);
    //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");
@@ -242,6 +242,9 @@ int main()
    q_vs_p_leptons_RF=new TH2F("q_vs_p_leptons_RF","charge in pre-shower for leptons from RF",600,0,1500,180,-100,200);
    q_vs_p_leptons_BT=new TH2F("q_vs_p_leptons_BT","charge in pre-shower for leptons from BT",600,0,1500,180,-100,200);
 
+   m_pim_p=new TH1F("m_pim_p","Invariant mass #pi^{-} p",1000,600,1600);
+   dist_pim_p=new TH1F("dist_pim_p","Distance between #pi^{-} nad proton",200,0,200);
+   
    char hname[20];
    for(int h=0;h<9;h++)
      {
