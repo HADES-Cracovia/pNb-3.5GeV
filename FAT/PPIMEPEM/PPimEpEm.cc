@@ -1,3 +1,4 @@
+
 #include "PPimEpEm.h"
 #include "data.h"
 #include <iostream>
@@ -212,15 +213,14 @@ void PPimEpEm::Loop()
     TVector3 r_pion,r_prot;
     r_pion.SetXYZ(sin(D2R*pim_theta)*cos(D2R*pim_phi),sin(D2R*pim_theta)*sin(D2R*pim_phi),cos(D2R*pim_theta));
     r_prot.SetXYZ(sin(D2R*p_theta)*cos(D2R*p_phi),sin(D2R*p_theta)*sin(D2R*p_phi),cos(D2R*p_theta));
-   
+
     l_pion->SetVectM( v_pion, 139.57018 );
     l_proton->SetVectM( v_prot, 938.272029 );
-
     *gamma_protonpion = *l_pion + *l_proton;
 
     double lambda_m=gamma_protonpion->M();
     double lambda_d=trackDistance(p_r,p_z,v_prot,pim_r,pim_z,v_pion);
-
+    
     dist_pim_p->Fill(lambda_d);
     m_pim_p->Fill(lambda_m);
     

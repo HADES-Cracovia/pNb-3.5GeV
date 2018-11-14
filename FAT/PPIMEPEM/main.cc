@@ -73,7 +73,9 @@ int main()
    e1_delta = new TLorentzVector(0,0,0,0);
    e2_delta = new TLorentzVector(0,0,0,0);
    e1e2_miss = new TLorentzVector(0,0,0,0);
-
+   l_pion=new TLorentzVector(0,0,0,0);
+   l_proton=new TLorentzVector(0,0,0,0);
+   gamma_protonpion=new TLorentzVector(0,0,0,0);
 /************************************** O U T P U T   F I L E ******************************************/
    outFileData = new TFile("pNb_ppimepem_all_ver1.root","recreate");
    ofstream myfile;
