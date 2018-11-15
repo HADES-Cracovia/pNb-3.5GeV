@@ -244,7 +244,10 @@ int main()
    q_vs_p_leptons_RF=new TH2F("q_vs_p_leptons_RF","charge in pre-shower for leptons from RF",600,0,1500,180,-100,200);
    q_vs_p_leptons_BT=new TH2F("q_vs_p_leptons_BT","charge in pre-shower for leptons from BT",600,0,1500,180,-100,200);
 
-   m_pim_p=new TH1F("m_pim_p","Invariant mass #pi^{-} p",1000,600,1600);
+   m_pim_p=new TH1F("m_pim_p","Invariant mass #pi^{-} p",500,600,1600);
+   m_pim_p_ZD=new TH1F("m_pim_p","Invariant mass #pi^{-} p",500,600,1600);
+   m_pim_p_ep_em=new TH1F("m_pim_p_ep_em","Invariant mass di-lepton #Lambda",500,1000,2000);
+   m_pim_p_ep_em_ZD=new TH1F("m_pim_p_ep_em","Invariant mass di-lepton #Lambda",500,1000,2000);
    dist_pim_p=new TH1F("dist_pim_p","Distance between #pi^{-} nad proton",200,0,200);
    lambda_vertex=new TH2F("lambda_vertex","Z vs. r cooridane of #Lambda decay vertex",1000,-300,700,500,0,500);
      
@@ -707,6 +710,9 @@ int main()
 
 
    m_pim_p->Write();
+   m_pim_p_ZD->Write();
+   m_pim_p_ep_em->Write();
+   m_pim_p_ep_em_ZD->Write();
    dist_pim_p->Write();
    lambda_vertex->Write(); 
 

@@ -40,8 +40,9 @@ namespace PATData {
   extern TH1F      *sig_all_var_back, *sig_all_var_bt_back, *pureBT_signal_back_var;
   extern TH1F      *sig_to_bg_var, *sig_to_bg_bt_var, *sig_to_bg_pureBT_var;
 
-  extern TH1F *dist_pim_p, *m_pim_p;
-
+  extern TH1F *dist_pim_p, *m_pim_p, *m_pim_p_ep_em;
+  extern TH1F *m_pim_p_ZD, *m_pim_p_ep_em_ZD;
+  
   extern TH1F                   *pureBT_signal, *pureBT_signal_OK, *pureBT_signal_back1, *pureBT_signal_back2;
   extern TH1F          *pureBT_signal_var, *pureBT_signal_OK_var, *pureBT_signal_back1_var, *pureBT_signal_back2_var;
   extern TH2F			*ep_beta_mom, *em_beta_mom,*ep_beta_mom_bt, *em_beta_mom_bt, *pureBT_beta_mom;

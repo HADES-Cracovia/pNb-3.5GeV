@@ -219,6 +219,7 @@ void PPimEpEm::Loop()
     l_proton->SetVectM( v_prot, 938.272029 );
     *gamma_protonpion = *l_pion + *l_proton;
 
+    double lambda1520_mass=(*gamma_protonpion+*gammae1e2).M();
     double lambda_m=gamma_protonpion->M();
     double lambda_d=trackDistance(p_r,p_z,v_prot,pim_r,pim_z,v_pion);
     TVector3 lambda_ver=vertex(p_r,p_z,v2,pim_r,pim_z,v3);
@@ -233,6 +234,7 @@ void PPimEpEm::Loop()
 	 && lambda_ver.Z()>min_z)
       {
 	is_lambda=true;
+	m_pim_p_ZD->Fill(lambda_m);
       }
     //End of hadronic part
 
@@ -268,6 +270,11 @@ void PPimEpEm::Loop()
 
     if (ElectronPositron && /*(((int)trigbit)&16) && trigdec>0 &&*/  isBest>=0 && oa > ang_cut /*&& eVertReco_z>-500 */) 
       {
+
+	m_pim_p_ep_em->Fill(lambda1520_mass);
+	if(is_lambda)
+	  m_pim_p_ep_em_ZD->Fill(lambda1520_mass);
+	  
 	
 	if(bt_ep_condition && ep_system==0)
 	  q_vs_p_leptons_BT->Fill(ep_p,ep_shw_sum1+ep_shw_sum2-ep_shw_sum0);
@@ -412,84 +419,6 @@ void PPimEpEm::Loop()
 	      momentum_spectrum_bt->Fill(em_p*(-1));
 	      momentum_spectrum_bt->Fill(ep_p);
 
-	      /*
-		(*tlo)["em_btChargeRing"] = em_btChargeRing;
-		(*tlo)["em_btChargeSum"] = em_btChargeSum;
-		(*tlo)["em_btChi2"] = em_btChi2;
-		(*tlo)["em_btClusters"] = em_btClusters;
-		(*tlo)["em_btMaxima"] = em_btMaxima;
-		(*tlo)["em_btMaximaCharge"] = em_btMaximaCharge;
-		(*tlo)["em_btMaximaChargeShared"] = em_btMaximaChargeShared;
-		(*tlo)["em_btMaximaChargeSharedFragment"] = em_btMaximaChargeSharedFragment;
-		(*tlo)["em_btMaximaShared"] = em_btMaximaShared;
-		(*tlo)["em_btMaximaSharedFragment"] = em_btMaximaSharedFragment;
-		(*tlo)["em_btMeanDist"] = em_btMeanDist;
-		(*tlo)["em_btNearbyMaxima"] = em_btNearbyMaxima;
-		(*tlo)["em_btNearbyMaximaShared"] = em_btNearbyMaximaShared;
-		(*tlo)["em_btPadsClus"] = em_btPadsClus;
-		(*tlo)["em_btPadsRing"] = em_btPadsRing;
-		(*tlo)["em_btRingMatrix"] = em_btRingMatrix;
-		(*tlo)["ep_btChargeRing"] = ep_btChargeRing;
-		(*tlo)["ep_btChargeSum"] = ep_btChargeSum;
-		(*tlo)["ep_btChi2"] = ep_btChi2;
-		(*tlo)["ep_btClusters"] = ep_btClusters;
-		(*tlo)["ep_btMaxima"] = ep_btMaxima;
-		(*tlo)["ep_btMaximaCharge"] = ep_btMaximaCharge;
-		(*tlo)["ep_btMaximaChargeShared"] = ep_btMaximaChargeShared;
-		(*tlo)["ep_btMaximaChargeSharedFragment"] = ep_btMaximaChargeSharedFragment;
-		(*tlo)["ep_btMaximaShared"] = ep_btMaximaShared;
-		(*tlo)["ep_btMaximaSharedFragment"] = ep_btMaximaSharedFragment;
-		(*tlo)["ep_btMeanDist"] = ep_btMeanDist;
-		(*tlo)["ep_btNearbyMaxima"] = ep_btNearbyMaxima;
-		(*tlo)["ep_btNearbyMaximaShared"] = ep_btNearbyMaximaShared;
-		(*tlo)["ep_btPadsClus"] = ep_btPadsClus;
-		(*tlo)["ep_btPadsRing"] = ep_btPadsRing;
-		(*tlo)["ep_btRingMatrix"] = ep_btRingMatrix;
-		(*tlo)["ep_mom"] = ep_p;
-		(*tlo)["ep_theta"] = ep_theta;
-		(*tlo)["ep_theta_rich"] = ep_theta_rich;
-		(*tlo)["ep_phi"] = ep_phi;
-		(*tlo)["ep_phi_rich"] = ep_phi_rich;
-		(*tlo)["ep_beta"] = ep_beta_new;
-		(*tlo)["em_mom"] = em_p;
-		(*tlo)["em_theta"] = em_theta;
-		(*tlo)["em_theta_rich"] = em_theta_rich;
-		(*tlo)["em_phi"] = em_phi;
-		(*tlo)["em_phi_rich"] = em_phi_rich;
-		(*tlo)["em_beta"] = em_beta_new;
-		(*tlo)["oa"] = oa;
-		(*tlo)["oa_rich"] = oa_rich;
-		(*tlo)["sig"] = 1;
-		(*tlo)["ep_m"] = e1_mass;
-		(*tlo)["em_m"] = e2_mass;
-		(*tlo)["epem_inv_mass"] = m_inv_e1e2 / 1000.;
-		(*tlo)["epem_inv_mass2"] = m2_inv_e1e2 / 1000000.;
-		(*tlo)["epem_miss_mass"] = e1e2_miss->M() / 1000.;
-		(*tlo)["epem_miss_mass2"] = e1e2_miss->M2() / 1000000.;
-		(*tlo)["epem_y"] = e1e2->Rapidity();
-		(*tlo)["epem_pt"] = e1e2->Pt() / 1000.;
-
-		(*tlo)["ep_rich_amp"] = ep_rich_amp;
-		(*tlo)["ep_rich_centr"] = ep_rich_centr;
-		(*tlo)["ep_rich_padnum"] = ep_rich_padnum;
-		(*tlo)["ep_rich_patmat"] = ep_rich_patmat;
-		(*tlo)["ep_rich_houtra"] = ep_rich_houtra;
-		(*tlo)["em_rich_amp"] = em_rich_amp;
-		(*tlo)["em_rich_centr"] = em_rich_centr;
-		(*tlo)["em_rich_padnum"] = em_rich_padnum;
-		(*tlo)["em_rich_patmat"] = em_rich_patmat;
-		(*tlo)["em_rich_houtra"] = em_rich_houtra;
-
-		(*tlo)["eVert_x"] = eVert_x;
-		(*tlo)["eVert_y"] = eVert_y;
-		(*tlo)["eVert_z"] = eVert_z;
-
-		(*tlo)["eVertReco_z"] = eVertReco_z;
-		(*tlo)["eVertReco_x"] = eVertReco_x;
-		(*tlo)["eVertReco_y"] = eVertReco_y;
-	      
-		tlo->fill();
-	      */
 	    }
 
 	if(m_inv_e1e2>140.)  miss_all->Fill(e1e2_miss->M()/1000., EFF );
