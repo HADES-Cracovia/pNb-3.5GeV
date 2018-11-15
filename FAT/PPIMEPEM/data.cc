@@ -43,6 +43,8 @@ namespace PATData
   TH3F      *rf_freedom;
   TH2F      *rf_f_dtheta, *rf_f_dphi;
   TH2F      *q_vs_p_leptons_RF,*q_vs_p_leptons_BT; 
+  TH2F *lambda_vertex;
+
   TH2F *phi_theta_rich[9];
  
   TFile *file1_cuts, *file2_cuts;

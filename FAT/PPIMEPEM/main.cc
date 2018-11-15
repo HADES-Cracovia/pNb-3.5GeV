@@ -246,7 +246,8 @@ int main()
 
    m_pim_p=new TH1F("m_pim_p","Invariant mass #pi^{-} p",1000,600,1600);
    dist_pim_p=new TH1F("dist_pim_p","Distance between #pi^{-} nad proton",200,0,200);
-   
+   lambda_vertex=new TH2F("lambda_vertex","Z vs. r cooridane of #Lambda decay vertex",1000,-300,700,500,0,500);
+     
    char hname[20];
    for(int h=0;h<9;h++)
      {
@@ -703,6 +704,12 @@ int main()
 
    q_vs_p_leptons_BT->Write();
    q_vs_p_leptons_RF->Write();
+
+
+   m_pim_p->Write();
+   dist_pim_p->Write();
+   lambda_vertex->Write(); 
+
    //Save histopgrams parameters into text file
    
    myfile <<"Di-lepton parameters\n";

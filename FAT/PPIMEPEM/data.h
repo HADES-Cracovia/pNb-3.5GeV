@@ -54,6 +54,7 @@ namespace PATData {
   extern TH2F *q_vs_p_leptons_RF,*q_vs_p_leptons_BT;
   extern TH3F      *rf_freedom;
   extern TH2F      *rf_f_dtheta, *rf_f_dphi;
+  extern TH2F *lambda_vertex;
   extern TFile *file1_cuts, *file2_cuts;
 
   extern TH2F  *phi_theta_rich[9];

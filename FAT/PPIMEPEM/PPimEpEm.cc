@@ -204,7 +204,8 @@ void PPimEpEm::Loop()
 
     //Hadronic part
     bool is_lambda=0;
-    double min_distance=10;
+    double min_distance=20;
+    double min_z=0;
 
     TVector3 v_pion, v_prot;
     v_pion.SetXYZ(F*pim_p*sin(D2R*pim_theta)*cos(D2R*pim_phi),F*pim_p*sin(D2R*pim_theta)*sin(D2R*pim_phi),F*pim_p*cos(D2R*pim_theta));
@@ -220,13 +221,16 @@ void PPimEpEm::Loop()
 
     double lambda_m=gamma_protonpion->M();
     double lambda_d=trackDistance(p_r,p_z,v_prot,pim_r,pim_z,v_pion);
+    TVector3 lambda_ver=vertex(p_r,p_z,v2,pim_r,pim_z,v3);
     
     dist_pim_p->Fill(lambda_d);
     m_pim_p->Fill(lambda_m);
+    lambda_vertex->Fill(lambda_ver.Z(),TMath::Sqrt(lambda_ver.X()*lambda_ver.X()+lambda_ver.Y()*lambda_ver.Y()));
     
     if(  lambda_d<min_distance
-       && lambda_m<1120
-	 && lambda_m>1110)
+	 && lambda_m<1120
+	 && lambda_m>1110
+	 && lambda_ver.Z()>min_z)
       {
 	is_lambda=true;
       }
