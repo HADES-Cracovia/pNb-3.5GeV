@@ -29,7 +29,7 @@ namespace PATData
   TH1F *pt_140_all, *pt_140_back1, *pt_140_back2, *pt_140_OK;
   TH1F *pureBT_signal, *pureBT_signal_OK, *pureBT_signal_back1, *pureBT_signal_back2;
   TH1F *pureBT_signal_var, *pureBT_signal_OK_var, *pureBT_signal_back1_var, *pureBT_signal_back2_var;
-  TH2F *ep_beta_mom, *em_beta_mom,*ep_beta_mom_bt, *em_beta_mom_bt, *pureBT_beta_mom;
+  TH2F *ep_beta_mom, *em_beta_mom,*ep_beta_mom_bt, *em_beta_mom_bt, *pureBT_beta_mom, *p_beta_mom, *pim_beta_mom;
   TH1F *momentum_spectrum, *momentum_spectrum_bt, *momentum_spectrum_pureBT;
   TH1F *sig_rf_and_bt,*sig_rf_and_bt_OK,*sig_rf_and_bt_back1,*sig_rf_and_bt_back2;
   TH1F *sig_to_bg_var, *sig_to_bg_bt_var, *sig_to_bg_pureBT_var;
@@ -38,7 +38,7 @@ namespace PATData
   TH1F *sig_all_var_back, *sig_all_var_bt_back, *pureBT_signal_back_var;
 
   TH1F *dist_pim_p, *m_pim_p, *m_pim_p_ep_em;
-  TH1F *m_pim_p_ZD, *m_pim_p_ep_em_ZD;
+  TH1F *m_pim_p_ZD, *m_pim_p_ep_em_ZD, *m_pim_p_ep_em_ZD_RF, *m_pim_p_ep_em_ZD_BT;
   
   TH1I *bt_rf_stat, *bt_rf_stat_pi,*bt_rf_stat_back1, *bt_rf_stat_back2, *bt_rf_stat_OK,*bt_rf_stat_pi_back1, *bt_rf_stat_pi_back2, *bt_rf_stat_pi_OK;
   TH3F *rf_freedom;

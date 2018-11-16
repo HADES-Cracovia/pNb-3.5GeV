@@ -183,10 +183,10 @@ void PPimEpEp::Loop()
 
     //cout << "Poczatek obliczen..." << endl;
 
-    double ang_cut =9.;
+    double ang_cut =4.;
     //double ang_cut = 4.;
 	  
-    double close_cut =9.;
+    double close_cut =4.;
     double nonfit_close_cut =-4.;
     //double close_cut = 4.;
 

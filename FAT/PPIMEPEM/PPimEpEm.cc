@@ -15,433 +15,365 @@ void PPimEpEm::Loop()
   static long licznik = 0;
 
   if (fChain == 0) return;
-  /*
-    (*tlo)["em_btChargeRing"] = 0;
-    (*tlo)["em_btChargeSum"] = 0;
-    (*tlo)["em_btChi2"] = 0;
-    (*tlo)["em_btClusters"] = 0;
-    (*tlo)["em_btMaxima"] = 0;
-    (*tlo)["em_btMaximaCharge"] = 0;
-    (*tlo)["em_btMaximaChargeShared"] = 0;
-    (*tlo)["em_btMaximaChargeSharedFragment"] = 0;
-    (*tlo)["em_btMaximaShared"] = 0;
-    (*tlo)["em_btMaximaSharedFragment"] = 0;
-    (*tlo)["em_btMeanDist"] = 0;
-    (*tlo)["em_btNearbyMaxima"] = 0;
-    (*tlo)["em_btNearbyMaximaShared"] = 0;
-    (*tlo)["em_btPadsClus"] = 0;
-    (*tlo)["em_btPadsRing"] = 0;
-    (*tlo)["em_btRingMatrix"] = 0;
-    (*tlo)["ep_btChargeRing"] = 0;
-    (*tlo)["ep_btChargeSum"] = 0;
-    (*tlo)["ep_btChi2"] = 0;
-    (*tlo)["ep_btClusters"] = 0;
-    (*tlo)["ep_btMaxima"] = 0;
-    (*tlo)["ep_btMaximaCharge"] = 0;
-    (*tlo)["ep_btMaximaChargeShared"] = 0;
-    (*tlo)["ep_btMaximaChargeSharedFragment"] = 0;
-    (*tlo)["ep_btMaximaShared"] = 0;
-    (*tlo)["ep_btMaximaSharedFragment"] = 0;
-    (*tlo)["ep_btMeanDist"] = 0;
-    (*tlo)["ep_btNearbyMaxima"] = 0;
-    (*tlo)["ep_btNearbyMaximaShared"] = 0;
-    (*tlo)["ep_btPadsClus"] = 0;
-    (*tlo)["ep_btPadsRing"] = 0;
-    (*tlo)["ep_btRingMatrix"] = 0;
-
-
-    (*tlo)["ep_mom"] = 0;
-    (*tlo)["ep_theta"] = 0;
-    (*tlo)["ep_theta_rich"] = 0;
-    (*tlo)["ep_phi"] = 0;
-    (*tlo)["ep_phi_rich"] = 0;
-    (*tlo)["ep_beta"] = 0;
-    (*tlo)["em_mom"] = 0;
-    (*tlo)["em_theta"] = 0;
-    (*tlo)["em_theta_rich"] = 0;
-    (*tlo)["em_phi"] = 0;
-    (*tlo)["em_phi_rich"] = 0;
-    (*tlo)["em_beta"] = 0;
-    (*tlo)["oa"] = 0;
-    (*tlo)["oa_rich"] = 0;
-    (*tlo)["sig"] = 0;
-    (*tlo)["ep_m"] = 0;
-    (*tlo)["em_m"] = 0;
-    (*tlo)["epem_inv_mass"] = 0;
-    (*tlo)["epem_inv_mass2"] = 0;
-    (*tlo)["epem_miss_mass"] = 0;
-    (*tlo)["epem_miss_mass2"] = 0;
-    (*tlo)["epem_y"] = 0;
-    (*tlo)["epem_pt"] = 0;
-    (*tlo)["ep_rich_amp"] = 0;
-    (*tlo)["ep_rich_centr"] = 0;
-    (*tlo)["ep_rich_padnum"] = 0;
-    (*tlo)["ep_rich_patmat"] = 0;
-    (*tlo)["ep_rich_houtra"] = 0;
-    (*tlo)["em_rich_amp"] = 0;
-    (*tlo)["em_rich_centr"] = 0;
-    (*tlo)["em_rich_padnum"] = 0;
-    (*tlo)["em_rich_patmat"] = 0;
-    (*tlo)["em_rich_houtra"] = 0;
-
-    (*tlo)["eVert_x"] = 0;
-    (*tlo)["eVert_y"] = 0;
-    (*tlo)["eVert_z"] = 0;
-
-    (*tlo)["eVertReco_z"] = -1000.;
-    (*tlo)["eVertReco_x"] = -1000.;
-    (*tlo)["eVertReco_y"] = -1000.;
-    (*tlo)["evtPileupMeta"] = 0.;
-    (*tlo)["evtPileupStart"] = 0.;
-    (*tlo)["ep_isOffVertexClust"] = 0.;
-    (*tlo)["ep_p_corr_ep"] = 0.;
-    (*tlo)["em_isOffVertexClust"] = 0.;
-    (*tlo)["em_p_corr_em"] = 0.;
-
-    tlo->fill();
-  */
 
   Long64_t nentries = fChain->GetEntries();
 
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry=0; jentry<nentries;jentry++) {
-    Long64_t ientry = LoadTree(jentry);
-    if (ientry < 0) break;
-    nb = fChain->GetEntry(jentry);   nbytes += nb;
+  for (Long64_t jentry=0; jentry<nentries;jentry++)
+    {
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) break;
+      nb = fChain->GetEntry(jentry);   nbytes += nb;
 
-    ++licznik;
-    if ((licznik % 100000)==0) cout << "Events: " << licznik << endl;
-
-
-    double F = 1.006;
-    TVector3 v1, v2, v3;
-    v2.SetXYZ(F*ep_p*sin(D2R*ep_theta)*cos(D2R*ep_phi),F*ep_p*sin(D2R*ep_theta)*sin(D2R*ep_phi),F*ep_p*cos(D2R*ep_theta));
-    v3.SetXYZ(F*em_p*sin(D2R*em_theta)*cos(D2R*em_phi),F*em_p*sin(D2R*em_theta)*sin(D2R*em_phi),F*em_p*cos(D2R*em_theta));
-
-    TVector3 r1, r2;
-    r1.SetXYZ(sin(D2R*ep_theta_rich)*cos(D2R*ep_phi_rich),sin(D2R*ep_theta_rich)*sin(D2R*ep_phi_rich),cos(D2R*ep_theta_rich));
-    r2.SetXYZ(sin(D2R*em_theta_rich)*cos(D2R*em_phi_rich),sin(D2R*em_theta_rich)*sin(D2R*em_phi_rich),cos(D2R*em_theta_rich));
-
-    e1->SetVectM( v2, 0.51099906 );
-    e2->SetVectM( v3, 0.51099906 );
-
-    *gammae1e2 = *e1 + *e2;
-    *e1e2 = *e1 + *e2;
-    *e1_delta = *e1;
-    *e2_delta = *e2;
-    *e1e2_miss = *beam - *e1 - *e2;
-
-    double m2_inv_e1e2 = gammae1e2->M2();
-    double m_inv_e1e2 = gammae1e2->M();
-    double oa = R2D * openingangle(*e1, *e2);
-    double oa_rich = R2D * openingangle(r1, r2);
-
-    double e1_mass = ep_p*ep_p * (  1. / (ep_beta*ep_beta)  - 1. ) ;
-    double e2_mass = em_p*em_p * (  1. / (em_beta*em_beta)  - 1. ) ;
-
-    //	  cout << "opening angle = " << oa << endl;
-
-    ACC = 1.;
-    EFF = 1.;
+      ++licznik;
+      if ((licznik % 100000)==0) cout << "Events: " << licznik << endl;
 
 
-    gammae1e2->Boost(0., 0., -(beam->Beta()));
-    e1_delta->Boost(0., 0., -(beam->Beta()));
-    e2_delta->Boost(0., 0., -(beam->Beta()));
+      double F = 1.006;
+      TVector3 v1, v2, v3;
+      v2.SetXYZ(F*ep_p*sin(D2R*ep_theta)*cos(D2R*ep_phi),F*ep_p*sin(D2R*ep_theta)*sin(D2R*ep_phi),F*ep_p*cos(D2R*ep_theta));
+      v3.SetXYZ(F*em_p*sin(D2R*em_theta)*cos(D2R*em_phi),F*em_p*sin(D2R*em_theta)*sin(D2R*em_phi),F*em_p*cos(D2R*em_theta));
 
-    e1_delta->Boost( -gammae1e2->Px()/gammae1e2->E(), -gammae1e2->Py()/gammae1e2->E(), -gammae1e2->Pz()/gammae1e2->E());
-    e2_delta->Boost( -gammae1e2->Px()/gammae1e2->E(), -gammae1e2->Py()/gammae1e2->E(), -gammae1e2->Pz()/gammae1e2->E());
+      TVector3 r1, r2;
+      r1.SetXYZ(sin(D2R*ep_theta_rich)*cos(D2R*ep_phi_rich),sin(D2R*ep_theta_rich)*sin(D2R*ep_phi_rich),cos(D2R*ep_theta_rich));
+      r2.SetXYZ(sin(D2R*em_theta_rich)*cos(D2R*em_phi_rich),sin(D2R*em_theta_rich)*sin(D2R*em_phi_rich),cos(D2R*em_theta_rich));
 
-    //cout << "Poczatek obliczen..." << endl;
+      e1->SetVectM( v2, 0.51099906 );
+      e2->SetVectM( v3, 0.51099906 );
 
-    //double ang_cut = 0.;
-    double ang_cut = 9.;
+      *gammae1e2 = *e1 + *e2;
+      *e1e2 = *e1 + *e2;
+      *e1_delta = *e1;
+      *e2_delta = *e2;
+      *e1e2_miss = *beam - *e1 - *e2;
 
-    double close_cut = 9.;
-    double nonfit_close_cut = -4.;
+      double m2_inv_e1e2 = gammae1e2->M2();
+      double m_inv_e1e2 = gammae1e2->M();
+      double oa = R2D * openingangle(*e1, *e2);
+      double oa_rich = R2D * openingangle(r1, r2);
+
+      double e1_mass = ep_p*ep_p * (  1. / (ep_beta*ep_beta)  - 1. ) ;
+      double e2_mass = em_p*em_p * (  1. / (em_beta*em_beta)  - 1. ) ;
+
+      //	  cout << "opening angle = " << oa << endl;
+
+      ACC = 1.;
+      EFF = 1.;
+
+
+      gammae1e2->Boost(0., 0., -(beam->Beta()));
+      e1_delta->Boost(0., 0., -(beam->Beta()));
+      e2_delta->Boost(0., 0., -(beam->Beta()));
+
+      e1_delta->Boost( -gammae1e2->Px()/gammae1e2->E(), -gammae1e2->Py()/gammae1e2->E(), -gammae1e2->Pz()/gammae1e2->E());
+      e2_delta->Boost( -gammae1e2->Px()/gammae1e2->E(), -gammae1e2->Py()/gammae1e2->E(), -gammae1e2->Pz()/gammae1e2->E());
+
+      //cout << "Poczatek obliczen..." << endl;
+
+      //double ang_cut = 0.;
+      double ang_cut = 4.;
+
+      double close_cut = 4.;
+      double nonfit_close_cut = -4.;
     
 #ifdef FLANCH
-    insideEmS0 = (pEmS0 == 0) ? 0 : pEmS0->IsInside(em_z,em_theta);
-    insideEmS1 = (pEmS1 == 0) ? 0 : pEmS1->IsInside(em_z,em_theta);
-    insideEpS0 = (pEpS0 == 0) ? 0 : pEpS0->IsInside(ep_z,ep_theta);
-    insideEpS1 = (pEpS1 == 0) ? 0 : pEpS1->IsInside(ep_z,ep_theta);
-    //insideEmS0 = (pEmS0 == 0) ? 0 : pEmS0->IsInside(eVert_z,em_theta);
-    //insideEmS1 = (pEmS1 == 0) ? 0 : pEmS1->IsInside(eVert_z,em_theta);
-    //insideEpS0 = (pEpS0 == 0) ? 0 : pEpS0->IsInside(eVert_z,ep_theta);
-    //insideEpS1 = (pEpS1 == 0) ? 0 : pEpS1->IsInside(eVert_z,ep_theta);
+      insideEmS0 = (pEmS0 == 0) ? 0 : pEmS0->IsInside(em_z,em_theta);
+      insideEmS1 = (pEmS1 == 0) ? 0 : pEmS1->IsInside(em_z,em_theta);
+      insideEpS0 = (pEpS0 == 0) ? 0 : pEpS0->IsInside(ep_z,ep_theta);
+      insideEpS1 = (pEpS1 == 0) ? 0 : pEpS1->IsInside(ep_z,ep_theta);
+      //insideEmS0 = (pEmS0 == 0) ? 0 : pEmS0->IsInside(eVert_z,em_theta);
+      //insideEmS1 = (pEmS1 == 0) ? 0 : pEmS1->IsInside(eVert_z,em_theta);
+      //insideEpS0 = (pEpS0 == 0) ? 0 : pEpS0->IsInside(eVert_z,ep_theta);
+      //insideEpS1 = (pEpS1 == 0) ? 0 : pEpS1->IsInside(eVert_z,ep_theta);
 #endif
 
-    insideTarget = 1;
+      insideTarget = 1;
 
 #ifdef RECTANG
-    insideEmS0 = (em_theta > 50 && em_z < -50 /* && em_p<200.*/) ? 1 : 0;
-    insideEmS1 = (em_theta > 50 && em_z < -50 /* && em_p<200.*/) ? 1 : 0;
-    insideEpS0 = (ep_theta > 50 && ep_z < -50 /* && ep_p<200.*/) ? 1 : 0;
-    insideEpS1 = (ep_theta > 50 && ep_z < -50 /* && ep_p<200.*/) ? 1 : 0;
+      insideEmS0 = (em_theta > 50 && em_z < -50 /* && em_p<200.*/) ? 1 : 0;
+      insideEmS1 = (em_theta > 50 && em_z < -50 /* && em_p<200.*/) ? 1 : 0;
+      insideEpS0 = (ep_theta > 50 && ep_z < -50 /* && ep_p<200.*/) ? 1 : 0;
+      insideEpS1 = (ep_theta > 50 && ep_z < -50 /* && ep_p<200.*/) ? 1 : 0;
 #endif
 
-    //#ifdef NOCUT
-    insideEmS0 = 0;
-    insideEmS1 = 0;
-    insideEpS0 = 0;
-    insideEpS1 = 0;
-    //#endif
+      //#ifdef NOCUT
+      insideEmS0 = 0;
+      insideEmS1 = 0;
+      insideEpS0 = 0;
+      insideEpS1 = 0;
+      //#endif
 
 
-    NoLeptonE1 = !((ep_oa_lept< close_cut&&ep_oa_lept>0.0) &&ep_oa_lept>nonfit_close_cut );
-    NoHadronE1 = !(ep_oa_hadr< close_cut &&ep_oa_hadr>nonfit_close_cut );
-    NoLeptonE2 = !((em_oa_lept< close_cut&&em_oa_lept>0.0) &&em_oa_lept>nonfit_close_cut );
-    NoHadronE2 = !(em_oa_hadr< close_cut &&em_oa_hadr>nonfit_close_cut );
-    NoHadronE1 = 1;
-    NoHadronE2 = 1;
-
-    /*
-      NoLeptonE1 = 1;
+      NoLeptonE1 = !((ep_oa_lept< close_cut&&ep_oa_lept>0.0) &&ep_oa_lept>nonfit_close_cut );
+      NoHadronE1 = !(ep_oa_hadr< close_cut &&ep_oa_hadr>nonfit_close_cut );
+      NoLeptonE2 = !((em_oa_lept< close_cut&&em_oa_lept>0.0) &&em_oa_lept>nonfit_close_cut );
+      NoHadronE2 = !(em_oa_hadr< close_cut &&em_oa_hadr>nonfit_close_cut );
       NoHadronE1 = 1;
-      NoLeptonE2 = 1;
       NoHadronE2 = 1;
-    */
 
-    //Hadronic part
-    bool is_lambda=0;
-    double min_distance=20;
-    double min_z=0;
+      /*
+	NoLeptonE1 = 1;
+	NoHadronE1 = 1;
+	NoLeptonE2 = 1;
+	NoHadronE2 = 1;
+      */
 
-    TVector3 v_pion, v_prot;
-    v_pion.SetXYZ(F*pim_p*sin(D2R*pim_theta)*cos(D2R*pim_phi),F*pim_p*sin(D2R*pim_theta)*sin(D2R*pim_phi),F*pim_p*cos(D2R*pim_theta));
-    v_prot.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+      //Hadronic part
+      bool is_lambda=0;
+      double min_distance=20;
+      double min_z=0;
 
-    TVector3 r_pion,r_prot;
-    r_pion.SetXYZ(sin(D2R*pim_theta)*cos(D2R*pim_phi),sin(D2R*pim_theta)*sin(D2R*pim_phi),cos(D2R*pim_theta));
-    r_prot.SetXYZ(sin(D2R*p_theta)*cos(D2R*p_phi),sin(D2R*p_theta)*sin(D2R*p_phi),cos(D2R*p_theta));
+      TVector3 v_pion, v_prot;
+      v_pion.SetXYZ(F*pim_p*sin(D2R*pim_theta)*cos(D2R*pim_phi),F*pim_p*sin(D2R*pim_theta)*sin(D2R*pim_phi),F*pim_p*cos(D2R*pim_theta));
+      v_prot.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
 
-    l_pion->SetVectM( v_pion, 139.57018 );
-    l_proton->SetVectM( v_prot, 938.272029 );
-    *gamma_protonpion = *l_pion + *l_proton;
+      TVector3 r_pion,r_prot;
+      r_pion.SetXYZ(sin(D2R*pim_theta)*cos(D2R*pim_phi),sin(D2R*pim_theta)*sin(D2R*pim_phi),cos(D2R*pim_theta));
+      r_prot.SetXYZ(sin(D2R*p_theta)*cos(D2R*p_phi),sin(D2R*p_theta)*sin(D2R*p_phi),cos(D2R*p_theta));
 
-    double lambda1520_mass=(*gamma_protonpion+*gammae1e2).M();
-    double lambda_m=gamma_protonpion->M();
-    double lambda_d=trackDistance(p_r,p_z,v_prot,pim_r,pim_z,v_pion);
-    TVector3 lambda_ver=vertex(p_r,p_z,v2,pim_r,pim_z,v3);
-    
-    dist_pim_p->Fill(lambda_d);
-    m_pim_p->Fill(lambda_m);
-    lambda_vertex->Fill(lambda_ver.Z(),TMath::Sqrt(lambda_ver.X()*lambda_ver.X()+lambda_ver.Y()*lambda_ver.Y()));
-    
-    if(  lambda_d<min_distance
-	 && lambda_m<1120
-	 && lambda_m>1110
-	 && lambda_ver.Z()>min_z)
-      {
-	is_lambda=true;
-	m_pim_p_ZD->Fill(lambda_m);
-      }
-    //End of hadronic part
+ 
+      l_pion->SetVectM( v_pion, 139.57018 );
+      l_proton->SetVectM( v_prot, 938.272029 );
+      *gamma_protonpion = *l_pion + *l_proton;
 
+      double lambda1520_mass=(*gamma_protonpion+*gammae1e2).M();
+      double lambda_m=gamma_protonpion->M();
+      double lambda_d=trackDistance(p_r,p_z,v_prot,pim_r,pim_z,v_pion);
+      TVector3 lambda_ver=vertex(p_r,p_z,v2,pim_r,pim_z,v3);
 
+      if(isBest!=-1)
+	{
+	  dist_pim_p->Fill(lambda_d);
+	  m_pim_p->Fill(lambda_m);
+	  lambda_vertex->Fill(lambda_ver.Z(),TMath::Sqrt(lambda_ver.X()*lambda_ver.X()+lambda_ver.Y()*lambda_ver.Y()));
 
-    
-    Positron = (((ep_system==0&&insideEpS0==0)||(ep_system==1&&insideEpS1==0)));
-    Electron = (((em_system==0&&insideEmS0==0)||(em_system==1&&insideEmS1==0)));
-
-    ElectronPositron = Positron && NoLeptonE1 && NoHadronE1  &&  Electron && NoLeptonE2 && NoHadronE2  &&  insideTarget;
-
-
-    bool bt_em_condition=(em_isBT!=-1
-			  //&& em_btMaxima>=2
-			  && em_btPadsRing>=2
-			  );
-    bool bt_ep_condition=(ep_isBT!=-1
-			  //&& ep_btMaxima>=2
-			  && ep_btPadsRing>=2
-			  );
-    bool bt_condition=(bt_em_condition && bt_ep_condition);
-    bool pre_shower= (ep_system==0?(ep_shw_sum1+ep_shw_sum2-ep_shw_sum0) > (parametrization(ep_p)):true)
-      &&(em_system==0?(em_shw_sum1+em_shw_sum2-em_shw_sum0) > (parametrization(em_p)):true);								   
-    bool mass_condition=(ep_p>100 && em_p>100 && ep_p<2000. && em_p<2000.
-			 //&& ep_p>200 && em_p>200
-			 //&&(ep_system==0?ep_beta>0.95:ep_beta>0.92)&&(em_system==0?em_beta>0.95:em_beta>0.92)
-			 && em_beta<1.1 && ep_beta<1.1
-			 && em_beta>0.9 && ep_beta>0.9
-			 && pre_shower
-			 && is_lambda
-			 );
-    int i_array=0;
-
-    if (ElectronPositron && /*(((int)trigbit)&16) && trigdec>0 &&*/  isBest>=0 && oa > ang_cut /*&& eVertReco_z>-500 */) 
-      {
-
-	m_pim_p_ep_em->Fill(lambda1520_mass);
-	if(is_lambda)
-	  m_pim_p_ep_em_ZD->Fill(lambda1520_mass);
-	  
-	
-	if(bt_ep_condition && ep_system==0)
-	  q_vs_p_leptons_BT->Fill(ep_p,ep_shw_sum1+ep_shw_sum2-ep_shw_sum0);
-	if(bt_em_condition && em_system==0)
-	  q_vs_p_leptons_BT->Fill(em_p,ep_shw_sum1+em_shw_sum2-em_shw_sum0);
-	if(ep_isring && ep_system==0)
-	  q_vs_p_leptons_RF->Fill(ep_p,ep_shw_sum1+ep_shw_sum2-ep_shw_sum0);
-	if(em_isring && em_system==0)
-	  q_vs_p_leptons_RF->Fill(em_p,em_shw_sum1+em_shw_sum2-em_shw_sum0);
-	   
-	if( mass_condition )
-	  {
-	    if(ep_isring && !bt_ep_condition && !em_isring && bt_em_condition)
-	      i_array=1;
-	    if(ep_isring && !bt_ep_condition && em_isring && bt_em_condition)
-	      i_array=2;
-	    if(ep_isring && !bt_ep_condition && em_isring && !bt_em_condition)
-	      i_array=3;
-	    if(ep_isring && bt_ep_condition && !em_isring && bt_em_condition)
-	      i_array=4;
-	    if(ep_isring && bt_ep_condition && em_isring && bt_em_condition)
-	      i_array=5;
-	    if(ep_isring && bt_ep_condition && em_isring && !bt_em_condition)
-	      i_array=6;
-	    if(!ep_isring && bt_ep_condition && !em_isring && bt_em_condition)
-	      i_array=7;
-	    if(!ep_isring && bt_ep_condition && em_isring && bt_em_condition)
-	      i_array=8;
-	    if(!ep_isring && bt_ep_condition && em_isring && !bt_em_condition)
-	      i_array=9;
-
-	    if(i_array!=0)
-	      bt_rf_stat->Fill(i_array);
-	    if(m_inv_e1e2>140 && i_array!=0)
-	      bt_rf_stat_pi->Fill(i_array);
-	      
-	    if(bt_condition)
-	      bt_rf_stat->Fill(10);
-	    if(ep_isring && em_isring)
-	      bt_rf_stat->Fill(11);
-	    if(bt_condition && ep_isring && em_isring)
-	      bt_rf_stat->Fill(12);
-	    if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
-	      bt_rf_stat->Fill(13);
-	    
-	    if(m_inv_e1e2>140 && m_inv_e1e2<700)
-	      {
-		if(bt_condition )
-		  bt_rf_stat_pi->Fill(10);
-		if(ep_isring && em_isring )
-		  bt_rf_stat_pi->Fill(11);
-		if(bt_condition && ep_isring && em_isring )
-		  bt_rf_stat_pi->Fill(12);
-		if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
-		  bt_rf_stat_pi->Fill(13);
-	      }
-	    if(m_inv_e1e2<140)
-	      {
-		if(bt_condition )
-		  bt_rf_stat->Fill(14);
-		if(ep_isring && em_isring )
-		  bt_rf_stat->Fill(15);
-		if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
-		  bt_rf_stat->Fill(16);
-	      }
-	    if(m_inv_e1e2>700)
-	      {
-		if(bt_condition )
-		  bt_rf_stat->Fill(17);
-		if(ep_isring && em_isring)
-		  bt_rf_stat->Fill(18);
-		if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
-		  bt_rf_stat->Fill(19);
-	      }
-	    if(m_inv_e1e2>140 && m_inv_e1e2<700)
-	      {
-		if(bt_condition )
-		  bt_rf_stat->Fill(20);
-		if(ep_isring && em_isring)
-		  bt_rf_stat->Fill(21);
-		if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
-		  bt_rf_stat->Fill(22);
-	      }
-	  }
-
-	if(ep_isring>0 && em_isring>0 && mass_condition)
-	  if(bt_condition)
+	  if(  lambda_d<min_distance
+	       && lambda_ver.Z()>min_z)
+	    m_pim_p_ZD->Fill(lambda_m);
+     
+	  if(  lambda_d<min_distance
+	       && lambda_m<1120
+	       && lambda_m>1110
+	       && lambda_ver.Z()>min_z)
 	    {
-	      sig_rf_and_bt->Fill(m_inv_e1e2/1000., EFF );
+	      is_lambda=true;
+	      //m_pim_p_ZD->Fill(lambda_m);
 	    }
-	  
-	if(ep_isring>0 && em_isring>0 && mass_condition) { //RF signal
-	  sig_all->Fill(m_inv_e1e2/1000., EFF );
-	  sig_all_var->Fill(m_inv_e1e2/1000., EFF );
-	  em_mom->Fill(em_p);
-	  ep_mom->Fill(ep_p);
+	  p_beta_mom->Fill(p_beta_new,p_p);
+	  pim_beta_mom->Fill(pim_beta_new,pim_p);
+	}
+      //End of hadronic part
+
+
+
+    
+      Positron = (((ep_system==0&&insideEpS0==0)||(ep_system==1&&insideEpS1==0)));
+      Electron = (((em_system==0&&insideEmS0==0)||(em_system==1&&insideEmS1==0)));
+
+      ElectronPositron = Positron && NoLeptonE1 && NoHadronE1  &&  Electron && NoLeptonE2 && NoHadronE2  &&  insideTarget;
+
+
+      bool bt_em_condition=(em_isBT!=-1
+			    //&& em_btMaxima>=2
+			    && em_btPadsRing>=2
+			    );
+      bool bt_ep_condition=(ep_isBT!=-1
+			    //&& ep_btMaxima>=2
+			    && ep_btPadsRing>=2
+			    );
+      bool bt_condition=(bt_em_condition && bt_ep_condition);
+      bool pre_shower= (ep_system==0?(ep_shw_sum1+ep_shw_sum2-ep_shw_sum0) > (parametrization(ep_p)):true)
+	&&(em_system==0?(em_shw_sum1+em_shw_sum2-em_shw_sum0) > (parametrization(em_p)):true);								   
+      bool mass_condition=(ep_p>100 && em_p>100 && ep_p<2000. && em_p<2000.
+			   //&& ep_p>200 && em_p>200
+			   //&&(ep_system==0?ep_beta>0.95:ep_beta>0.92)&&(em_system==0?em_beta>0.95:em_beta>0.92)
+			   && em_beta<1.1 && ep_beta<1.1
+			   && em_beta>0.9 && ep_beta>0.9
+			   && pre_shower
+			   && is_lambda
+			   );
+      int i_array=0;
+
+      if (ElectronPositron && /*(((int)trigbit)&16) && trigdec>0 &&*/  isBest>=0 && oa > ang_cut /*&& eVertReco_z>-500 */) 
+	{
 	  ep_beta_mom->Fill( ep_beta_new, ep_p, EFF );
 	  em_beta_mom->Fill( em_beta_new, em_p, EFF );
-	  rf_freedom->Fill((em_theta-em_theta_rich),(em_phi-em_phi_rich)*TMath::Sin(em_theta*TMath::DegToRad()),em_p);
-	  rf_freedom->Fill((ep_theta-ep_theta_rich),(ep_phi-ep_phi_rich)*TMath::Sin(ep_theta*TMath::DegToRad()),ep_p);
-	  rf_f_dtheta->Fill((em_theta-em_theta_rich),em_p);
-	  rf_f_dphi->Fill((em_phi-em_phi_rich)*TMath::Sin(em_theta*TMath::DegToRad()),em_p);
-	  rf_f_dtheta->Fill((ep_theta-ep_theta_rich),ep_p);
-	  rf_f_dphi->Fill((ep_phi-ep_phi_rich)*TMath::Sin(ep_theta*TMath::DegToRad()),ep_p);
-	  momentum_spectrum->Fill(em_p*(-1));
-	  momentum_spectrum->Fill(ep_p);
-	  double p_max=1000.;
-	  for(int h=0;h<9;h++)
+	  m_pim_p_ep_em->Fill(lambda1520_mass);
+
+	  if(is_lambda)
+	    m_pim_p_ep_em_ZD->Fill(lambda1520_mass);
+	  
+	
+	  if(bt_ep_condition && ep_system==0)
+	    q_vs_p_leptons_BT->Fill(ep_p,ep_shw_sum1+ep_shw_sum2-ep_shw_sum0);
+	  if(bt_em_condition && em_system==0)
+	    q_vs_p_leptons_BT->Fill(em_p,ep_shw_sum1+em_shw_sum2-em_shw_sum0);
+	  if(ep_isring && ep_system==0)
+	    q_vs_p_leptons_RF->Fill(ep_p,ep_shw_sum1+ep_shw_sum2-ep_shw_sum0);
+	  if(em_isring && em_system==0)
+	    q_vs_p_leptons_RF->Fill(em_p,em_shw_sum1+em_shw_sum2-em_shw_sum0);
+	   
+	  if( mass_condition )
 	    {
-	      if(ep_p>h/9.*p_max && ep_p<(h+1)/9.*p_max)
-		phi_theta_rich[h]->Fill((ep_theta-ep_theta_rich),(ep_phi-ep_phi_rich)*TMath::Sin(ep_theta*TMath::DegToRad()));
-	      if(em_p>h/9.*p_max && em_p<(h+1)/9.*p_max)
-		phi_theta_rich[h]->Fill((em_theta-em_theta_rich),(em_phi-em_phi_rich)*TMath::Sin(em_theta*TMath::DegToRad()));
+	      if(ep_isring && !bt_ep_condition && !em_isring && bt_em_condition)
+		i_array=1;
+	      if(ep_isring && !bt_ep_condition && em_isring && bt_em_condition)
+		i_array=2;
+	      if(ep_isring && !bt_ep_condition && em_isring && !bt_em_condition)
+		i_array=3;
+	      if(ep_isring && bt_ep_condition && !em_isring && bt_em_condition)
+		i_array=4;
+	      if(ep_isring && bt_ep_condition && em_isring && bt_em_condition)
+		i_array=5;
+	      if(ep_isring && bt_ep_condition && em_isring && !bt_em_condition)
+		i_array=6;
+	      if(!ep_isring && bt_ep_condition && !em_isring && bt_em_condition)
+		i_array=7;
+	      if(!ep_isring && bt_ep_condition && em_isring && bt_em_condition)
+		i_array=8;
+	      if(!ep_isring && bt_ep_condition && em_isring && !bt_em_condition)
+		i_array=9;
+
+	      if(i_array!=0)
+		bt_rf_stat->Fill(i_array);
+	      if(m_inv_e1e2>140 && i_array!=0)
+		bt_rf_stat_pi->Fill(i_array);
+	      
+	      if(bt_condition)
+		bt_rf_stat->Fill(10);
+	      if(ep_isring && em_isring)
+		bt_rf_stat->Fill(11);
+	      if(bt_condition && ep_isring && em_isring)
+		bt_rf_stat->Fill(12);
+	      if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
+		bt_rf_stat->Fill(13);
+	    
+	      if(m_inv_e1e2>140 && m_inv_e1e2<700)
+		{
+		  if(bt_condition )
+		    bt_rf_stat_pi->Fill(10);
+		  if(ep_isring && em_isring )
+		    bt_rf_stat_pi->Fill(11);
+		  if(bt_condition && ep_isring && em_isring )
+		    bt_rf_stat_pi->Fill(12);
+		  if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
+		    bt_rf_stat_pi->Fill(13);
+		}
+	      if(m_inv_e1e2<140)
+		{
+		  if(bt_condition )
+		    bt_rf_stat->Fill(14);
+		  if(ep_isring && em_isring )
+		    bt_rf_stat->Fill(15);
+		  if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
+		    bt_rf_stat->Fill(16);
+		}
+	      if(m_inv_e1e2>700)
+		{
+		  if(bt_condition )
+		    bt_rf_stat->Fill(17);
+		  if(ep_isring && em_isring)
+		    bt_rf_stat->Fill(18);
+		  if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
+		    bt_rf_stat->Fill(19);
+		}
+	      if(m_inv_e1e2>140 && m_inv_e1e2<700)
+		{
+		  if(bt_condition )
+		    bt_rf_stat->Fill(20);
+		  if(ep_isring && em_isring)
+		    bt_rf_stat->Fill(21);
+		  if((bt_ep_condition ||ep_isring)&&(bt_em_condition||em_isring) && !(em_isring && ep_isring))
+		    bt_rf_stat->Fill(22);
+		}
+	    }
+
+	  if(ep_isring>0 && em_isring>0 && mass_condition)
+	    if(bt_condition)
+	      {
+		sig_rf_and_bt->Fill(m_inv_e1e2/1000., EFF );
+	      }
+	  
+	  if(ep_isring>0 && em_isring>0 && mass_condition)  //RF signal
+	    {
+	      if(is_lambda)
+		m_pim_p_ep_em_ZD_RF->Fill(lambda1520_mass);
+	      sig_all->Fill(m_inv_e1e2/1000., EFF );
+	      sig_all_var->Fill(m_inv_e1e2/1000., EFF );
+	      em_mom->Fill(em_p);
+	      ep_mom->Fill(ep_p);
+	      
+	      rf_freedom->Fill((em_theta-em_theta_rich),(em_phi-em_phi_rich)*TMath::Sin(em_theta*TMath::DegToRad()),em_p);
+	      rf_freedom->Fill((ep_theta-ep_theta_rich),(ep_phi-ep_phi_rich)*TMath::Sin(ep_theta*TMath::DegToRad()),ep_p);
+	      rf_f_dtheta->Fill((em_theta-em_theta_rich),em_p);
+	      rf_f_dphi->Fill((em_phi-em_phi_rich)*TMath::Sin(em_theta*TMath::DegToRad()),em_p);
+	      rf_f_dtheta->Fill((ep_theta-ep_theta_rich),ep_p);
+	      rf_f_dphi->Fill((ep_phi-ep_phi_rich)*TMath::Sin(ep_theta*TMath::DegToRad()),ep_p);
+	      momentum_spectrum->Fill(em_p*(-1));
+	      momentum_spectrum->Fill(ep_p);
+	      double p_max=1000.;
+	      for(int h=0;h<9;h++)
+		{
+		  if(ep_p>h/9.*p_max && ep_p<(h+1)/9.*p_max)
+		    phi_theta_rich[h]->Fill((ep_theta-ep_theta_rich),(ep_phi-ep_phi_rich)*TMath::Sin(ep_theta*TMath::DegToRad()));
+		  if(em_p>h/9.*p_max && em_p<(h+1)/9.*p_max)
+		    phi_theta_rich[h]->Fill((em_theta-em_theta_rich),(em_phi-em_phi_rich)*TMath::Sin(em_theta*TMath::DegToRad()));
+		}
+	    }
+	  if(mass_condition && (bt_ep_condition||ep_isring) && (bt_em_condition||em_isring) && !(em_isring && ep_isring))//pure backtracking signal
+	    {
+	      pureBT_signal->Fill(m_inv_e1e2/1000., EFF );
+	      pureBT_signal_var->Fill(m_inv_e1e2/1000., EFF );
+	      if(ep_isBT!=-1)
+		{
+		  pureBT_beta_mom->Fill( ep_beta_new, ep_p, EFF );
+		  momentum_spectrum_pureBT->Fill(ep_p);
+		  //pureBT_beta_mom_var->Fill( ep_beta_new, ep_p, EFF );
+		}
+	      if(em_isBT!=-1)
+		{
+		  pureBT_beta_mom->Fill( em_beta_new, em_p, EFF );
+		  momentum_spectrum_pureBT->Fill(em_p*(-1));
+		  //pureBT_beta_mom_var->Fill( em_beta_new, em_p, EFF );
+		}
+	    }
+	  if (mass_condition)  
+	    if (bt_condition)//bt signal
+	      {
+		if(is_lambda)
+		  m_pim_p_ep_em_ZD_BT->Fill(lambda1520_mass);
+		sig_all_bt->Fill(m_inv_e1e2/1000., EFF );
+		sig_all_var_bt->Fill(m_inv_e1e2/1000., EFF );
+		ep_beta_mom_bt->Fill( ep_beta_new, ep_p, EFF );
+		em_beta_mom_bt->Fill( em_beta_new, em_p, EFF );
+		em_mom_bt->Fill(em_p);
+		ep_mom_bt->Fill(ep_p);
+		momentum_spectrum_bt->Fill(em_p*(-1));
+		momentum_spectrum_bt->Fill(ep_p);
+
+	      }
+
+	  if(m_inv_e1e2>140.)  miss_all->Fill(e1e2_miss->M()/1000., EFF );
+
+	  sig_all_var2->Fill(m_inv_e1e2/1000., EFF );
+	  rapidity_all->Fill( e1e2->Rapidity(), EFF  );
+	  pt_all->Fill( e1e2->Pt() / 1000. , EFF );
+	  if (m_inv_e1e2 > 140. && e1e2_miss->M()>860.&& e1e2_miss->M()<1020.)
+	    {
+	      cos_ep->Fill( cos( openingangle( *e1_delta, *gammae1e2 ) ) );
+	      cos_em->Fill( cos( openingangle( *e2_delta, *gammae1e2 ) ) );
+	      cos_sum->Fill( cos( openingangle( *e1_delta, *gammae1e2 ) ), 0.5 );
+	      cos_sum->Fill( cos( openingangle( *e2_delta, *gammae1e2 ) ), 0.5 );
+	      cos_ep_cm->Fill( cos(gammae1e2->Theta() ));
+	      rapidity_140_all->Fill( e1e2->Rapidity(), EFF  );
+	      pt_140_all->Fill( e1e2->Pt() / 1000., EFF  );
 	    }
 	}
-	if(mass_condition && (bt_ep_condition||ep_isring) && (bt_em_condition||em_isring) && !(em_isring && ep_isring))//pure backtracking signal
-	  {
-	    pureBT_signal->Fill(m_inv_e1e2/1000., EFF );
-	    pureBT_signal_var->Fill(m_inv_e1e2/1000., EFF );
-	    if(ep_isBT!=-1)
-	      {
-		pureBT_beta_mom->Fill( ep_beta_new, ep_p, EFF );
-		momentum_spectrum_pureBT->Fill(ep_p);
-		//pureBT_beta_mom_var->Fill( ep_beta_new, ep_p, EFF );
-	      }
-	    if(em_isBT!=-1)
-	      {
-		pureBT_beta_mom->Fill( em_beta_new, em_p, EFF );
-		momentum_spectrum_pureBT->Fill(em_p*(-1));
-		//pureBT_beta_mom_var->Fill( em_beta_new, em_p, EFF );
-	      }
-	  }
-	if (mass_condition)  
-	  if (bt_condition)//bt signal
-	    {
-	      sig_all_bt->Fill(m_inv_e1e2/1000., EFF );
-	      sig_all_var_bt->Fill(m_inv_e1e2/1000., EFF );
-	      ep_beta_mom_bt->Fill( ep_beta_new, ep_p, EFF );
-	      em_beta_mom_bt->Fill( em_beta_new, em_p, EFF );
-	      em_mom_bt->Fill(em_p);
-	      ep_mom_bt->Fill(ep_p);
-	      momentum_spectrum_bt->Fill(em_p*(-1));
-	      momentum_spectrum_bt->Fill(ep_p);
 
-	    }
+      //tlo->fill();
 
-	if(m_inv_e1e2>140.)  miss_all->Fill(e1e2_miss->M()/1000., EFF );
-
-	sig_all_var2->Fill(m_inv_e1e2/1000., EFF );
-	rapidity_all->Fill( e1e2->Rapidity(), EFF  );
-	pt_all->Fill( e1e2->Pt() / 1000. , EFF );
-	if (m_inv_e1e2 > 140. && e1e2_miss->M()>860.&& e1e2_miss->M()<1020.)
-	  {
-	    cos_ep->Fill( cos( openingangle( *e1_delta, *gammae1e2 ) ) );
-	    cos_em->Fill( cos( openingangle( *e2_delta, *gammae1e2 ) ) );
-	    cos_sum->Fill( cos( openingangle( *e1_delta, *gammae1e2 ) ), 0.5 );
-	    cos_sum->Fill( cos( openingangle( *e2_delta, *gammae1e2 ) ), 0.5 );
-	    cos_ep_cm->Fill( cos(gammae1e2->Theta() ));
-	    rapidity_140_all->Fill( e1e2->Rapidity(), EFF  );
-	    pt_140_all->Fill( e1e2->Pt() / 1000., EFF  );
-	  }
-      }
-
-    //tlo->fill();
-
-    // if (Cut(ientry) < 0) continue;
-  } // end of main loop
+      // if (Cut(ientry) < 0) continue;
+    } // end of main loop
 } // eof Loop 
 
 

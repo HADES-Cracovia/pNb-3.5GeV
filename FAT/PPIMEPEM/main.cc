@@ -198,7 +198,9 @@ int main()
    em_beta_mom = new TH2F("em_beta_mom","em_beta_mom",50,0.6,1.3,100,0,1000); em_beta_mom->Sumw2();
    ep_beta_mom_bt = new TH2F("ep_beta_mom_bt","ep_beta_mom_bt",50,0.6,1.3,100,0,1000); ep_beta_mom_bt->Sumw2();
    em_beta_mom_bt = new TH2F("em_beta_mom_bt","em_beta_mom_bt",50,0.6,1.3,100,0,1000); em_beta_mom_bt->Sumw2();
-
+   p_beta_mom = new TH2F("p_beta_mom","p_beta_mom",100,0.0,1.3,300,0,3000); p_beta_mom->Sumw2(); 
+   pim_beta_mom = new TH2F("pim_beta_mom","pim_beta_mom",100,0.0,1.3,300,0,3000); pim_beta_mom->Sumw2();
+   
    em_mom= new TH1F("em_mom","em_mom",250,0,1000);
    ep_mom= new TH1F("ep_mom","ep_mom",250,0,1000);
    em_mom_bt= new TH1F("em_mom_bt","em_mom_bt",250,0,1000);
@@ -248,6 +250,8 @@ int main()
    m_pim_p_ZD=new TH1F("m_pim_p_ZD","Invariant mass #pi^{-} p",500,600,1600);
    m_pim_p_ep_em=new TH1F("m_pim_p_ep_em","Invariant mass di-lepton #Lambda",500,1000,2000);
    m_pim_p_ep_em_ZD=new TH1F("m_pim_p_ep_em_ZD","Invariant mass di-lepton #Lambda",500,1000,2000);
+   m_pim_p_ep_em_ZD_BT=new TH1F("m_pim_p_ep_em_ZD_BT","Invariant mass di-lepton #Lambda",500,1000,2000);
+   m_pim_p_ep_em_ZD_RF=new TH1F("m_pim_p_ep_em_ZD_RF","Invariant mass di-lepton #Lambda",500,1000,2000);
    dist_pim_p=new TH1F("dist_pim_p","Distance between #pi^{-} nad proton",200,0,200);
    lambda_vertex=new TH2F("lambda_vertex","Z vs. r cooridane of #Lambda decay vertex",1000,-300,700,500,0,500);
      
@@ -587,6 +591,8 @@ int main()
 
    ep_beta_mom->Write();
    em_beta_mom->Write();
+   p_beta_mom->Write();
+   pim_beta_mom->Write();
    ep_beta_mom_bt->Write();
    em_beta_mom_bt->Write();
 
@@ -713,6 +719,8 @@ int main()
    m_pim_p_ZD->Write();
    m_pim_p_ep_em->Write();
    m_pim_p_ep_em_ZD->Write();
+   m_pim_p_ep_em_ZD_RF->Write();
+   m_pim_p_ep_em_ZD_BT->Write();
    dist_pim_p->Write();
    lambda_vertex->Write(); 
 
