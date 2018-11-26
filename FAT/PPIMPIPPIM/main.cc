@@ -111,6 +111,7 @@ int main()
   
   p_p_beta=new TH2F("p_p_beta","Momentum vs. beta for protons",p_n,p_min,p_max,beta_n,beta_min,beta_max);
   pim_p_beta=new TH2F("pim_p_beta","Momentum vs. beta for #pi^{-}",p_n,p_min,p_max,beta_n,beta_min,beta_max);
+  pip_p_beta=new TH2F("pip_p_beta","Momentum vs. beta for #pi^{+}",p_n,p_min,p_max,beta_n,beta_min,beta_max);
   p_pim_mass=new TH1F("p_pim_mass","Invariant mass #pi^{-} p",2000,500,2500);									       
   p_pim1_mass=new TH1F("p_pim1_mass","Invariant mass #pi_{1}^{-} p",2000,500,2500);
   p_pim2_mass=new TH1F("p_pim2_mass","Invariant mass #pi_{2}^{-} p",2000,500,2500);
@@ -155,8 +156,16 @@ int main()
   DML_dist_p_pim_pim_pip=new TH2F("DML_dist_p_pim_pim_pip","DML_dist_p_pim_pim_pip",300,0,300,300,0,300);
   DML_dist_p_pim=new TH1F("DML_dist_p_pim","DML_dist_p_pim",1000,0,300);
   DML_dist_pim_pip=new TH1F("DML_dist_pip_pim","DML_dist_pip_pim",1000,0,300);
+  vertex_lambda=new TH2F("vertex_lambda","#Lambda (1116) decay vertex for all #pi^{-} p pairs;Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400); 
+  vertex_target=new TH2F("vertex_target","#Lambda (1520) decay vertex for all #pi^{-} #pi^{+} pairs;Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400);
+  DL_vertex_lambda=new TH2F("DL_vertex_lambda","#Lambda (1116) decay vertex for #pi^{-} p pairs closer then dist_{min};Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400);
+  DL_vertex_target=new TH2F("DL_vertex_target","#Lambda (1520) decay vertex for #pi^{-} #pi^{+} pairs closer then dist_{min};Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400);
+  DLM_vertex_lambda=new TH2F("DLM_vertex_lambda","#Lambda (1116) decay vertex for #pi^{-} p pairs from #Lambda (distance and mass cut);Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400);
+  DLM_vertex_target=new TH2F("DLM_vertex_target","#Lambda (1520) decay vertex for #pi^{-} #pi^{+} pairs pairs from;Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400);
 
-  
+  sum_dist_1=new TH1F("sum_dist_1","Sum of all distances in hyp1",100,-1,1);
+  sum_dist_2=new TH1F("sum_dist_2","Sum of all distances in hyp2",100,-1,1);
+  sum_dist_diff=new TH1F("sum_dist_diff","Difference between hypothesis 1 and 2",100,-1,1);
   /**************************** M A I N   P A R T ****************************************/
 
   //PPim t;
@@ -200,7 +209,7 @@ int main()
   dist_p_pim_pim_pip->Write();
   dist_pim_pip->Write();
   dist_p_pim->Write();
-
+  
   DL_p_pim_mass->Write();
   DL_p_pim1_mass->Write();
   DL_p_pim2_mass->Write();
@@ -234,7 +243,11 @@ int main()
   DML_dist_p_pim->Write();
   //p_mass->Write();
   //pim_mass->Write();
- 
+
+  sum_dist_diff->Write();
+  sum_dist_2->Write();
+  sum_dist_1->Write();
+  
   //myfile.close();
 
   outFileData->Close();

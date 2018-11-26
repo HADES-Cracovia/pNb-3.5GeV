@@ -22,9 +22,10 @@ namespace PATData {
   extern HFilter *filter;
   extern float EFF, ACC;
   //PPimPipPim*******************************
-  extern TH2F *p_p_beta, *pim_p_beta;
+  extern TH2F *p_p_beta, *pim_p_beta, *pip_p_beta;
   extern TH1F *p_pim_mass, *p_mass, *pim_mass;
 
+  extern TH1F *sum_dist_1, *sum_dist_2, *sum_dist_diff;
   
   extern TH1F *p_pim1_mass, *p_pim2_mass, *pim_pip_mass,*pim1_pip_mass,*pim2_pip_mass, *p_pim_pip_pim_mass;
   extern TH2F *dist_p_pim_pim_pip;
@@ -44,6 +45,7 @@ namespace PATData {
 
   extern TH1F *DL_target_z, *DL_target_z_diff, *DL_pip_z;
   extern TH1F *DL_pim_pip_z;
+  extern TH2F *vertex_lambda, *vertex_target, *DL_vertex_lambda, *DL_vertex_target, *DLM_vertex_lambda, *DLM_vertex_target;
   //*****************************************  
 
   extern TCutG *pEpS0, *pEpS1, *pEmS0, *pEmS1;
@@ -116,6 +118,7 @@ namespace PATData {
   double trackDistance(double r1, double z1, TVector3 v1, double r2, double z2, TVector3 v2);
   TVector3 vertex(double z1,double r1,TVector3 vec1, double z2,double r2,TVector3 vec2);
   TVector3 trackToPoint(TVector3 base,TVector3 dir, TVector3 point);
+  double getR(TVector3 vec);
 }
 
 /*********************************************************************************************/

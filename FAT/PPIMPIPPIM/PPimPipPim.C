@@ -28,7 +28,8 @@ void PPimPipPim::Loop()
       // if (Cut(ientry) < 0) continue;
       
       ++licznik;
-      if ((licznik % 100000)==0) cout << "Events: " << licznik << endl;
+      if ((licznik % 100000)==0)
+	cout << "Events: " << licznik <<" from: "<<nentries<< endl;
 
 
       double F = 1.006;
@@ -71,15 +72,21 @@ void PPimPipPim::Loop()
       double p_mass = p_p*p_p * (  1. / (p_beta*p_beta)  - 1. ) ;
       double pi_mass = pim1_p*pim1_p * (  1. / (pim1_beta*pim1_beta)  - 1. ) ;
 
+      TVector3 ver_p_pim1=vertex(p_r,p_z,v2,pim1_r,pim1_z,v3);
+      TVector3 ver_p_pim2=vertex(p_r,p_z,v2,pim2_r,pim2_z,v5);
+      TVector3 ver_pip_pim1=vertex(pip_r,pip_z,v4,pim1_r,pim1_z,v3);
+      TVector3 ver_pip_pim2=vertex(pip_r,pip_z,v4,pim2_r,pim2_z,v5);
+
       double dist_p_pim1=trackDistance(p_r,p_z,v2,pim1_r,pim1_z,v3);
       double dist_p_pim2=trackDistance(p_r,p_z,v2,pim2_r,pim2_z,v5);
       double dist_pip_pim1=trackDistance(pip_r,pip_z,v4,pim1_r,pim1_z,v3);
       double dist_pip_pim2=trackDistance(pip_r,pip_z,v4,pim2_r,pim2_z,v5);
-
-      TVector3 ver_p_pim1=vertex(p_r,p_z,v2,pim1_r,pim1_z,v3);
-      TVector3 ver_p_pim2=vertex(p_r,p_z,v2,pim2_r,pim2_z,v5);
-      TVector3 ver_pip_pim1=vertex(pip_r,pip_z,v4,pim1_r,pim1_z,v3);
-      TVector3 ver_pip_pim2=vertex(pip_r,pip_z,v4,pim2_r,pim2_z,v5);  
+      double dist_lambda1_pip=trackDistance(pip_r,pip_z,v4,ver_pip_pim1.Z(),getR(ver_pip_pim1),gammappim1->Vect());
+      double dist_lambda2_pip=trackDistance(pip_r,pip_z,v4,ver_pip_pim2.Z(),getR(ver_pip_pim2),gammappim2->Vect());
+      double dist_lambda1_pim2=trackDistance(pim2_r,pim2_z,v5,ver_pip_pim1.Z(),getR(ver_pip_pim1),gammappim1->Vect());
+      double dist_lambda2_pim1=trackDistance(pim1_r,pim1_z,v3,ver_pip_pim2.Z(),getR(ver_pip_pim2),gammappim2->Vect());
+      
+        
       //	  cout << "opening angle = " << oa << endl;
 
       ACC = 1.;
@@ -155,109 +162,122 @@ void PPimPipPim::Loop()
       bool dist2=(dist_p_pim2<15
 		  && ver_p_pim2.Z()>0
 		  && dist_p_pim1>dist_p_pim2);
-      
-      if(isBest==1)
+
+
+
+	if(isBest==1)
 	{
-	  p_p_beta->Fill(p_p,p_beta_new);
-	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
-	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
-	  pim_p_beta->Fill(pip_p,pip_beta_new);
+	p_p_beta->Fill(p_p,p_beta_new);
+	pim_p_beta->Fill(pim1_p,pim1_beta_new);
+	pim_p_beta->Fill(pim1_p,pim1_beta_new);
+	pim_p_beta->Fill(pip_p,pip_beta_new);
 	  
-	  p_pim_mass->Fill(m_inv_ppim1);
-	  p_pim_mass->Fill(m_inv_ppim2);
-	  p_pim1_mass->Fill(m_inv_ppim1);
-	  p_pim2_mass->Fill(m_inv_ppim2);
+	p_pim_mass->Fill(m_inv_ppim1);
+	p_pim_mass->Fill(m_inv_ppim2);
+	p_pim1_mass->Fill(m_inv_ppim1);
+	p_pim2_mass->Fill(m_inv_ppim2);
 
-	  pim_pip_mass->Fill(m_inv_pippim2);
-	  pim_pip_mass->Fill(m_inv_pippim1);
-	  pim2_pip_mass->Fill(m_inv_pippim2);
-	  pim1_pip_mass->Fill(m_inv_pippim1);
+	pim_pip_mass->Fill(m_inv_pippim2);
+	pim_pip_mass->Fill(m_inv_pippim1);
+	pim2_pip_mass->Fill(m_inv_pippim2);
+	pim1_pip_mass->Fill(m_inv_pippim1);
 
-	  p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
+	p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
 
-	  dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim1);
-	  dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim2);
-	  dist_p_pim->Fill(dist_p_pim2);
-	  dist_p_pim->Fill(dist_p_pim1);
-	  dist_pim_pip->Fill(dist_pip_pim2);
-	  dist_pim_pip->Fill(dist_pip_pim1);
+	dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim1);
+	dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim2);
+	dist_p_pim->Fill(dist_p_pim2);
+	dist_p_pim->Fill(dist_p_pim1);
+	dist_pim_pip->Fill(dist_pip_pim2);
+	dist_pim_pip->Fill(dist_pip_pim1);
+
+	
+
+	double sum1=dist_p_pim1+dist_pip_pim2+dist_lambda1_pip+dist_lambda1_pim2;
+	double sum2=dist_p_pim2+dist_pip_pim1+dist_lambda2_pip+dist_lambda2_pim1;
+
+	sum_dist_1->Fill(sum1);
+	sum_dist_2->Fill(sum2);
+	sum_dist_diff->Fill(TMath::Abs(sum1-sum2));
 	}
-      if(isBest==1 && dist1)
+
+	/*
+	if(isBest==1 && dist1)
 	{
-	  TVector3 pip_ver(0,0,pip_z);
-	  TVector3 ver_pip_l=trackToPoint(ver_p_pim1,gammappim1->Vect(),pip_ver);
-	  //cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
-	  ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
+	TVector3 pip_ver(0,0,pip_z);
+	TVector3 ver_pip_l=trackToPoint(ver_p_pim1,gammappim1->Vect(),pip_ver);
+	//cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
+	ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
   	  
-	  DL_p_pim_mass->Fill(m_inv_ppim1);
-	  DL_p_pim1_mass->Fill(m_inv_ppim1);
-	  DL_pim_pip_mass->Fill(m_inv_pippim2);
-	  DL_pim2_pip_mass->Fill(m_inv_pippim2);
-	  DL_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DL_dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim2);
-	  DL_dist_p_pim->Fill(dist_p_pim1);
-	  DL_dist_pim_pip->Fill(dist_pip_pim2);
+	DL_p_pim_mass->Fill(m_inv_ppim1);
+	DL_p_pim1_mass->Fill(m_inv_ppim1);
+	DL_pim_pip_mass->Fill(m_inv_pippim2);
+	DL_pim2_pip_mass->Fill(m_inv_pippim2);
+	DL_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
+	DL_dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim2);
+	DL_dist_p_pim->Fill(dist_p_pim1);
+	DL_dist_pim_pip->Fill(dist_pip_pim2);
 
-	  DL_target_z->Fill(pip_z);
-	  DL_target_z->Fill(pim2_z);
-	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim2_z));
-	  DL_pim_pip_z->Fill(ver_pip_pim2.Z());
-	  DL_pip_z->Fill(pip_z);
+	DL_target_z->Fill(pip_z);
+	DL_target_z->Fill(pim2_z);
+	DL_target_z_diff->Fill(TMath::Abs(pip_z-pim2_z));
+	DL_pim_pip_z->Fill(ver_pip_pim2.Z());
+	DL_pip_z->Fill(pip_z);
 
-	  if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
-	    {
-	      DL_in_target->Fill(m_inv_ppim1);
-	    }
-	}
-      if(isBest==1 && dist2)
+	if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
 	{
-	  TVector3 pip_ver(0,0,pip_z);
-	  TVector3 ver_pip_l=trackToPoint(ver_p_pim2,gammappim2->Vect(),pip_ver);
-	  //cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
-	  ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
+	DL_in_target->Fill(m_inv_ppim1);
+	}
+	}
+	if(isBest==1 && dist2)
+	{
+	TVector3 pip_ver(0,0,pip_z);
+	TVector3 ver_pip_l=trackToPoint(ver_p_pim2,gammappim2->Vect(),pip_ver);
+	//cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
+	ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
 	  
-	  DL_p_pim_mass->Fill(m_inv_ppim2);
-	  DL_p_pim2_mass->Fill(m_inv_ppim2);
-	  DL_pim_pip_mass->Fill(m_inv_pippim1);
-	  DL_pim1_pip_mass->Fill(m_inv_pippim1);
-	  DL_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DL_dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim1);
-	  DL_dist_p_pim->Fill(dist_p_pim2);
-	  DL_dist_pim_pip->Fill(dist_pip_pim1);
+	DL_p_pim_mass->Fill(m_inv_ppim2);
+	DL_p_pim2_mass->Fill(m_inv_ppim2);
+	DL_pim_pip_mass->Fill(m_inv_pippim1);
+	DL_pim1_pip_mass->Fill(m_inv_pippim1);
+	DL_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
+	DL_dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim1);
+	DL_dist_p_pim->Fill(dist_p_pim2);
+	DL_dist_pim_pip->Fill(dist_pip_pim1);
 
-	  DL_target_z->Fill(pip_z);
-	  DL_target_z->Fill(pim1_z);
-	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim1_z));
-	  DL_pim_pip_z->Fill(ver_pip_pim1.Z());
-	  DL_pip_z->Fill(pip_z);
+	DL_target_z->Fill(pip_z);
+	DL_target_z->Fill(pim1_z);
+	DL_target_z_diff->Fill(TMath::Abs(pip_z-pim1_z));
+	DL_pim_pip_z->Fill(ver_pip_pim1.Z());
+	DL_pip_z->Fill(pip_z);
 
-	  if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
-	    {
-	      DL_in_target->Fill(m_inv_ppim2);
-	    }
-	}
-      if(isBest==1 && dist1 && c_mass1)
+	if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
 	{
-	  DML_p_pim_mass->Fill(m_inv_ppim1);
-	  DML_p_pim1_mass->Fill(m_inv_ppim1);
-	  DML_pim_pip_mass->Fill(m_inv_pippim2);
-	  DML_pim2_pip_mass->Fill(m_inv_pippim2);
-	  DML_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DML_dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim2);
-	  DML_dist_p_pim->Fill(dist_p_pim1);
-	  DML_dist_pim_pip->Fill(dist_pip_pim2);
+	DL_in_target->Fill(m_inv_ppim2);
 	}
-      if(isBest==1 && dist2 && c_mass2)
+	}
+	if(isBest==1 && dist1 && c_mass1)
 	{
-	  DML_p_pim_mass->Fill(m_inv_ppim2);
-	  DML_p_pim2_mass->Fill(m_inv_ppim2);
-	  DML_pim_pip_mass->Fill(m_inv_pippim1);
-	  DML_pim1_pip_mass->Fill(m_inv_pippim1);
-	  DML_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DML_dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim1);
-	  DML_dist_p_pim->Fill(dist_p_pim2);
-	  DML_dist_pim_pip->Fill(dist_pip_pim1);
+	DML_p_pim_mass->Fill(m_inv_ppim1);
+	DML_p_pim1_mass->Fill(m_inv_ppim1);
+	DML_pim_pip_mass->Fill(m_inv_pippim2);
+	DML_pim2_pip_mass->Fill(m_inv_pippim2);
+	DML_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
+	DML_dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim2);
+	DML_dist_p_pim->Fill(dist_p_pim1);
+	DML_dist_pim_pip->Fill(dist_pip_pim2);
 	}
+	if(isBest==1 && dist2 && c_mass2)
+	{
+	DML_p_pim_mass->Fill(m_inv_ppim2);
+	DML_p_pim2_mass->Fill(m_inv_ppim2);
+	DML_pim_pip_mass->Fill(m_inv_pippim1);
+	DML_pim1_pip_mass->Fill(m_inv_pippim1);
+	DML_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
+	DML_dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim1);
+	DML_dist_p_pim->Fill(dist_p_pim2);
+	DML_dist_pim_pip->Fill(dist_pip_pim1);
+	}*/
     }
 }
 
