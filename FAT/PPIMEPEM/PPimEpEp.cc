@@ -183,13 +183,7 @@ void PPimEpEp::Loop()
 
     //cout << "Poczatek obliczen..." << endl;
 
-    double ang_cut =4.;
-    //double ang_cut = 4.;
-	  
-    double close_cut =4.;
-    double nonfit_close_cut =-4.;
-    //double close_cut = 4.;
-
+    
 #ifdef FLANCH
     insideEp1S0 = (pEp1S0 == 0) ? 0 : pEp1S0->IsInside(ep1_z,ep1_theta);
     insideEp1S1 = (pEp1S1 == 0) ? 0 : pEp1S1->IsInside(ep1_z,ep1_theta);
@@ -232,27 +226,12 @@ void PPimEpEp::Loop()
     //#endif
 
 
-    NoLeptonE1 = !((ep1_oa_lept< close_cut&&ep1_oa_lept>0.0) &&ep1_oa_lept>nonfit_close_cut );
-    NoHadronE1 = !(ep1_oa_hadr< close_cut &&ep1_oa_hadr>nonfit_close_cut );
-    NoLeptonE2 = !((ep2_oa_lept< close_cut&&ep2_oa_lept>0.0) &&ep2_oa_lept>nonfit_close_cut );
-    NoHadronE2 = !(ep2_oa_hadr< close_cut &&ep2_oa_hadr>nonfit_close_cut );
-    NoHadronE1 = 1;
-    NoHadronE2 = 1;
-
-
     /*
       NoLeptonE1 = 1;
       NoHadronE1 = 1;
       NoLeptonE2 = 1;
       NoHadronE2 = 1;
     */
-
-    Positron1 = (((ep1_system==0&&insideEp1S0==0)||(ep1_system==1&&insideEp1S1==0)));
-    Positron2 = (((ep2_system==0&&insideEp2S0==0)||(ep2_system==1&&insideEp2S1==0)));
-
-    PositronPositron = Positron1 && NoLeptonE1 && NoHadronE1  &&  Positron2 && NoLeptonE2 && NoHadronE2  && insideTarget &&
-      ( e1_mass < 5000. && e2_mass < 5000. );
-
     //Hadronic part
     bool is_lambda=false;
     double min_distance=20;
@@ -284,7 +263,23 @@ void PPimEpEp::Loop()
     //End of hadronic part
 
 
-    
+    double ang_cut =0;
+    //double ang_cut = 4.;
+	  
+    double close_cut =0.;
+    double nonfit_close_cut =-0.;
+    //double close_cut = 4.;
+NoLeptonE1 = !((ep1_oa_lept< close_cut&&ep1_oa_lept>0.0) &&ep1_oa_lept>nonfit_close_cut );
+    NoHadronE1 = !(ep1_oa_hadr< close_cut &&ep1_oa_hadr>nonfit_close_cut );
+    NoLeptonE2 = !((ep2_oa_lept< close_cut&&ep2_oa_lept>0.0) &&ep2_oa_lept>nonfit_close_cut );
+    NoHadronE2 = !(ep2_oa_hadr< close_cut &&ep2_oa_hadr>nonfit_close_cut );
+    NoHadronE1 = 1;
+    NoHadronE2 = 1;
+    Positron1 = (((ep1_system==0&&insideEp1S0==0)||(ep1_system==1&&insideEp1S1==0)));
+    Positron2 = (((ep2_system==0&&insideEp2S0==0)||(ep2_system==1&&insideEp2S1==0)));
+
+    PositronPositron = 1;//Positron1 && NoLeptonE1 && NoHadronE1  &&  Positron2 && NoLeptonE2 && NoHadronE2  && insideTarget && ( e1_mass < 5000. && e2_mass < 5000. );
+
     bool bt_ep1_condition=(ep1_isBT!=-1
 			   //&& ep1_btMaxima>=2
 			   && ep1_btPadsRing>=2

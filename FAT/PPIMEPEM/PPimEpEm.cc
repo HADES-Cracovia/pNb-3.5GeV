@@ -1,4 +1,3 @@
-
 #include "PPimEpEm.h"
 #include "data.h"
 #include <iostream>
@@ -71,11 +70,7 @@ void PPimEpEm::Loop()
       //cout << "Poczatek obliczen..." << endl;
 
       //double ang_cut = 0.;
-      double ang_cut = 4.;
-
-      double close_cut = 4.;
-      double nonfit_close_cut = -4.;
-    
+     
 #ifdef FLANCH
       insideEmS0 = (pEmS0 == 0) ? 0 : pEmS0->IsInside(em_z,em_theta);
       insideEmS1 = (pEmS1 == 0) ? 0 : pEmS1->IsInside(em_z,em_theta);
@@ -95,22 +90,6 @@ void PPimEpEm::Loop()
       insideEpS0 = (ep_theta > 50 && ep_z < -50 /* && ep_p<200.*/) ? 1 : 0;
       insideEpS1 = (ep_theta > 50 && ep_z < -50 /* && ep_p<200.*/) ? 1 : 0;
 #endif
-
-      //#ifdef NOCUT
-      insideEmS0 = 0;
-      insideEmS1 = 0;
-      insideEpS0 = 0;
-      insideEpS1 = 0;
-      //#endif
-
-
-      NoLeptonE1 = !((ep_oa_lept< close_cut&&ep_oa_lept>0.0) &&ep_oa_lept>nonfit_close_cut );
-      NoHadronE1 = !(ep_oa_hadr< close_cut &&ep_oa_hadr>nonfit_close_cut );
-      NoLeptonE2 = !((em_oa_lept< close_cut&&em_oa_lept>0.0) &&em_oa_lept>nonfit_close_cut );
-      NoHadronE2 = !(em_oa_hadr< close_cut &&em_oa_hadr>nonfit_close_cut );
-      NoHadronE1 = 1;
-      NoHadronE2 = 1;
-
       /*
 	NoLeptonE1 = 1;
 	NoHadronE1 = 1;
@@ -119,10 +98,14 @@ void PPimEpEm::Loop()
       */
 
       //Hadronic part
-      bool is_lambda=0;
+      bool is_lambda=false;
       double min_distance=20;
-      double min_z=0;
+      double min_z=5;
+      double ang_cut = 0;
+      double close_cut = 0;
+      double nonfit_close_cut = 0;
 
+      
       TVector3 v_pion, v_prot;
       v_pion.SetXYZ(F*pim_p*sin(D2R*pim_theta)*cos(D2R*pim_phi),F*pim_p*sin(D2R*pim_theta)*sin(D2R*pim_phi),F*pim_p*cos(D2R*pim_theta));
       v_prot.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
@@ -165,12 +148,25 @@ void PPimEpEm::Loop()
       //End of hadronic part
 
 
+      //#ifdef NOCUT
+      insideEmS0 = 0;
+      insideEmS1 = 0;
+      insideEpS0 = 0;
+      insideEpS1 = 0;
+      //#endif
 
+
+      NoLeptonE1 = !((ep_oa_lept< close_cut&&ep_oa_lept>0.0) &&ep_oa_lept>nonfit_close_cut );
+      NoHadronE1 = !(ep_oa_hadr< close_cut &&ep_oa_hadr>nonfit_close_cut );
+      NoLeptonE2 = !((em_oa_lept< close_cut&&em_oa_lept>0.0) &&em_oa_lept>nonfit_close_cut );
+      NoHadronE2 = !(em_oa_hadr< close_cut &&em_oa_hadr>nonfit_close_cut );
+      NoHadronE1 = 1;
+      NoHadronE2 = 1;
     
       Positron = (((ep_system==0&&insideEpS0==0)||(ep_system==1&&insideEpS1==0)));
       Electron = (((em_system==0&&insideEmS0==0)||(em_system==1&&insideEmS1==0)));
 
-      ElectronPositron = Positron && NoLeptonE1 && NoHadronE1  &&  Electron && NoLeptonE2 && NoHadronE2  &&  insideTarget;
+      ElectronPositron =1;// Positron && NoLeptonE1 && NoHadronE1  &&  Electron && NoLeptonE2 && NoHadronE2  &&  insideTarget;
 
 
       bool bt_em_condition=(em_isBT!=-1

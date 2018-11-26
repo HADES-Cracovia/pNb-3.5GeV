@@ -75,21 +75,27 @@ bool HGraphCut::graphCut(HParticle *pPart)
   */
   switch ( id )
     {
-    case 2: if ( beta > 0.8 )
+    case 2:
+      if ( beta > 0.8 )
 	return true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! always ok
-      else return false;
+      else
+	return false;
       if (ep_cut) return ep_cut->IsInside( beta, mom );
       break;
       
-    case 3: if ( beta > 0.8 )
+    case 3:
+      if ( beta > 0.8 )
 	return true; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! always ok
-      else return false;
+      else
+	return false;
       if (em_cut) return em_cut->IsInside( beta, mom );
       break;
       
-    case 8: if ( sqrt(mass) < 240 && sqrt(mass)>40 )
+    case 8:
+      if ( sqrt(mass) < 240 && sqrt(mass)>40 )
 	return true;
-      else return false;
+      else
+	return false;
       return true;
       if (pip_cut) return pip_cut->IsInside( mom, mass );
       //cout << "8 masa: " << mass << "    ";
