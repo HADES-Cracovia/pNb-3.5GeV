@@ -33,6 +33,12 @@ namespace PATData
   TH2F *DL_dist_p_pim_pim_pip;
   TH1F *DL_p_pim_mass, *DL_p_mass, *DL_pim_mass, *DL_in_target;
 
+  TH1F *chi_p_pim_mass, *chi_pip_pim_mass, *chi_final_mass;
+  TH2F *chi_lambda_vertex;
+
+  TH1F *LM_chi_p_pim_mass, *LM_chi_pip_pim_mass, *LM_chi_final_mass;
+  TH2F *LM_chi_lambda_vertex;
+  
   TH1F *DML_p_pim1_mass, *DML_p_pim2_mass, *DML_pim_pip_mass,*DML_pim1_pip_mass,*DML_pim2_pip_mass, *DML_p_pim_pip_pim_mass;
   TH1F *DML_dist_p_pim, *DML_dist_pim_pip;
   TH2F *DML_dist_p_pim_pim_pip;
