@@ -202,7 +202,7 @@ void PPimPipPim::Loop()
 	  if(sum1<chi_max || sum2<chi_max)
 	    sum_dist_diff->Fill(TMath::Abs(sum1-sum2));
 
-	  if(chi_max>sum1 && sum1<sum2)
+	  if(chi_max>sum1 && sum1<sum2 && ver_p_pim1.Z()>ver_pip_pim2.Z())
 	    {
 	      chi_p_pim_mass->Fill(m_inv_ppim1);
 	      chi_pip_pim_mass->Fill(m_inv_pippim2);
@@ -218,7 +218,7 @@ void PPimPipPim::Loop()
 		}
 	    }
 	
-	  if(sum2<chi_max && sum2<sum1)
+	  if(sum2<chi_max && sum2<sum1 && ver_p_pim2.Z()>ver_pip_pim1.Z())
 	    {
 	      chi_p_pim_mass->Fill(m_inv_ppim2);
 	      chi_pip_pim_mass->Fill(m_inv_pippim1);
