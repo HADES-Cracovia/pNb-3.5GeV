@@ -163,7 +163,7 @@ void PPimPipPim::Loop()
 		  && ver_p_pim2.Z()>0
 		  && dist_p_pim1>dist_p_pim2);
 
-      double chi_max=40;
+      double chi_max=400;
 
 
       if(isBest==1)
@@ -194,8 +194,8 @@ void PPimPipPim::Loop()
 
 	
 
-	  double sum1=dist_p_pim1+dist_pip_pim2+dist_lambda1_pip+dist_lambda1_pim2;
-	  double sum2=dist_p_pim2+dist_pip_pim1+dist_lambda2_pip+dist_lambda2_pim1;
+	  double sum1=dist_p_pim1*dist_p_pim1+dist_pip_pim2*dist_pip_pim2+dist_lambda1_pip*dist_lambda1_pip+dist_lambda1_pim2*dist_lambda1_pim2;
+	  double sum2=dist_p_pim2*dist_p_pim2+dist_pip_pim1*dist_pip_pim1+dist_lambda2_pip*dist_lambda2_pip+dist_lambda2_pim1*dist_lambda2_pim1;
 
 	  sum_dist_1->Fill(sum1);
 	  sum_dist_2->Fill(sum2);
@@ -233,6 +233,19 @@ void PPimPipPim::Loop()
 		  LM_chi_final_mass->Fill(m_inv_ppimpippim);
 		}
 	    }
+	  //optimalization part
+	  for(int i=0;i<10;i++)
+	    for(int j=0;j<10;j++)
+	      {
+		if(sum1<300+20*i && sum1<sum2 && ver_p_pim1.Z()>ver_pip_pim2.Z() && ver_p_pim1.Z()>(j*5)-20)
+		  if(m_inv_ppim1<1120 && m_inv_ppim1>1110)
+		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
+		
+		if(sum2<300+20*i && sum2<sum1 && ver_p_pim2.Z()>ver_pip_pim1.Z() && ver_p_pim2.Z()>(j*5)-20)
+		  if(m_inv_ppim2<1120 && m_inv_ppim2>1110)
+		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
+	      }
+  	  //end of opt part
 	
 	}
 

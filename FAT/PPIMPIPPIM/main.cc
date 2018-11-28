@@ -86,7 +86,7 @@ int main()
   ppi_miss = new TLorentzVector(0,0,0,0);
 
   /************************************** O U T P U T   F I L E ******************************************/
-  outFileData = new TFile("pNb_ppimpippim_full_chi_LM_Zvertex_ver2.root","recreate");
+  outFileData = new TFile("pNb_ppimpippim_full_chi_LM_minZvertex.root","recreate");
   //ofstream myfile;
   //myfile.open ("raport.txt",ios::trunc);
   //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");
@@ -164,9 +164,9 @@ int main()
   DLM_vertex_lambda=new TH2F("DLM_vertex_lambda","#Lambda (1116) decay vertex for #pi^{-} p pairs from #Lambda (distance and mass cut);Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400);
   DLM_vertex_target=new TH2F("DLM_vertex_target","#Lambda (1520) decay vertex for #pi^{-} #pi^{+} pairs pairs from;Z_{vertex} [mm] ;R_{vertex} [mm]",500,-100,400,400,0,400);
 
-  sum_dist_1=new TH1F("sum_dist_1","Sum of all distances in hyp1",500,0,500);
-  sum_dist_2=new TH1F("sum_dist_2","Sum of all distances in hyp2",500,0,500);
-  sum_dist_diff=new TH1F("sum_dist_diff","Difference between hypothesis 1 and 2",400,0,400);
+  sum_dist_1=new TH1F("sum_dist_1","Sum of all distances in hyp1",1000,0,1000);
+  sum_dist_2=new TH1F("sum_dist_2","Sum of all distances in hyp2",1000,0,1000);
+  sum_dist_diff=new TH1F("sum_dist_diff","Difference between hypothesis 1 and 2",800,0,800);
 
   chi_p_pim_mass=new TH1F("chi_p_pim_mass","p #pi^{-} mass after chi cut; M_{#pi^{-} p}[MeV]",600,1000,1600);
   chi_pip_pim_mass=new TH1F("chi_pip_pim_mass","#pi^{+} #pi^{-} mass after chi cut; M_{#pi^{-} #pi^{+}}[MeV]",900,200,1100);
@@ -178,6 +178,20 @@ int main()
   LM_chi_pip_pim_mass=new TH1F("LM_chi_pip_pim_mass","#pi^{+} #pi^{-} mass after chi cut and #Lambda mass; M_{#pi^{-} #pi^{+}}[MeV]",900,200,1100);
   LM_chi_lambda_vertex=new TH2F("LM_chi_lambda_vertex","Reconstructed vertex of a #Lambda (1116),after chi and #Lambda mass cut;Z_{vertex}[mm];R_{vertex}[mm]",600,-100,200,400,0,200);
   LM_chi_final_mass=new TH1F("LM_chi_final_mass","#pi^{+} #pi^{-} P #Pi^{-} mass after chi and mass cut; M_{#pi^{-} #pi^{+}  p #pi^{-}}[MeV]",1000,1300,2300);
+
+  int chi_step=20;
+  int dist_step=5;
+
+  for(int i=0;i<10;i++)
+    for(int j=0;j<10;j++)
+      {
+	char hname[20];
+	char htitle[40];
+	sprintf(htitle,"#pi^{+} #pi^{-} p #pi^{-} for chi < %d and Z_{#Lambda vetex} > %d",300+chi_step*i,dist_step*j-20);
+	sprintf(hname,"chi_%d_distance_%d",300+chi_step*i,dist_step*j-20);
+	signal_fit[i][j]=new TH1F(hname,htitle,500,1300,2300);
+      }
+  
   /**************************** M A I N   P A R T ****************************************/
 
   //PPim t;
@@ -273,6 +287,13 @@ int main()
   LM_chi_final_mass->Write();
   //myfile.close();
 
+  for(int i=0;i<10;i++)
+    for(int j=0;j<10;j++)
+      {
+	signal_fit[i][j]->Write();
+      }
+  
+  
   outFileData->Close();
 }
 

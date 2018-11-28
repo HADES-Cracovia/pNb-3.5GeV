@@ -42,6 +42,8 @@ namespace PATData {
 
   extern TH1F *LM_chi_p_pim_mass, *LM_chi_pip_pim_mass, *LM_chi_final_mass;
   extern TH2F *LM_chi_lambda_vertex;
+
+  extern TH1F *signal_fit[10][10];
   
   extern TH1F *DML_p_pim1_mass, *DML_p_pim2_mass, *DML_pim_pip_mass,*DML_pim1_pip_mass,*DML_pim2_pip_mass, *DML_p_pim_pip_pim_mass;
   extern TH1F *DML_dist_p_pim, *DML_dist_pim_pip;

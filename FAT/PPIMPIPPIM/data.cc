@@ -47,6 +47,8 @@ namespace PATData
   TH1F *DL_target_z, *DL_target_z_diff, *DL_pip_z;
   TH1F *DL_pim_pip_z;
 
+  TH1F *signal_fit[10][10];
+
   TH2F *vertex_lambda, *vertex_target, *DL_vertex_lambda, *DL_vertex_target, *DLM_vertex_lambda, *DLM_vertex_target;
   //***************************************** 
 
