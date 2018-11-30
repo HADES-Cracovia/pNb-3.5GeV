@@ -202,14 +202,14 @@ void PPimPipPim::Loop()
 	  if(sum1<chi_max || sum2<chi_max)
 	    sum_dist_diff->Fill(TMath::Abs(sum1-sum2));
 
-	  if(chi_max>sum1 && sum1<sum2 && ver_p_pim1.Z()>ver_pip_pim2.Z())
+	  if(chi_max>sum1)
 	    {
 	      chi_p_pim_mass->Fill(m_inv_ppim1);
 	      chi_pip_pim_mass->Fill(m_inv_pippim2);
 	      chi_lambda_vertex->Fill(ver_p_pim1.Z(),getR(ver_p_pim1));
 	      chi_final_mass->Fill(m_inv_ppimpippim);
 
-	      if(m_inv_ppim1<1120 && m_inv_ppim1>1110)
+	      if(m_inv_ppim1<1120 && m_inv_ppim1>1110 && m_inv_pippim2<460)
 		{
 		  LM_chi_p_pim_mass->Fill(m_inv_ppim1);
 		  LM_chi_pip_pim_mass->Fill(m_inv_pippim2);
@@ -218,14 +218,14 @@ void PPimPipPim::Loop()
 		}
 	    }
 	
-	  if(sum2<chi_max && sum2<sum1 && ver_p_pim2.Z()>ver_pip_pim1.Z())
+	  if(sum2<chi_max)
 	    {
 	      chi_p_pim_mass->Fill(m_inv_ppim2);
 	      chi_pip_pim_mass->Fill(m_inv_pippim1);
 	      chi_lambda_vertex->Fill(ver_p_pim2.Z(),getR(ver_p_pim2));
 	      chi_final_mass->Fill(m_inv_ppimpippim);
 	      
-	      if(m_inv_ppim2<1120 && m_inv_ppim2>1110)
+	      if(m_inv_ppim2<1120 && m_inv_ppim2>1110 && m_inv_pippim1<460)
 		{
 		  LM_chi_p_pim_mass->Fill(m_inv_ppim2);
 		  LM_chi_pip_pim_mass->Fill(m_inv_pippim1);
@@ -237,12 +237,16 @@ void PPimPipPim::Loop()
 	  for(int i=0;i<10;i++)
 	    for(int j=0;j<10;j++)
 	      {
-		if(sum1<300+20*i && sum1<sum2 && ver_p_pim1.Z()>ver_pip_pim2.Z() && ver_p_pim1.Z()>(j*5)-20)
-		  if(m_inv_ppim1<1120 && m_inv_ppim1>1110)
+		double dist1=(ver_p_pim1-ver_pip_pim2).Mag();
+		double dist2=(ver_p_pim2-ver_pip_pim1).Mag();
+
+		  
+		if(sum1<300+20*i &&  dist1>j*2)
+		  if(m_inv_ppim1<1120 && m_inv_ppim1>1110 && m_inv_pippim2<460)
 		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
 		
-		if(sum2<300+20*i && sum2<sum1 && ver_p_pim2.Z()>ver_pip_pim1.Z() && ver_p_pim2.Z()>(j*5)-20)
-		  if(m_inv_ppim2<1120 && m_inv_ppim2>1110)
+		if(sum2<300+20*i && dist2>j*2)
+		  if(m_inv_ppim2<1120 && m_inv_ppim2>1110 && m_inv_pippim1<460)
 		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
 	      }
   	  //end of opt part

@@ -86,7 +86,7 @@ int main()
   ppi_miss = new TLorentzVector(0,0,0,0);
 
   /************************************** O U T P U T   F I L E ******************************************/
-  outFileData = new TFile("pNb_ppimpippim_full_chi_LM_minZvertex.root","recreate");
+  outFileData = new TFile("pNb_ppimpippim_full_chi2_LM_minZvertex.root","recreate");
   //ofstream myfile;
   //myfile.open ("raport.txt",ios::trunc);
   //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");
@@ -180,15 +180,15 @@ int main()
   LM_chi_final_mass=new TH1F("LM_chi_final_mass","#pi^{+} #pi^{-} P #Pi^{-} mass after chi and mass cut; M_{#pi^{-} #pi^{+}  p #pi^{-}}[MeV]",1000,1300,2300);
 
   int chi_step=20;
-  int dist_step=5;
+  int dist_step=2;
 
   for(int i=0;i<10;i++)
     for(int j=0;j<10;j++)
       {
 	char hname[20];
 	char htitle[40];
-	sprintf(htitle,"#pi^{+} #pi^{-} p #pi^{-} for chi < %d and Z_{#Lambda vetex} > %d",300+chi_step*i,dist_step*j-20);
-	sprintf(hname,"chi_%d_distance_%d",300+chi_step*i,dist_step*j-20);
+	sprintf(htitle,"p #pi^{-} for chi < %d and Z_{#Lambda vetex} > %d",300+chi_step*i,dist_step*j-20);
+	sprintf(hname,"chi_%d_distance_%d",300+chi_step*i,dist_step*j);
 	signal_fit[i][j]=new TH1F(hname,htitle,500,1300,2300);
       }
   
