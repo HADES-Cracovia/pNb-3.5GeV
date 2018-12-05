@@ -30,15 +30,16 @@ int main()
   //   double pion_momentum = 612.0;
 
   //   double pion_momentum = 656.0;
-  double pion_momentum = 690.0; 
+  double proton_kinetic=3500;
+  double proton_momentum = sqrt(proton_kinetic*proton_kinetic+2*proton_kinetic*938.272013); 
   //   double pion_momentum = 748.0;
   //   double pion_momentum = 800.0;
 
   // ORIGIN: https://hades-wiki.gsi.de/foswiki/bin/view/PionBeam/WebHome
 
-  double pion_energy = sqrt( pion_momentum*pion_momentum + 139.56995*139.56995 );
+  double proton_energy = sqrt( proton_momentum*proton_momentum +938.272013*938.272013 );
 
-  proj = new TLorentzVector(0,0, pion_momentum, pion_energy); // PION BEAM momentum as above
+  proj = new TLorentzVector(0,0, proton_momentum, proton_energy); // PION BEAM momentum as above
 
   targ = new TLorentzVector(0,0,0,938.27231); // PROTON
   /*******************************************************************************************************/
@@ -86,7 +87,7 @@ int main()
   ppi_miss = new TLorentzVector(0,0,0,0);
 
   /************************************** O U T P U T   F I L E ******************************************/
-  outFileData = new TFile("pNb_ppimpippim_full_chi2_LM_minZvertex.root","recreate");
+  outFileData = new TFile("pNb_ppimpippim_full_chi2_LM_pippimM_tlo.root","recreate");
   //ofstream myfile;
   //myfile.open ("raport.txt",ios::trunc);
   //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");
@@ -98,7 +99,7 @@ int main()
   /*******************************************************************************************************/
 
   /************************** control ntuple ***************************/
-  tlo = new HNtuple("ppim","ppim");
+  tlo = new HNtuple("ppimpippim","ppimpippim");
   tlo->setFile( outFileData );
   /*********************************************************************/
 
@@ -187,8 +188,8 @@ int main()
       {
 	char hname[20];
 	char htitle[40];
-	sprintf(htitle,"p #pi^{-} for chi < %d and Z_{#Lambda vetex} > %d",300+chi_step*i,dist_step*j-20);
-	sprintf(hname,"chi_%d_distance_%d",300+chi_step*i,dist_step*j);
+	sprintf(htitle,"p #pi^{-} for chi < %d and distance > %d",360+chi_step*i,dist_step*j);
+	sprintf(hname,"chi_%d_distance_%d",360+chi_step*i,dist_step*j);
 	signal_fit[i][j]=new TH1F(hname,htitle,500,1300,2300);
       }
   
@@ -220,7 +221,7 @@ int main()
 
   outFileData->cd();
 
-  //tlo->Write();
+  tlo->Write();
   
   p_p_beta->Write();
   pim_p_beta->Write();

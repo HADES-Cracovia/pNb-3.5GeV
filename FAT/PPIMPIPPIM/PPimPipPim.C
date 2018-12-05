@@ -54,6 +54,8 @@ void PPimPipPim::Loop()
       *gammapim1pip= *pim1 + *pip;
       *gammapim2pip= *pim2 + *pip;
       *gammappim1pippim2=*pim1 +*pim2 + *pip + *p;
+
+
       
       //*ppim1 = *p + *pim1;
       //*p_delta = *p;
@@ -70,7 +72,10 @@ void PPimPipPim::Loop()
       double oa_rich = R2D * openingangle(r1, r2);
 
       double p_mass = p_p*p_p * (  1. / (p_beta*p_beta)  - 1. ) ;
-      double pi_mass = pim1_p*pim1_p * (  1. / (pim1_beta*pim1_beta)  - 1. ) ;
+      double pi_mass = pim1_p*pim1_p * (  1. / (pim1_beta*pim1_beta_new)  - 1. ) ;
+      double pip_mass = pim1_p*pim1_p * (  1. / (pim1_beta*pim1_beta_new)  - 1. ) ;
+      double pim1_mass = pim1_p*pim1_p * (  1. / (pim1_beta*pim1_beta_new)  - 1. ) ;
+      double pim2_mass = pim2_p*pim2_p * (  1. / (pim2_beta*pim2_beta_new)  - 1. ) ;
 
       TVector3 ver_p_pim1=vertex(p_r,p_z,v2,pim1_r,pim1_z,v3);
       TVector3 ver_p_pim2=vertex(p_r,p_z,v2,pim2_r,pim2_z,v5);
@@ -165,9 +170,86 @@ void PPimPipPim::Loop()
 
       double chi_max=400;
 
+      double sum1=dist_p_pim1*dist_p_pim1+dist_pip_pim2*dist_pip_pim2+dist_lambda1_pip*dist_lambda1_pip+dist_lambda1_pim2*dist_lambda1_pim2;
+      double sum2=dist_p_pim2*dist_p_pim2+dist_pip_pim1*dist_pip_pim1+dist_lambda2_pip*dist_lambda2_pip+dist_lambda2_pim1*dist_lambda2_pim1;
+
+      double sum1_1=dist_p_pim1+dist_pip_pim2+dist_lambda1_pip+dist_lambda1_pim2;
+      double sum2_1=dist_p_pim2+dist_pip_pim1+dist_lambda2_pip+dist_lambda2_pim1;
 
       if(isBest==1)
 	{
+	  (*tlo)["p_p"]=p_p;
+	  (*tlo)["p_theta"] = p_theta;
+	  (*tlo)["p_theta_rich"] = p_theta_rich;
+	  (*tlo)["p_phi"] = p_phi;
+	  (*tlo)["p_phi_rich"] = p_phi_rich;
+	  (*tlo)["p_beta"] = p_beta_new;
+	  (*tlo)["p_m"] = p_mass;
+	  
+	  (*tlo)["pip_p"]=pip_p;
+	  (*tlo)["pip_theta"] = pip_theta;
+	  (*tlo)["pip_theta_rich"] = pip_theta_rich;
+	  (*tlo)["pip_phi"] = pip_phi;
+	  (*tlo)["pip_phi_rich"] = pip_phi_rich;
+	  (*tlo)["pip_beta"] = pip_beta_new;
+	  (*tlo)["pip_m"] = pip_mass;
+
+	  (*tlo)["pim1_p"]=pim1_p;
+	  (*tlo)["pim1_theta"] = pim1_theta;
+	  (*tlo)["pim1_theta_rich"] = pim1_theta_rich;
+	  (*tlo)["pim1_phi"] = pim1_phi;
+	  (*tlo)["pim1_phi_rich"] = pim1_phi_rich;
+	  (*tlo)["pim1_beta"] = pim1_beta_new;
+	  (*tlo)["pim1_m"] = pim1_mass;
+
+	  (*tlo)["pim2_p"]=pim2_p;
+	  (*tlo)["pim2_theta"] = pim2_theta;
+	  (*tlo)["pim2_theta_rich"] = pim2_theta_rich;
+	  (*tlo)["pim2_phi"] = pim2_phi;
+	  (*tlo)["pim2_phi_rich"] = pim2_phi_rich;
+	  (*tlo)["pim2_beta"] = pim2_beta_new;
+	  (*tlo)["pim2_m"] = pim2_mass;
+
+	  (*tlo)["dist_pip_pim1"]=dist_pip_pim1;
+	  (*tlo)["dist_pip_pim2"] = dist_pip_pim2;
+	  (*tlo)["dist_p_pim1"] = dist_p_pim1;
+	  (*tlo)["dist_p_pim2"] = dist_p_pim2;
+	  (*tlo)["dist_lambda1_pim2"] = dist_lambda1_pim2;
+	  (*tlo)["dist_lambda1_pip"] = dist_lambda1_pip;
+	  (*tlo)["dist_lambda2_pim1"] = dist_lambda2_pim1;
+	  (*tlo)["dist_lambda2_pip"] = dist_lambda2_pip;
+	  
+	  (*tlo)["m_inv_p_pim1"] = m_inv_ppim1;
+	  (*tlo)["m_inv_p_pim2"] = m_inv_ppim2;
+	  (*tlo)["m_inv_pip_pim1"] = m_inv_pippim1;
+	  (*tlo)["m_inv_pip_pim2"] = m_inv_pippim2;
+	  (*tlo)["m_inv_p_pim_pip_pim"] = m_inv_ppimpippim;
+
+	  (*tlo)["ver_p_pim1_x"]=ver_p_pim1.X();
+	  (*tlo)["ver_p_pim1_y"]=ver_p_pim1.Y();
+	  (*tlo)["ver_p_pim1_z"]=ver_p_pim1.Z();
+
+	  (*tlo)["ver_p_pim2_x"]=ver_p_pim2.X();
+	  (*tlo)["ver_p_pim2_y"]=ver_p_pim2.Y();
+	  (*tlo)["ver_p_pim2_z"]=ver_p_pim2.Z();
+
+	  (*tlo)["ver_pip_pim1_x"]=ver_pip_pim1.X();
+	  (*tlo)["ver_pip_pim1_y"]=ver_pip_pim1.Y();
+	  (*tlo)["ver_pip_pim1_z"]=ver_pip_pim1.Z();
+
+	  (*tlo)["ver_pip_pim2_x"]=ver_pip_pim2.X();
+	  (*tlo)["ver_pip_pim2_y"]=ver_pip_pim2.Y();
+	  (*tlo)["ver_pip_pim2_z"]=ver_pip_pim2.Z();
+
+	  (*tlo)["sum_dist_1"]=sum1_1;
+	  (*tlo)["sum_dist_2"]=sum2_1;
+	  
+	  (*tlo)["sum_dist2_1"]=sum1;
+	  (*tlo)["sum_dist2_2"]=sum2;
+	  
+	  
+	  tlo->fill();
+	  /*
 	  p_p_beta->Fill(p_p,p_beta_new);
 	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
 	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
@@ -191,11 +273,6 @@ void PPimPipPim::Loop()
 	  dist_p_pim->Fill(dist_p_pim1);
 	  dist_pim_pip->Fill(dist_pip_pim2);
 	  dist_pim_pip->Fill(dist_pip_pim1);
-
-	
-
-	  double sum1=dist_p_pim1*dist_p_pim1+dist_pip_pim2*dist_pip_pim2+dist_lambda1_pip*dist_lambda1_pip+dist_lambda1_pim2*dist_lambda1_pim2;
-	  double sum2=dist_p_pim2*dist_p_pim2+dist_pip_pim1*dist_pip_pim1+dist_lambda2_pip*dist_lambda2_pip+dist_lambda2_pim1*dist_lambda2_pim1;
 
 	  sum_dist_1->Fill(sum1);
 	  sum_dist_2->Fill(sum2);
@@ -234,6 +311,7 @@ void PPimPipPim::Loop()
 		}
 	    }
 	  //optimalization part
+	  
 	  for(int i=0;i<10;i++)
 	    for(int j=0;j<10;j++)
 	      {
@@ -241,14 +319,15 @@ void PPimPipPim::Loop()
 		double dist2=(ver_p_pim2-ver_pip_pim1).Mag();
 
 		  
-		if(sum1<300+20*i &&  dist1>j*2)
+		if(sum1<360+20*i &&  dist1>j*2)
 		  if(m_inv_ppim1<1120 && m_inv_ppim1>1110 && m_inv_pippim2<460)
 		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
 		
-		if(sum2<300+20*i && dist2>j*2)
+		if(sum2<360+20*i && dist2>j*2)
 		  if(m_inv_ppim2<1120 && m_inv_ppim2>1110 && m_inv_pippim1<460)
 		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
 	      }
+	  */
   	  //end of opt part
 	
 	}
