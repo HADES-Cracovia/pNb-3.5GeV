@@ -92,7 +92,8 @@ namespace PATData
   TLorentzVector *ppi_miss;
   TLorentzVector *p_delta;
   TLorentzVector *pi_delta;
-
+  TLorentzVector *miss;
+  
   Int_t insideTarget;
 
   Int_t insideEmS0;

@@ -44,6 +44,7 @@ int main()
   targ = new TLorentzVector(0,0,0,938.27231); // PROTON
   /*******************************************************************************************************/
   beam = new TLorentzVector(0,0,0,0);
+  miss = new TLorentzVector(0,0,0,0);
   *beam = *proj + *targ;
 
 

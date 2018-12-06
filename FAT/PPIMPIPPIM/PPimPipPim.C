@@ -61,7 +61,9 @@ void PPimPipPim::Loop()
       //*p_delta = *p;
       //*pim1_delta = *pim1;
       //*ppim1_miss = *beam - *p - *pim1;
+      *miss=*beam-*gammappim1pippim2;
 
+      
       //double m2_inv_ppim = gammappim->M2();
       double m_inv_ppim1 = gammappim1->M();
       double m_inv_ppim2 = gammappim2->M();
@@ -246,10 +248,12 @@ void PPimPipPim::Loop()
 	  
 	  (*tlo)["sum_dist2_1"]=sum1;
 	  (*tlo)["sum_dist2_2"]=sum2;
+
+	  (*tlo)["miss_mass_kp"]=miss->M();
 	  
 	  
 	  tlo->fill();
-	  /*
+	  
 	  p_p_beta->Fill(p_p,p_beta_new);
 	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
 	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
@@ -327,7 +331,7 @@ void PPimPipPim::Loop()
 		  if(m_inv_ppim2<1120 && m_inv_ppim2>1110 && m_inv_pippim1<460)
 		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
 	      }
-	  */
+	  
   	  //end of opt part
 	
 	}
