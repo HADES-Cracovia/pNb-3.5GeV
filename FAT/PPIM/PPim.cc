@@ -56,7 +56,8 @@ void PPim::Loop()
 
       double d_p_pim=trackDistance(p_r,p_z,v2,pim_r,pim_z,v3);
       TVector3 ver=vertex(p_r,p_z,v2,pim_r,pim_z,v3);
-
+      TVector3 ver_dst(eVert_x, eVert_y, eVert_z);
+      double dist = (ver-ver_dst).Mag();
 
       //	  cout << "opening angle = " << oa << endl;
 
@@ -78,8 +79,8 @@ void PPim::Loop()
 
       double close_cut = 9.;
       double nonfit_close_cut = -4.;
-      double min_dist=30;
-      double min_z=4;
+      double min_dist=10;
+      double min_z=35;
       //double close_cut = 0.;
       //double nonfit_close_cut = 0.;
       //double close_cut = 4.;
@@ -139,7 +140,7 @@ void PPim::Loop()
 	  vertex_z_r->Fill(ver.Z(),TMath::Sqrt(ver.X()*ver.X()+ver.Y()*ver.Y()));
 	}
       
-      if(isBest==1 && d_p_pim<min_dist && ver.Z()>min_z)
+      if(isBest==1 && d_p_pim<min_dist && dist>min_z)
 	{
 	  ZD_p_pim_mass->Fill(m_inv_ppi);
 	  //vertex_z_r->Fill(ver.Z(),TMath::Sqrt(ver.X()*ver.X()+ver.Y()*ver.Y()));
@@ -153,12 +154,12 @@ void PPim::Loop()
 	    }
 	  if(isBest>=1 && d_p_pim<50)
 	    {
-	      if(ver.Z()>(ll*2)-10)
+	      if(dist>(ll*2))
 		Z_p_pim_mass_array[ll-1]->Fill(m_inv_ppi);
 	    }
 	  for(int kk=1;kk<=25;kk++)
 	    {
-	      if(isBest>=1 && d_p_pim<ll*2 && (ver.Z()>(kk*2)-10))
+	      if(isBest>=1 && d_p_pim<ll*2 && (dist>(kk*2)))
 		DZ_p_pim_mass_array[ll-1][kk-1]->Fill(m_inv_ppi);
 	    }  
 	}

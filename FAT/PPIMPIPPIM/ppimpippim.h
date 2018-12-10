@@ -371,15 +371,18 @@ void ppimpippim::FitK0(TH1F*hist, TF1 *sig, TF1* bg, TF1* sig_bg)
 void ppimpippim::FitL1115(TH1F*hist, TF1 *sig, TF1* bg, TF1* sig_bg)
 {
   cout<<endl<<"Fitting L1115"<<endl;
-  double pedestal=0.5*((hist->GetBinContent(hist->FindBin(1110)))+(hist->GetBinContent(hist->FindBin(1120))));
+  double y1110=(hist->GetBinContent(hist->FindBin(1110)));
+  double y1120=(hist->GetBinContent(hist->FindBin(1120)));
+  double pedestal=0.5*(y1110+y1120);
+  cout<<"pedestal: "<<pedestal<<endl;
   //hist->Draw();
   sig->SetLineColor(kGreen);
   bg->SetLineColor(kBlue);
   sig_bg->SetLineColor(kRed);
 
-  sig->SetRange(1110,1120);
-  bg->SetRange(1090,1150);
-  sig_bg->SetRange(1090,1400);
+  sig->SetRange(118,1122);
+  bg->SetRange(1080,1110);
+  sig_bg->SetRange(1080,1120);
 
   sig->SetNpx(200);
   sig_bg->SetNpx(200);
@@ -391,10 +394,11 @@ void ppimpippim::FitL1115(TH1F*hist, TF1 *sig, TF1* bg, TF1* sig_bg)
   sig->SetParameter(0,hist->GetBinContent(hist->FindBin(1115))-pedestal);
   sig->SetParameter(2,2);
   sig->SetParameter(1,1115);
-  //sig->SetParameter(3,bg->GetParameter(0));
+  sig->SetParameter(3,y1110-1110*(y1120-y1110)/10);
+  sig->SetParameter(4,(y1120-y1110)/10);
   //sig->SetParameter(4,bg->GetParameter(1));
 
-  //hist->Fit(sig,"R");
+  hist->Fit(sig,"R");
   
   sig_bg->SetParameter(0,sig->GetParameter(0));
   sig_bg->SetParameter(1,sig->GetParameter(1));
@@ -407,6 +411,8 @@ void ppimpippim::FitL1115(TH1F*hist, TF1 *sig, TF1* bg, TF1* sig_bg)
   sig_bg->SetParameter(8,bg->GetParameter(5));
 
   hist->Fit(sig_bg,"R");
+  
+  sig_bg->SetRange(1080,1160);
   hist->Fit(sig_bg,"R");
 
   sig->SetParameter(0,sig_bg->GetParameter(0));
