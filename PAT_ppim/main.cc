@@ -44,7 +44,7 @@ Int_t simflag = 0;
 Int_t wallflag = 1;
 Int_t startflag = 0;
 
-#define LEPTONS 1
+//#define LEPTONS 1
 #define HADRONS 1
 
 /*********************************************************************************/
@@ -83,7 +83,7 @@ int main(Int_t argc, Char_t **argv)
 
   //*******************************************
   //*******************************************
-  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/";
+  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_3/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PION/FILES/288_time/";
   //*******************************************
@@ -161,8 +161,8 @@ int main(Int_t argc, Char_t **argv)
   //***------- hadron stuff ---------------------------
 #ifdef HADRONS
   myHyps.add("HpHm", eHadronPos,eHadronNeg);
-  myHyps.add("HpHmHpHm", eHadronPos,eHadronNeg,eHadronPos,eHadronNeg);
-  myHyps.add("HpHmHp", eHadronPos,eHadronNeg,eHadronPos);  
+  //myHyps.add("HpHmHpHm", eHadronPos,eHadronNeg,eHadronPos,eHadronNeg);
+  //myHyps.add("HpHmHp", eHadronPos,eHadronNeg,eHadronPos);  
 #endif
   //*************************************************** 
 #ifdef LEPTONS 
@@ -189,8 +189,8 @@ int main(Int_t argc, Char_t **argv)
   //***------- hadron stuff ---------------------------
 #ifdef HADRONS
   myPids2.add("HpHm", "PPim",eProton,ePiMinus);
-  myPids2.add("HpHmHpHm", "PPimPipPim",eProton,ePiMinus,ePiPlus,ePiMinus);
-  myPids2.add("HpHmHp", "PPimPip",eProton,ePiMinus,ePiPlus);
+  //myPids2.add("HpHmHpHm", "PPimPipPim",eProton,ePiMinus,ePiPlus,ePiMinus);
+  //myPids2.add("HpHmHp", "PPimPip",eProton,ePiMinus,ePiPlus);
 #endif
   //*************************************************** 
 #ifdef LEPTONS 
@@ -216,8 +216,8 @@ int main(Int_t argc, Char_t **argv)
   //***------- hadron stuff ---------------------------
 #ifdef HADRONS
   myPids_A2.add("HpHm", "PPim_ID",eProton,ePiMinus);
-  myPids_A2.add("HpHmHpHm", "PPimPipPim_ID",eProton,ePiMinus,ePiPlus,ePiMinus);
-  myPids_A2.add("HpHmHp", "PPimPip_ID",eProton,ePiMinus,ePiPlus);
+  //myPids_A2.add("HpHmHpHm", "PPimPipPim_ID",eProton,ePiMinus,ePiPlus,ePiMinus);
+  //myPids_A2.add("HpHmHp", "PPimPip_ID",eProton,ePiMinus,ePiPlus);
 
   //myPids_A2.add("HpLpLm", "PEpEm_ID",eProton,ePositron,eElectron);
 #endif

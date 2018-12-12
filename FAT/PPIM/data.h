@@ -29,7 +29,7 @@ namespace PATData {
   
   extern TH1F *p_pim1_mass, *p_pim2_mass, *pim_pip_mass,*pim1_pip_mass,*pim2_pip_mass, *p_pim_pip_pim_mass;
   extern TH2F *dist_p_pim_pim_pip, *vertex_z_r;
-  extern TH1F *dist_p_pim, *dist_pim_pip;
+  extern TH1F *dist_p_pim, *dist_pim_pip, *dist_between_vertex;
 
   //*****************************************  
 

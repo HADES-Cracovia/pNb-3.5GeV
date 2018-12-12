@@ -58,7 +58,7 @@ void PPim::Loop()
       TVector3 ver=vertex(p_r,p_z,v2,pim_r,pim_z,v3);
       TVector3 ver_dst(eVert_x, eVert_y, eVert_z);
       double dist = (ver-ver_dst).Mag();
-
+      //cout<<"dist: "<< dist<<endl;
       //	  cout << "opening angle = " << oa << endl;
 
       ACC = 1.;
@@ -133,6 +133,7 @@ void PPim::Loop()
 	  pim_p_beta->Fill(pim_p,pim_beta_new);
 	  p_pim_mass->Fill(m_inv_ppi);
 	  dist_p_pim->Fill(d_p_pim);
+	  dist_between_vertex->Fill(dist);
 	}
       if(isBest==1 && d_p_pim<min_dist)
 	{
@@ -154,12 +155,12 @@ void PPim::Loop()
 	    }
 	  if(isBest>=1 && d_p_pim<50)
 	    {
-	      if(dist>(ll*2))
+	      if(dist>(ll*4))
 		Z_p_pim_mass_array[ll-1]->Fill(m_inv_ppi);
 	    }
 	  for(int kk=1;kk<=25;kk++)
 	    {
-	      if(isBest>=1 && d_p_pim<ll*2 && (dist>(kk*2)))
+	      if(isBest>=1 && d_p_pim<ll*2 && (dist>(kk*4)))
 		DZ_p_pim_mass_array[ll-1][kk-1]->Fill(m_inv_ppi);
 	    }  
 	}
@@ -184,6 +185,7 @@ PPim::PPim(TTree *tree)
     //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT/FILES/sep08_all/list2/sum2.root/PPim_ID");
     //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/hadron.root/PPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron00.root/PPim_ID");
+    
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron01.root/PPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron02.root/PPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron03.root/PPim_ID");
@@ -220,7 +222,7 @@ PPim::PPim(TTree *tree)
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron34.root/PPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron35.root/PPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron36.root/PPim_ID");
-  
+    
     tree = chain; 
   }
 

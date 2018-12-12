@@ -87,7 +87,8 @@ int main()
 
   /************************************** O U T P U T   F I L E ******************************************/
   //outFileData = new TFile("pNb_ppim_280.root","recreate");
-  outFileData = new TFile("pNb_ppim_all_opt_dist_between_vertex.root","recreate");
+  //outFileData = new TFile("pNb_ppim_all_opt_dist_between_vertex.root","recreate");
+  outFileData = new TFile("temp.root","recreate");
   //ofstream myfile;
   //myfile.open ("raport.txt",ios::trunc);
   //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");
@@ -134,15 +135,15 @@ int main()
 
       for(int kk=1; kk<=25;kk++)
 	{
-	  sprintf(dzname,"DZ_p_pim_mass_%d_%d",(jj)*2,kk*2);
-	  sprintf(dztitle,"mass_after_distance_cut_%d_z_cut_%d",jj,(kk)*2);
+	  sprintf(dzname,"DZ_p_pim_mass_%d_%d",(jj)*2,kk*4);
+	  sprintf(dztitle,"mass_after_distance_cut_%d_vert_dist_%d",jj*2,(kk)*4);
 	  DZ_p_pim_mass_array[jj-1][kk-1]=new TH1F(dzname,dztitle,2000,500,2500);
 	} 
     }
   
   dist_p_pim=new TH1F("dist_p_pim","dist_p_pim",1000,0,300);
   vertex_z_r=new TH2F("vertex_z_r","Z vs. r coordinate for vertex, after distance cut",400,-100,100,200,0,100);  
-  
+  dist_between_vertex=new TH1F("dist_between_vertex","Distance between primary and #Lambda vertex;dist[mm]",1000,0,500);
   /**************************** M A I N   P A R T ****************************************/
 
   PPim t;
@@ -182,7 +183,8 @@ int main()
   ZD_p_pim_mass->Write();
   
   vertex_z_r->Write();
-  
+  dist_between_vertex->Write();  
+
   TCanvas *c2=new TCanvas("c2","Cut on distance");
   c2->Divide(5,5);
 

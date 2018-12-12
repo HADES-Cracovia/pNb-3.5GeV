@@ -36,7 +36,7 @@ submissiondir=${submmissionbase}/PAT_ppim
  nFilesPerJob=1                               # number of files to be analyzed by 1 job (default==1)
     jobscript=${submissiondir}/jobScript_SL.sh     # exec script (full path, call without dot, set it executable!)
     #outputdir=/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/    # outputdir for files AND logFiles
-    outputdir=/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/     # outputdir for files AND logFiles
+    outputdir=/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_3/     # outputdir for files AND logFiles
 pathoutputlog=${outputdir}/out                    # protocol from batch farm for each file
      filename=testrun                           # filename of log file if nFilesPerJob > 1 (partnumber will be appended)
 par1=/lustre/nyx/hades/user/kempter/svn/hydra_BT/defall.sh  # gen8a optional par1 : environment script
