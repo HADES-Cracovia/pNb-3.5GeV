@@ -147,7 +147,7 @@ void HParticlePool::fill(HIterator* dataIt, HIterator *geantIt, HIterator *start
   // header information
   HEventHeader *evHeader = gHades->getCurrentEvent()->getHeader();
 
-  cout<<"exent sequent number: "<<evHeader->getEventSeqNumber()<<endl;
+  //cout<<"exent sequent number: "<<evHeader->getEventSeqNumber()<<endl;
   
   eventData.set("trigdownscale", evHeader->getDownscaling() );
   eventData.set("trigdownscaleflag", evHeader->getDownscalingFlag() );
