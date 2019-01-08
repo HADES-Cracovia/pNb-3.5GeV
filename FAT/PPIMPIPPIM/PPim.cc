@@ -184,9 +184,9 @@ PPim::PPim(TTree *tree)
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron31.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron32.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron33.root/PPimPipPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");  
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");  
 
     tree = chain; 
   }

@@ -100,7 +100,7 @@ int main()
   /*******************************************************************************************************/
 
   /************************** control ntuple ***************************/
-  tlo = new HNtuple("ppimpippim","ppimpippim");
+  tlo = new HNtuple("ppimpippim_results","ppimpippim_results");
   tlo->setFile( outFileData );
   /*********************************************************************/
 
@@ -219,15 +219,15 @@ int main()
 
 
   /****************************************************************************************/
-
+  //cout<<"point-9"<<endl;
   outFileData->cd();
-
-  tlo->Write();
-  
+  //cout<<"point-8"<<endl;
+  //tlo->Write();
+  //cout<<"point-7"<<endl;
   p_p_beta->Write();
   pim_p_beta->Write();
   pip_p_beta->Write();
-
+  //cout<<"point-6"<<endl;
   p_pim_mass->Write();
   p_pim1_mass->Write();
   p_pim2_mass->Write();
@@ -235,11 +235,11 @@ int main()
   pim2_pip_mass->Write();
   pim1_pip_mass->Write();
   p_pim_pip_pim_mass->Write();
-
+  //cout<<"point-6"<<endl;
   dist_p_pim_pim_pip->Write();
   dist_pim_pip->Write();
   dist_p_pim->Write();
-  
+  //cout<<"point-5"<<endl;
   DL_p_pim_mass->Write();
   DL_p_pim1_mass->Write();
   DL_p_pim2_mass->Write();
@@ -252,7 +252,7 @@ int main()
   DL_dist_p_pim_pim_pip->Write();
   DL_dist_pim_pip->Write();
   DL_dist_p_pim->Write();
-
+  //cout<<"point-4"<<endl;
   DL_target_z_diff->Write();
   DL_target_z->Write();
   DL_pim_pip_z->Write();
@@ -267,28 +267,28 @@ int main()
   DML_pim2_pip_mass->Write();
   DML_pim1_pip_mass->Write();
   DML_p_pim_pip_pim_mass->Write();
-
+  //cout<<"point-3"<<endl;
   DML_dist_p_pim_pim_pip->Write();
   DML_dist_pim_pip->Write();
   DML_dist_p_pim->Write();
   //p_mass->Write();
   //pim_mass->Write();
-
+  //cout<<"point-2"<<endl;
   sum_dist_diff->Write();
   sum_dist_2->Write();
   sum_dist_1->Write();
-
+  //cout<<"point-1"<<endl;
   chi_pip_pim_mass->Write();
   chi_p_pim_mass->Write();
   chi_lambda_vertex->Write();
   chi_final_mass->Write();
-  
+  //cout<<"point0"<<endl;
   LM_chi_pip_pim_mass->Write();
   LM_chi_p_pim_mass->Write();
   LM_chi_lambda_vertex->Write();
   LM_chi_final_mass->Write();
   //myfile.close();
-
+  //cout<<"point1"<<endl;
   for(int i=0;i<10;i++)
     for(int j=0;j<10;j++)
       {

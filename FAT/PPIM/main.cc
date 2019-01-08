@@ -88,7 +88,7 @@ int main()
   /************************************** O U T P U T   F I L E ******************************************/
   //outFileData = new TFile("pNb_ppim_280.root","recreate");
   //outFileData = new TFile("pNb_ppim_all_opt_dist_between_vertex.root","recreate");
-  outFileData = new TFile("temp.root","recreate");
+  outFileData = new TFile("pNb_ppim_opt_dist_between_vertex_trigger_downscale_full_stat.root","recreate");
   //ofstream myfile;
   //myfile.open ("raport.txt",ios::trunc);
   //outFileData = new TFile("ntuple_epem_656_C_gen1.root","recreate");

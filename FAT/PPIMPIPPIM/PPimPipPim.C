@@ -178,7 +178,7 @@ void PPimPipPim::Loop()
       double sum1_1=dist_p_pim1+dist_pip_pim2+dist_lambda1_pip+dist_lambda1_pim2;
       double sum2_1=dist_p_pim2+dist_pip_pim1+dist_lambda2_pip+dist_lambda2_pim1;
 
-      if(isBest==1)
+      if(isBest==1 && trigdownscaleflag==1)
 	{
 	  (*tlo)["p_p"]=p_p;
 	  (*tlo)["p_theta"] = p_theta;
@@ -434,44 +434,44 @@ PPimPipPim::PPimPipPim(TTree *tree)
   if (tree == 0) {
 	  
     TChain * chain = new TChain("PPimPipPim_ID","");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron00.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron00.root/PPimPipPim_ID");
     ///*
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron01.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron02.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron03.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron04.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron05.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron06.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron07.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron08.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron09.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron10.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron11.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron12.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron13.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron14.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron15.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron16.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron17.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron18.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron19.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron20.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron21.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron22.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron23.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron24.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron25.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron26.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron27.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron28.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron29.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron30.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron31.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron32.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron33.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");  
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron01.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron02.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron03.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron04.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron05.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron06.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron07.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron08.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron09.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron10.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron11.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron12.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron13.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron14.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron15.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron16.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron17.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron18.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron19.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron20.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron21.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron22.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron23.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron24.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron25.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron26.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron27.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron28.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron29.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron30.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron31.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron32.root/PPimPipPim_ID");
+      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron33.root/PPimPipPim_ID");
+      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
+      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
+      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");  
     //*/    
     tree = chain; 
   }
@@ -521,6 +521,21 @@ void PPimPipPim::Init(TTree *tree)
   fChain->SetMakeClass(1);
 
   fChain->SetBranchAddress("isBest", &isBest, &b_isBest);
+  fChain->SetBranchAddress("eVertClust_chi2", &eVertClust_chi2, &b_eVertClust_chi2);
+  fChain->SetBranchAddress("eVertClust_x", &eVertClust_x, &b_eVertClust_x);
+  fChain->SetBranchAddress("eVertClust_y", &eVertClust_y, &b_eVertClust_y);
+  fChain->SetBranchAddress("eVertClust_z", &eVertClust_z, &b_eVertClust_z);
+  fChain->SetBranchAddress("eVertReco_chi2", &eVertReco_chi2, &b_eVertReco_chi2);
+  fChain->SetBranchAddress("eVertReco_x", &eVertReco_x, &b_eVertReco_x);
+  fChain->SetBranchAddress("eVertReco_y", &eVertReco_y, &b_eVertReco_y);
+  fChain->SetBranchAddress("eVertReco_z", &eVertReco_z, &b_eVertReco_z);
+  fChain->SetBranchAddress("eVert_chi2", &eVert_chi2, &b_eVert_chi2);
+  fChain->SetBranchAddress("eVert_x", &eVert_x, &b_eVert_x);
+  fChain->SetBranchAddress("eVert_y", &eVert_y, &b_eVert_y);
+  fChain->SetBranchAddress("eVert_z", &eVert_z, &b_eVert_z);
+  fChain->SetBranchAddress("event", &event, &b_event);
+  fChain->SetBranchAddress("hneg_mult", &hneg_mult, &b_hneg_mult);
+  fChain->SetBranchAddress("hpos_mult", &hpos_mult, &b_hpos_mult);
   fChain->SetBranchAddress("p_beta", &p_beta, &b_p_beta);
   fChain->SetBranchAddress("p_beta_new", &p_beta_new, &b_p_beta_new);
   fChain->SetBranchAddress("p_btChargeRing", &p_btChargeRing, &b_p_btChargeRing);
@@ -789,6 +804,12 @@ void PPimPipPim::Init(TTree *tree)
   fChain->SetBranchAddress("pip_track_length", &pip_track_length, &b_pip_track_length);
   fChain->SetBranchAddress("pip_tracklength", &pip_tracklength, &b_pip_tracklength);
   fChain->SetBranchAddress("pip_z", &pip_z, &b_pip_z);
+  fChain->SetBranchAddress("runnumber", &runnumber, &b_runnumber);
+  fChain->SetBranchAddress("totalmult", &totalmult, &b_totalmult);
+  fChain->SetBranchAddress("trigbit", &trigbit, &b_trigbit);
+  fChain->SetBranchAddress("trigdec", &trigdec, &b_trigdec);
+  fChain->SetBranchAddress("trigdownscale", &trigdownscale, &b_trigdownscale);
+  fChain->SetBranchAddress("trigdownscaleflag", &trigdownscaleflag, &b_trigdownscaleflag);
   Notify();
 }
 
