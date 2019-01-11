@@ -25,7 +25,7 @@ public:
   HGraphCut(const char* cutname, const char* filename=0, const char* opt="read") : HCut(cutname, filename, opt),
 										   p_cut(0), d_cut(0), ep_cut(0), em_cut(0), pip_cut(0), pim_cut(0) 
   {
-    p_cut = getCut("Mdc_dEdx_P_cut_mod_ChiiV1.root");
+    p_cut = getCut("Mdc_dEdx_P_cut_mod_ChiiV1");
     if (p_cut)
       std::cout << "p_cut has been read" << std::endl;
     d_cut = getCut("d_cut");
