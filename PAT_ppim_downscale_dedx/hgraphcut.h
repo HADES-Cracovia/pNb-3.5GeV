@@ -25,7 +25,7 @@ public:
   HGraphCut(const char* cutname, const char* filename=0, const char* opt="read") : HCut(cutname, filename, opt),
 										   p_cut(0), d_cut(0), ep_cut(0), em_cut(0), pip_cut(0), pim_cut(0) 
   {
-    p_cut = getCut("Mdc_dEdx_P_cut_mod_ChiiV1");
+    p_cut = getCut("dedx_cut_p");
     if (p_cut)
       std::cout << "p_cut has been read" << std::endl;
     d_cut = getCut("d_cut");
@@ -37,14 +37,14 @@ public:
     em_cut = getCut("em_cut");
     if (em_cut)
       std::cout << "em_cut has been read" << std::endl;
-    pip_cut=getCut("Mdc_dEdx_PiP_cut_PID_mod_ChiiV2");
+    pip_cut=getCut("dedx_cut_pi");
     //pip_cut = getCut("pip_cut");
     // **************** TEMPORARY 
     //pip_cut = getCut("p_cut"); // reverse cut
     // ****************************
     if (pip_cut)
       std::cout << "pip_cut has been read" << std::endl;
-    pim_cut = getCut("Mdc_dEdx_PiP_cut_PID_mod_ChiiV2");
+    pim_cut = getCut("dedx_cut_pi");
     if (pim_cut)
       std::cout << "pim_cut has been read" << std::endl;
     showerF = new TF1("showerF","-19.551 + 0.0882075*x -2.00111e-5*x*x + 5.39299e-9*x*x*x",0,3000);

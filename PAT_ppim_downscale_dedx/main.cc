@@ -84,7 +84,7 @@ int main(Int_t argc, Char_t **argv)
 
   //*******************************************
   //*******************************************
-  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/ppimpippim_dedx/";
+  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PION/FILES/288_time/";
   //*******************************************
@@ -267,7 +267,7 @@ int main(Int_t argc, Char_t **argv)
     //HGraphCut tCut3("all","/u/przygoda/PAT/PP125_PID_NEW_CUTS.root");
     // poprzedni staranny EXP HGraphCut tCut3("all","/u/przygoda/PAT/PP125_p_pip_CUT.root");
     //HGraphCut tCut3("all","/hera/hades/user/przygoda/PAT35/pp35_cuts.root"); // mass^2 versus mom
-    HGraphCut tCut3("all","/lustre/nyx/hades/user/knowakow/PP/PAT_1/cut.root");
+    HGraphCut tCut3("all","/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/de_dx_cut.root");
     //HGraphCut tCut3("all","/u/przygoda/PAT/PP125_p_p_CUT.root");
     //HGraphCut tCut3("all","/u/przygoda/PAT/PP_END_CUTS.root");
     // dla testow

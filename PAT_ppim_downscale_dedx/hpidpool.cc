@@ -236,10 +236,10 @@ void HPidPool::fill()
                {
 			      eventData.set( "isBest", 1 );
                }
-               //else if (ptrH->isActive() == true) // not best chi2 but pid ok
-               //{
-			      //eventData.set( "isBest", 0 );
-               //}
+               else if (ptrH->isActive() == true) // not best chi2 but pid ok
+               {
+			      eventData.set( "isBest", 0 );
+               }
 	       else
 	       {
 	                      // all combinations not fulfilling pid cuts
