@@ -127,7 +127,7 @@ void PPim::Loop()
 	NoLeptonPI = 1;
 	NoHadronPI = 1;
       */
-      if(isBest==1 && trigdownscaleflag==1)
+      if(isBest>=0 && trigdownscaleflag==1)
 	{
 	  p_p_beta->Fill(p_p,p_beta_new);
 	  pim_p_beta->Fill(pim_p,pim_beta_new);
@@ -135,13 +135,13 @@ void PPim::Loop()
 	  dist_p_pim->Fill(d_p_pim);
 	  dist_between_vertex->Fill(dist);
 	}
-      if(isBest==1 && d_p_pim<min_dist)
+      if(isBest>=0 && d_p_pim<min_dist)
 	{
 	  D_p_pim_mass->Fill(m_inv_ppi);
 	  vertex_z_r->Fill(ver.Z(),TMath::Sqrt(ver.X()*ver.X()+ver.Y()*ver.Y()));
 	}
       
-      if(isBest==1 && d_p_pim<min_dist && dist>min_z)
+      if(isBest>=0 && d_p_pim<min_dist && dist>min_z)
 	{
 	  ZD_p_pim_mass->Fill(m_inv_ppi);
 	  //vertex_z_r->Fill(ver.Z(),TMath::Sqrt(ver.X()*ver.X()+ver.Y()*ver.Y()));
@@ -151,18 +151,18 @@ void PPim::Loop()
       
       for(int ll=1;ll<=25;ll++)
 	{
-	  if(isBest>=1 && d_p_pim<ll*2)
+	  if(isBest>=0 && d_p_pim<ll*2)
 	    {
 	      D_p_pim_mass_array[ll-1]->Fill(m_inv_ppi);
 	    }
-	  if(isBest>=1 && d_p_pim<50)
+	  if(isBest>=0 && d_p_pim<50)
 	    {
 	      if(dist>(ll*4))
 		Z_p_pim_mass_array[ll-1]->Fill(m_inv_ppi);
 	    }
 	  for(int kk=1;kk<=25;kk++)
 	    {
-	      if(isBest>=1 && d_p_pim<ll*2 && (dist>(kk*4)))
+	      if(isBest>=0 && d_p_pim<ll*2 && (dist>(kk*4)))
 		DZ_p_pim_mass_array[ll-1][kk-1]->Fill(m_inv_ppi);
 	    }  
 	}
@@ -225,6 +225,9 @@ PPim::PPim(TTree *tree)
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron31.root/PPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron32.root/PPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron33.root/PPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron34.root/PPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron35.root/PPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron36.root/PPim_ID");
       
     //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron34.root/PPim_ID");
     //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron35.root/PPim_ID");

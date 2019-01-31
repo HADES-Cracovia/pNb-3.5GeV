@@ -84,7 +84,7 @@ int main(Int_t argc, Char_t **argv)
 
   //*******************************************
   //*******************************************
-  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_CW/";
+  TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_2/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/";
   //TString output_Dir ="/lustre/nyx/hades/user/knowakow/PION/FILES/288_time/";
   //*******************************************
@@ -433,7 +433,7 @@ Bool_t myselectlepton(HParticleCand* pcand)
   // must return kTRUE if selection criteria is fullfilled
 
   if(!pcand)                    return kFALSE;
-  if (pcand->getSystem()<0)          return kFALSE;
+  //if (pcand->getSystem()<0)          return kFALSE;
   if (pcand->getMomentum()>5000) return kFALSE;
   if (pcand->getChi2()>1000.) return kFALSE;
   if (pcand->getBeta()<0.01)   return kFALSE;
@@ -457,7 +457,7 @@ Bool_t myselecthadron(HParticleCand* pcand)
   // must return kTRUE if selection criteria is fullfilled
 
   if(!pcand)                   return kFALSE;
-  if (pcand->getSystem()<0)          return kFALSE;
+  //if (pcand->getSystem()<0)          return kFALSE;
   if (pcand->getMomentum()>5000) return kFALSE;
   if (pcand->getChi2()>1000.) return kFALSE;
   if (pcand->getBeta()<0.01)   return kFALSE;
