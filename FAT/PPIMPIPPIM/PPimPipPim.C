@@ -14,22 +14,21 @@ using namespace PATData;
 
 void PPimPipPim::Loop()
 {
-  static long licznik = 0;
+  int licznik = 0;
   if (fChain == 0) return;
 
-  Long64_t nentries = fChain->GetEntriesFast();
+  int nentries = fChain->GetEntriesFast();
 
-  Long64_t nbytes = 0, nb = 0;
+  double nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++)
     {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
-      
+
       ++licznik;
-      if ((licznik % 100000)==0)
-	cout << "Events: " << licznik <<endl;
+      if ((licznik % 100000)==0) cout << "Events: " << licznik << " "<<(1.0*licznik)/(1.0*nentries)*100<<" %"<< endl;
 
 
       double F = 1.006;
@@ -38,7 +37,7 @@ void PPimPipPim::Loop()
       v3.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
       v4.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
       v5.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
-      
+
       TVector3 r1, r2, r3,r4;
       r1.SetXYZ(sin(D2R*p_theta_rich)*cos(D2R*p_phi_rich),sin(D2R*p_theta_rich)*sin(D2R*p_phi_rich),cos(D2R*p_theta_rich));
       r2.SetXYZ(sin(D2R*pim1_theta_rich)*cos(D2R*pim1_phi_rich),sin(D2R*pim1_theta_rich)*sin(D2R*pim1_phi_rich),cos(D2R*pim1_theta_rich));
@@ -48,23 +47,19 @@ void PPimPipPim::Loop()
       pim1->SetVectM( v3, 139.57018 );
       pip->SetVectM( v4, 139.57018 );
       pim2->SetVectM( v5, 139.57018 );
-     
+
       *gammappim1 = *p + *pim1;
       *gammappim2 = *p + *pim2;
       *gammapim1pip= *pim1 + *pip;
       *gammapim2pip= *pim2 + *pip;
       *gammappim1pippim2=*pim1 +*pim2 + *pip + *p;
-
-
+      *miss=*beam-*gammappim1pippim2;
       
       //*ppim1 = *p + *pim1;
       //*p_delta = *p;
       //*pim1_delta = *pim1;
       //*ppim1_miss = *beam - *p - *pim1;
-      *miss=*beam-*gammappim1pippim2;
 
-      
-      //double m2_inv_ppim = gammappim->M2();
       double m_inv_ppim1 = gammappim1->M();
       double m_inv_ppim2 = gammappim2->M();
       double m_inv_pippim1 = gammapim1pip->M();
@@ -84,6 +79,12 @@ void PPimPipPim::Loop()
       TVector3 ver_pip_pim1=vertex(pip_r,pip_z,v4,pim1_r,pim1_z,v3);
       TVector3 ver_pip_pim2=vertex(pip_r,pip_z,v4,pim2_r,pim2_z,v5);
 
+      TVector3 ver_to_ver_1=ver_p_pim1-ver_pip_pim2;
+      TVector3 ver_to_ver_2=ver_p_pim2-ver_pip_pim1;
+
+      double oa_lambda_1=R2D*openingangle(ver_to_ver_1,gammappim1->Vect());
+      double oa_lambda_2=R2D*openingangle(ver_to_ver_2,gammappim2->Vect());
+      
       double dist_p_pim1=trackDistance(p_r,p_z,v2,pim1_r,pim1_z,v3);
       double dist_p_pim2=trackDistance(p_r,p_z,v2,pim2_r,pim2_z,v5);
       double dist_pip_pim1=trackDistance(pip_r,pip_z,v4,pim1_r,pim1_z,v3);
@@ -93,8 +94,8 @@ void PPimPipPim::Loop()
       double dist_lambda1_pim2=trackDistance(pim2_r,pim2_z,v5,ver_pip_pim1.Z(),getR(ver_pip_pim1),gammappim1->Vect());
       double dist_lambda2_pim1=trackDistance(pim1_r,pim1_z,v3,ver_pip_pim2.Z(),getR(ver_pip_pim2),gammappim2->Vect());
       
-        
-      //	  cout << "opening angle = " << oa << endl;
+
+      //  cout << "opening angle = " << oa << endl;
 
       ACC = 1.;
       EFF = 1.;
@@ -103,7 +104,6 @@ void PPimPipPim::Loop()
 	gammappi->Boost(0., 0., -(beam->Beta()));
 	p_delta->Boost(0., 0., -(beam->Beta()));
 	pi_delta->Boost(0., 0., -(beam->Beta()));
-
 	p_delta->Boost( -gammappi->Px()/gammappi->E(), -gammappi->Py()/gammappi->E(), -gammappi->Pz()/gammappi->E());
 	pi_delta->Boost( -gammappi->Px()/gammappi->E(), -gammappi->Py()/gammappi->E(), -gammappi->Pz()/gammappi->E());
       */
@@ -160,23 +160,13 @@ void PPimPipPim::Loop()
 	NoLeptonPI = 1;
 	NoHadronPI = 1;
       */
-      bool c_mass1=(m_inv_ppim1<1120 &&m_inv_ppim1>1110);
-      bool c_mass2=(m_inv_ppim2<1120 &&m_inv_ppim2>1110);
-
-      bool dist1=(dist_p_pim1<15
-		  && ver_p_pim1.Z()>0
-		  && dist_p_pim1<dist_p_pim2);
-      bool dist2=(dist_p_pim2<15
-		  && ver_p_pim2.Z()>0
-		  && dist_p_pim1>dist_p_pim2);
-
-      double chi_max=400;
-
+      double chi_max=180;
       double sum1=dist_p_pim1*dist_p_pim1+dist_pip_pim2*dist_pip_pim2+dist_lambda1_pip*dist_lambda1_pip+dist_lambda1_pim2*dist_lambda1_pim2;
       double sum2=dist_p_pim2*dist_p_pim2+dist_pip_pim1*dist_pip_pim1+dist_lambda2_pip*dist_lambda2_pip+dist_lambda2_pim1*dist_lambda2_pim1;
 
       double sum1_1=dist_p_pim1+dist_pip_pim2+dist_lambda1_pip+dist_lambda1_pim2;
       double sum2_1=dist_p_pim2+dist_pip_pim1+dist_lambda2_pip+dist_lambda2_pim1;
+
 
       if(isBest>=0 && trigdownscaleflag==1)
 	{
@@ -187,6 +177,7 @@ void PPimPipPim::Loop()
 	  (*tlo)["p_phi_rich"] = p_phi_rich;
 	  (*tlo)["p_beta"] = p_beta_new;
 	  (*tlo)["p_m"] = p_mass;
+	  (*tlo)["p_dedx"]=p_dedx_mdc;
 	  
 	  (*tlo)["pip_p"]=pip_p;
 	  (*tlo)["pip_theta"] = pip_theta;
@@ -195,6 +186,7 @@ void PPimPipPim::Loop()
 	  (*tlo)["pip_phi_rich"] = pip_phi_rich;
 	  (*tlo)["pip_beta"] = pip_beta_new;
 	  (*tlo)["pip_m"] = pip_mass;
+	  (*tlo)["pip_dedx"]=pip_dedx_mdc;
 
 	  (*tlo)["pim1_p"]=pim1_p;
 	  (*tlo)["pim1_theta"] = pim1_theta;
@@ -203,7 +195,8 @@ void PPimPipPim::Loop()
 	  (*tlo)["pim1_phi_rich"] = pim1_phi_rich;
 	  (*tlo)["pim1_beta"] = pim1_beta_new;
 	  (*tlo)["pim1_m"] = pim1_mass;
-
+	  (*tlo)["pim1_dedx"]=pim1_dedx_mdc;
+	  
 	  (*tlo)["pim2_p"]=pim2_p;
 	  (*tlo)["pim2_theta"] = pim2_theta;
 	  (*tlo)["pim2_theta_rich"] = pim2_theta_rich;
@@ -211,7 +204,8 @@ void PPimPipPim::Loop()
 	  (*tlo)["pim2_phi_rich"] = pim2_phi_rich;
 	  (*tlo)["pim2_beta"] = pim2_beta_new;
 	  (*tlo)["pim2_m"] = pim2_mass;
-
+	  (*tlo)["pim2_dedx"]=pim2_dedx_mdc;
+	  
 	  (*tlo)["dist_pip_pim1"]=dist_pip_pim1;
 	  (*tlo)["dist_pip_pim2"] = dist_pip_pim2;
 	  (*tlo)["dist_p_pim1"] = dist_p_pim1;
@@ -249,16 +243,19 @@ void PPimPipPim::Loop()
 	  (*tlo)["sum_dist2_1"]=sum1;
 	  (*tlo)["sum_dist2_2"]=sum2;
 
+	  (*tlo)["oa_lambda_1"]=oa_lambda_1;
+	  (*tlo)["oa_lambda_2"]=oa_lambda_2;
+	  
+
 	  (*tlo)["miss_mass_kp"]=miss->M();
-	  
-	  
+	  	  
 	  tlo->fill();
-	  
+	  /*	  
 	  p_p_beta->Fill(p_p,p_beta_new);
 	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
 	  pim_p_beta->Fill(pim1_p,pim1_beta_new);
 	  pip_p_beta->Fill(pip_p,pip_beta_new);
-	  
+
 	  p_pim_mass->Fill(m_inv_ppim1);
 	  p_pim_mass->Fill(m_inv_ppim2);
 	  p_pim1_mass->Fill(m_inv_ppim1);
@@ -277,6 +274,11 @@ void PPimPipPim::Loop()
 	  dist_p_pim->Fill(dist_p_pim1);
 	  dist_pim_pip->Fill(dist_pip_pim2);
 	  dist_pim_pip->Fill(dist_pip_pim1);
+	  */
+
+	  /*
+	  double sum1=dist_p_pim1*dist_p_pim1+dist_pip_pim2*dist_pip_pim2+dist_lambda1_pip*dist_lambda1_pip+dist_lambda1_pim2*dist_lambda1_pim2;
+	  double sum2=dist_p_pim2*dist_p_pim2+dist_pip_pim1*dist_pip_pim1+dist_lambda2_pip*dist_lambda2_pip+dist_lambda2_pim1*dist_lambda2_pim1;
 
 	  sum_dist_1->Fill(sum1);
 	  sum_dist_2->Fill(sum2);
@@ -298,14 +300,14 @@ void PPimPipPim::Loop()
 		  LM_chi_final_mass->Fill(m_inv_ppimpippim);
 		}
 	    }
-	
+
 	  if(sum2<chi_max)
 	    {
 	      chi_p_pim_mass->Fill(m_inv_ppim2);
 	      chi_pip_pim_mass->Fill(m_inv_pippim1);
 	      chi_lambda_vertex->Fill(ver_p_pim2.Z(),getR(ver_p_pim2));
 	      chi_final_mass->Fill(m_inv_ppimpippim);
-	      
+
 	      if(m_inv_ppim2<1120 && m_inv_ppim2>1110 && m_inv_pippim1<460)
 		{
 		  LM_chi_p_pim_mass->Fill(m_inv_ppim2);
@@ -315,110 +317,28 @@ void PPimPipPim::Loop()
 		}
 	    }
 	  //optimalization part
-	  
+	  double dist1=(ver_p_pim1-ver_pip_pim2).Mag();
+	  double dist2=(ver_p_pim2-ver_pip_pim1).Mag();
+
 	  for(int i=0;i<10;i++)
 	    for(int j=0;j<10;j++)
 	      {
-		double dist1=(ver_p_pim1-ver_pip_pim2).Mag();
-		double dist2=(ver_p_pim2-ver_pip_pim1).Mag();
-
-		  
-		if(sum1<360+20*i &&  dist1>j*2)
-		  if(m_inv_ppim1<1120 && m_inv_ppim1>1110 && m_inv_pippim2<460)
+		if(sum1<250+50*i && dist1>j*2)
+		  if(m_inv_ppim1<1120 && m_inv_ppim1>1110)
 		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
-		
-		if(sum2<360+20*i && dist2>j*2)
-		  if(m_inv_ppim2<1120 && m_inv_ppim2>1110 && m_inv_pippim1<460)
+
+		if(sum2<250+50*i  && dist2>j*2)
+		  if(m_inv_ppim2<1120 && m_inv_ppim2>1110)
 		    signal_fit[i][j]->Fill(m_inv_ppimpippim);
 	      }
+	  //end of opt part
+	  */	
+	}
 	  
-  	  //end of opt part
-	
-	}
-
-      /*
-      if(isBest==1 && dist1)
-	{
-	  TVector3 pip_ver(0,0,pip_z);
-	  TVector3 ver_pip_l=trackToPoint(ver_p_pim1,gammappim1->Vect(),pip_ver);
-	  //cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
-	  ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
-  	  
-	  DL_p_pim_mass->Fill(m_inv_ppim1);
-	  DL_p_pim1_mass->Fill(m_inv_ppim1);
-	  DL_pim_pip_mass->Fill(m_inv_pippim2);
-	  DL_pim2_pip_mass->Fill(m_inv_pippim2);
-	  DL_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DL_dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim2);
-	  DL_dist_p_pim->Fill(dist_p_pim1);
-	  DL_dist_pim_pip->Fill(dist_pip_pim2);
-
-	  DL_target_z->Fill(pip_z);
-	  DL_target_z->Fill(pim2_z);
-	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim2_z));
-	  DL_pim_pip_z->Fill(ver_pip_pim2.Z());
-	  DL_pip_z->Fill(pip_z);
-
-	  if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
-	    {
-	      DL_in_target->Fill(m_inv_ppim1);
-	    }
-	}
-      if(isBest==1 && dist2)
-	{
-	  TVector3 pip_ver(0,0,pip_z);
-	  TVector3 ver_pip_l=trackToPoint(ver_p_pim2,gammappim2->Vect(),pip_ver);
-	  //cout<<ver_pip_l.X()<<" "<<ver_pip_l.Z()<<endl;
-	  ver_pip_lambda->Fill(ver_pip_l.Z(),TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y()));
-	  
-	  DL_p_pim_mass->Fill(m_inv_ppim2);
-	  DL_p_pim2_mass->Fill(m_inv_ppim2);
-	  DL_pim_pip_mass->Fill(m_inv_pippim1);
-	  DL_pim1_pip_mass->Fill(m_inv_pippim1);
-	  DL_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DL_dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim1);
-	  DL_dist_p_pim->Fill(dist_p_pim2);
-	  DL_dist_pim_pip->Fill(dist_pip_pim1);
-
-	  DL_target_z->Fill(pip_z);
-	  DL_target_z->Fill(pim1_z);
-	  DL_target_z_diff->Fill(TMath::Abs(pip_z-pim1_z));
-	  DL_pim_pip_z->Fill(ver_pip_pim1.Z());
-	  DL_pip_z->Fill(pip_z);
-
-	  if(!(ver_pip_l.Z()<5 && ver_pip_l.Z()>-20 && TMath::Sqrt(ver_pip_l.X()*ver_pip_l.X()+ver_pip_l.Y()*ver_pip_l.Y())<20))
-	    {
-	      DL_in_target->Fill(m_inv_ppim2);
-	    }
-	}
-      if(isBest==1 && dist1 && c_mass1)
-	{
-	  DML_p_pim_mass->Fill(m_inv_ppim1);
-	  DML_p_pim1_mass->Fill(m_inv_ppim1);
-	  DML_pim_pip_mass->Fill(m_inv_pippim2);
-	  DML_pim2_pip_mass->Fill(m_inv_pippim2);
-	  DML_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DML_dist_p_pim_pim_pip->Fill(dist_p_pim1,dist_pip_pim2);
-	  DML_dist_p_pim->Fill(dist_p_pim1);
-	  DML_dist_pim_pip->Fill(dist_pip_pim2);
-	}
-      if(isBest==1 && dist2 && c_mass2)
-	{
-	  DML_p_pim_mass->Fill(m_inv_ppim2);
-	  DML_p_pim2_mass->Fill(m_inv_ppim2);
-	  DML_pim_pip_mass->Fill(m_inv_pippim1);
-	  DML_pim1_pip_mass->Fill(m_inv_pippim1);
-	  DML_p_pim_pip_pim_mass->Fill(m_inv_ppimpippim);
-	  DML_dist_p_pim_pim_pip->Fill(dist_p_pim2,dist_pip_pim1);
-	  DML_dist_p_pim->Fill(dist_p_pim2);
-	  DML_dist_pim_pip->Fill(dist_pip_pim1);
-	}
-      */
     }
 }
 
-
-PPimPipPim::PPimPipPim(TTree *tree)  
+PPimPipPim::PPimPipPim(TTree *tree)
 {
   // if parameter tree is not specified (or zero), connect the file
   // used to generate this class and read the Tree.
@@ -428,56 +348,51 @@ PPimPipPim::PPimPipPim(TTree *tree)
     f = new TFile("be08280235056_dst_gen1_sep08_hadron_out.root");
     }
     f->GetObject("PPimPipPim",tree);
-
     }
     Init(tree);*/
   if (tree == 0) {
-	  
+
     TChain * chain = new TChain("PPimPipPim_ID","");
-    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron00.root/PPimPipPim_ID");
-    ///*
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron01.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron02.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron03.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron04.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron05.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron06.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron07.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron08.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron09.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron10.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron11.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron12.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron13.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron14.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron15.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron16.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron17.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron18.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron19.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron20.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron21.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron22.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron23.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron24.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron25.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron26.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron27.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron28.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron29.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron30.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron31.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron32.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron33.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
-      chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");
-     
-      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron34.root/PPimPipPim_ID");
-      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron35.root/PPimPipPim_ID");
-      //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_1/FILES/full_stat_1/hadron36.root/PPimPipPim_ID");  
-    //*/    
-    tree = chain; 
+    //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/hadron.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron00.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron01.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron02.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron03.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron04.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron05.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron06.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron07.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron08.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron09.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron10.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron11.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron12.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron13.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron14.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron15.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron16.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron17.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron18.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron19.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron20.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron21.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron22.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron23.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron24.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron25.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron26.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron27.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron28.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron29.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron30.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron31.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron32.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron33.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron34.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron35.root/PPimPipPim_ID");
+    chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/full_stat_2/hadron36.root/PPimPipPim_ID");  
+
+    tree = chain;
   }
 
   Init(tree);
@@ -523,6 +438,7 @@ void PPimPipPim::Init(TTree *tree)
   fChain = tree;
   fCurrent = -1;
   fChain->SetMakeClass(1);
+  
 
   fChain->SetBranchAddress("isBest", &isBest, &b_isBest);
   fChain->SetBranchAddress("eVertClust_chi2", &eVertClust_chi2, &b_eVertClust_chi2);
@@ -842,4 +758,3 @@ Int_t PPimPipPim::Cut(Long64_t entry)
   // returns -1 otherwise.
   return 1;
 }
-
