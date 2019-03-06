@@ -82,6 +82,13 @@ void PPimPipPim::Loop()
       TVector3 ver_to_ver_1=ver_p_pim1-ver_pip_pim2;
       TVector3 ver_to_ver_2=ver_p_pim2-ver_pip_pim1;
 
+      double oa_pim1_p=R2D*openingangle(pim1->Vect(),p->Vect());
+      double oa_pim2_p=R2D*openingangle(pim2->Vect(),p->Vect());
+      double oa_pip_p=R2D*openingangle(pip->Vect(),p->Vect());
+      double oa_pim1_pim2=R2D*openingangle(pim1->Vect(),pim2->Vect());
+      double oa_pim1_pip=R2D*openingangle(pim1->Vect(),pip->Vect());
+      double oa_pim2_pip=R2D*openingangle(pim2->Vect(),pip->Vect());
+                  
       double oa_lambda_1=R2D*openingangle(ver_to_ver_1,gammappim1->Vect());
       double oa_lambda_2=R2D*openingangle(ver_to_ver_2,gammappim2->Vect());
       
@@ -93,6 +100,8 @@ void PPimPipPim::Loop()
       double dist_lambda2_pip=trackDistance(pip_r,pip_z,v4,ver_pip_pim2.Z(),getR(ver_pip_pim2),gammappim2->Vect());
       double dist_lambda1_pim2=trackDistance(pim2_r,pim2_z,v5,ver_pip_pim1.Z(),getR(ver_pip_pim1),gammappim1->Vect());
       double dist_lambda2_pim1=trackDistance(pim1_r,pim1_z,v3,ver_pip_pim2.Z(),getR(ver_pip_pim2),gammappim2->Vect());
+      double dist_ver_to_ver_1=ver_to_ver_1.Mag();
+      double dist_ver_to_ver_2=ver_to_ver_2.Mag();
       
 
       //  cout << "opening angle = " << oa << endl;
@@ -170,6 +179,17 @@ void PPimPipPim::Loop()
 
       if(isBest>=0 && trigdownscaleflag==1)
 	{
+	  (*tlo)["isBest"]=isBest;
+	  (*tlo)["event"]=event;
+	  (*tlo)["hneg_mult"]=hneg_mult;
+	  (*tlo)["hpos_mult"]=hpos_mult;
+	  (*tlo)["eVert_x"]=eVert_x;
+	  (*tlo)["eVert_y"]=eVert_y;
+	  (*tlo)["eVert_z"]=eVert_z;
+	  (*tlo)["totalmult"]=totalmult;
+	  (*tlo)["trigdownscaleflag"]=trigdownscaleflag;
+	  (*tlo)["trigdownscale"]=trigdownscale;
+	  
 	  (*tlo)["p_p"]=p_p;
 	  (*tlo)["p_theta"] = p_theta;
 	  (*tlo)["p_theta_rich"] = p_theta_rich;
@@ -214,6 +234,8 @@ void PPimPipPim::Loop()
 	  (*tlo)["dist_lambda1_pip"] = dist_lambda1_pip;
 	  (*tlo)["dist_lambda2_pim1"] = dist_lambda2_pim1;
 	  (*tlo)["dist_lambda2_pip"] = dist_lambda2_pip;
+	  (*tlo)["dist_ver_to_ver_1"]=dist_ver_to_ver_1;
+	  (*tlo)["dist_ver_to_ver_2"]=dist_ver_to_ver_2;
 	  
 	  (*tlo)["m_inv_p_pim1"] = m_inv_ppim1;
 	  (*tlo)["m_inv_p_pim2"] = m_inv_ppim2;
@@ -245,8 +267,13 @@ void PPimPipPim::Loop()
 
 	  (*tlo)["oa_lambda_1"]=oa_lambda_1;
 	  (*tlo)["oa_lambda_2"]=oa_lambda_2;
-	  
-
+	  (*tlo)["oa_pim1_p"]=oa_pim1_p;
+	  (*tlo)["oa_pim2_p"]=oa_pim2_p;
+	  (*tlo)["oa_pip_p"]=oa_pip_p;
+	  (*tlo)["oa_pim1_pim2"]=oa_pim1_pim2;
+	  (*tlo)["oa_pim1_pip"]=oa_pim1_pip;
+	  (*tlo)["oa_pim2_pip"]=oa_pim2_pip;
+	 
 	  (*tlo)["miss_mass_kp"]=miss->M();
 	  	  
 	  tlo->fill();
@@ -355,6 +382,7 @@ PPimPipPim::PPimPipPim(TTree *tree)
     TChain * chain = new TChain("PPimPipPim_ID","");
     //chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim/FILES/day280/hadron.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_3/hadron00.root/PPimPipPim_ID");
+    
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_3/hadron01.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_3/hadron02.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_3/hadron03.root/PPimPipPim_ID");
@@ -391,7 +419,7 @@ PPimPipPim::PPimPipPim(TTree *tree)
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_3/hadron34.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_3/hadron35.root/PPimPipPim_ID");
     chain->Add("/lustre/nyx/hades/user/knowakow/PNB/PAT_ppim_downscale_dedx/FILES/full_stat_3/hadron36.root/PPimPipPim_ID");  
-
+    
     tree = chain;
   }
 
