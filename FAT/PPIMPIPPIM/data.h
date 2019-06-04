@@ -18,19 +18,21 @@
 
 namespace PATData {
   extern TFile *outFileData;
-  extern HNtuple *tlo;
+  extern HNtuple *tlo, *n_out, *n_ppim;
   extern HFilter *filter;
   extern float EFF, ACC;
+  extern int event_number, event_mult;
   //PPimPipPim*******************************
   extern TH2F *p_p_beta, *pim_p_beta, *pip_p_beta;
   extern TH1F *p_pim_mass, *p_mass, *pim_mass;
 
-  extern TH1F *sum_dist_1, *sum_dist_2, *sum_dist_diff;
-  
+
   extern TH1F *p_pim1_mass, *p_pim2_mass, *pim_pip_mass,*pim1_pip_mass,*pim2_pip_mass, *p_pim_pip_pim_mass;
   extern TH2F *dist_p_pim_pim_pip;
   extern TH2F *ver_pip_lambda;
   extern TH1F *dist_p_pim, *dist_pim_pip;
+
+  extern TH1F *sum_dist_1, *sum_dist_2, *sum_dist_diff;
 
   extern TH1F *DL_p_pim1_mass, *DL_p_pim2_mass, *DL_pim_pip_mass,*DL_pim1_pip_mass,*DL_pim2_pip_mass, *DL_p_pim_pip_pim_mass;
   extern TH1F *DL_dist_p_pim, *DL_dist_pim_pip;
@@ -43,8 +45,6 @@ namespace PATData {
   extern TH1F *LM_chi_p_pim_mass, *LM_chi_pip_pim_mass, *LM_chi_final_mass;
   extern TH2F *LM_chi_lambda_vertex;
 
-  extern TH1F *signal_fit[10][10];
-  
   extern TH1F *DML_p_pim1_mass, *DML_p_pim2_mass, *DML_pim_pip_mass,*DML_pim1_pip_mass,*DML_pim2_pip_mass, *DML_p_pim_pip_pim_mass;
   extern TH1F *DML_dist_p_pim, *DML_dist_pim_pip;
   extern TH2F *DML_dist_p_pim_pim_pip;
@@ -52,8 +52,12 @@ namespace PATData {
 
   extern TH1F *DL_target_z, *DL_target_z_diff, *DL_pip_z;
   extern TH1F *DL_pim_pip_z;
+
+  extern TH1F *signal_fit[10][10];
+
   extern TH2F *vertex_lambda, *vertex_target, *DL_vertex_lambda, *DL_vertex_target, *DLM_vertex_lambda, *DLM_vertex_target;
-  //*****************************************  
+
+  //*****************************************
 
   extern TCutG *pEpS0, *pEpS1, *pEmS0, *pEmS1;
   extern TCutG *pEm1S0, *pEm1S1, *pEm2S0, *pEm2S1;
@@ -79,9 +83,10 @@ namespace PATData {
 
   extern TLorentzVector *p;
   extern TLorentzVector *pi, *pim1, *pim2, *pim, *pip;
-  extern TLorentzVector *beam;
+  extern TLorentzVector *beam, *miss;
   extern TLorentzVector *proj;
   extern TLorentzVector *targ;
+  extern TLorentzVector *gammappi;
   extern TLorentzVector *gammappip;
   extern TLorentzVector *gammappim1;
   extern TLorentzVector *gammappim2;
@@ -92,8 +97,7 @@ namespace PATData {
   extern TLorentzVector *ppi_miss;
   extern TLorentzVector *p_delta;
   extern TLorentzVector *pi_delta;
-  extern TLorentzVector *miss;
-  
+
   extern Int_t insideTarget;
 
   extern Int_t insideEmS0;
@@ -123,10 +127,10 @@ namespace PATData {
   void format(TH1* hist,double size=0.9);
   TH1* signal(const char* name, TH1* hist, TH1* back1, TH1* back2);
   double parametrization(double y);
-  double trackDistance(double r1, double z1, TVector3 v1, double r2, double z2, TVector3 v2);
-  TVector3 vertex(double z1,double r1,TVector3 vec1, double z2,double r2,TVector3 vec2);
-  TVector3 trackToPoint(TVector3 base,TVector3 dir, TVector3 point);
+  double trackDistance(double r1, double z1, TLorentzVector v1, double r2, double z2, TLorentzVector v2);
+  TVector3 vertex(double r1,double z1,TLorentzVector vec1, double r2,double z2,TLorentzVector vec2);
   double getR(TVector3 vec);
+  double trackToPoint(TVector3 base,TVector3 dir, TVector3 point);
 }
 
 /*********************************************************************************************/
