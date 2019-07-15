@@ -40,7 +40,7 @@ void ppimpippim::Loop()
   Long64_t nentries = fChain->GetEntries();
   Long64_t nbytes = 0, nb = 0;
 
-  TFile* outFileData = new TFile("pp_after_TMVA_DD.root","recreate");
+  TFile* outFileData = new TFile("pp_after_TMVA_DD_z_pNb_n6+4.root","recreate");
   HNtuple *n_out = new HNtuple("ppimpippim","ppimpippim_after TMVA");
   n_out->setFile( outFileData );
 
@@ -64,8 +64,9 @@ void ppimpippim::Loop()
   reader->AddVariable("dist_lambda_ver_pip_pim",&dist_lambda_ver_pip_pim);
   reader->AddVariable("dist_ver_to_ver",&dist_ver_to_ver);
   
-  reader->BookMVA("kMLP","/lustre/nyx/hades/user/knowakow/PP/FAT/TMVA/weights/TMVAClassification_data_driven_kMLP_pca_ce_600_n2_no_ev.weights.xml" );
-
+  //reader->BookMVA("kMLP","/lustre/nyx/hades/user/knowakow/PNB/FAT/TMVA/weights/TMVAClassification_data_driven_kMLP_pca_ce_600_n2_no_ev.weights.xml");
+  reader->BookMVA("kMLP","/lustre/nyx/hades/user/knowakow/PNB/FAT/TMVA/weights/TMVAClassification_data_driven_kMLP_pca_ce_600_(n6+4)_no_ev.weights.xml");
+  
   const int steps=100;
   const double xmin=1110;
   const double xmax=1120;

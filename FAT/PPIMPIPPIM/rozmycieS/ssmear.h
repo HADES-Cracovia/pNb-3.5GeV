@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Mon May  6 10:38:55 2019 by ROOT version 5.34/34
-// from TTree ppimpippim/ppimpippim
-// found on file: ../pp_new_vertex.root
+// Mon Jul 15 11:12:02 2019 by ROOT version 5.34/34
+// from TTree ppimpippim/ppimpippim_after TMVA
+// found on file: ../TMVAeval_DataDriven/pp_after_TMVA_DD_z_pNb_n6+4.root
 //////////////////////////////////////////////////////////
 
-#ifndef ppimpippim_h
-#define ppimpippim_h
+#ifndef ssmear_h
+#define ssmear_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -16,7 +16,7 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class ppimpippim {
+class ssmear {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -68,6 +68,8 @@ public :
    Float_t         m_inv_pip_pim1;
    Float_t         m_inv_pip_pim2;
    Float_t         miss_mass_kp;
+   Float_t         mlp_output;
+   Float_t         mlp_response;
    Float_t         oa_lambda;
    Float_t         oa_lambda_1;
    Float_t         oa_lambda_2;
@@ -84,12 +86,6 @@ public :
    Float_t         p_p;
    Float_t         p_phi;
    Float_t         p_q;
-  //Float_t         p_sim_id;
-  //Float_t         p_sim_p;
-  //Float_t         p_sim_parentid;
-  //Float_t         p_sim_vertex_x;
-  //Float_t         p_sim_vertex_y;
-  //Float_t         p_sim_vertex_z;
    Float_t         p_theta;
    Float_t         pim1_beta;
    Float_t         pim1_dedx;
@@ -97,12 +93,6 @@ public :
    Float_t         pim1_p;
    Float_t         pim1_phi;
    Float_t         pim1_q;
-  //Float_t         pim1_sim_id;
-  // Float_t         pim1_sim_p;
-  //Float_t         pim1_sim_parentid;
-  // Float_t         pim1_sim_vertex_x;
-  //Float_t         pim1_sim_vertex_y;
-  //Float_t         pim1_sim_vertex_z;
    Float_t         pim1_theta;
    Float_t         pim2_beta;
    Float_t         pim2_dedx;
@@ -110,27 +100,13 @@ public :
    Float_t         pim2_p;
    Float_t         pim2_phi;
    Float_t         pim2_q;
-   Float_t         pim2_sim_id;
-   Float_t         pim2_sim_p;
-  //Float_t         pim2_sim_parentid;
-  //Float_t         pim2_sim_vertex_x;
-  //Float_t         pim2_sim_vertex_y;
-  //Float_t         pim2_sim_vertex_z;
    Float_t         pim2_theta;
-  //Float_t         pim_sim_id;
-  //Float_t         pim_sim_parentid;
    Float_t         pip_beta;
    Float_t         pip_dedx;
    Float_t         pip_m;
    Float_t         pip_p;
    Float_t         pip_phi;
    Float_t         pip_q;
-  //Float_t         pip_sim_id;
-  //Float_t         pip_sim_p;
-  //Float_t         pip_sim_parentid;
-  //Float_t         pip_sim_vertex_x;
-  //Float_t         pip_sim_vertex_y;
-  //Float_t         pip_sim_vertex_z;
    Float_t         pip_theta;
    Float_t         simon_cuts;
    Float_t         totalmult;
@@ -202,6 +178,8 @@ public :
    TBranch        *b_m_inv_pip_pim1;   //!
    TBranch        *b_m_inv_pip_pim2;   //!
    TBranch        *b_miss_mass_kp;   //!
+   TBranch        *b_mlp_output;   //!
+   TBranch        *b_mlp_response;   //!
    TBranch        *b_oa_lambda;   //!
    TBranch        *b_oa_lambda_1;   //!
    TBranch        *b_oa_lambda_2;   //!
@@ -218,12 +196,6 @@ public :
    TBranch        *b_p_p;   //!
    TBranch        *b_p_phi;   //!
    TBranch        *b_p_q;   //!
-  //TBranch        *b_p_sim_id;   //!
-  //TBranch        *b_p_sim_p;   //!
-  //TBranch        *b_p_sim_parentid;   //!
-  //TBranch        *b_p_sim_vertex_x;   //!
-  //TBranch        *b_p_sim_vertex_y;   //!
-  //TBranch        *b_p_sim_vertex_z;   //!
    TBranch        *b_p_theta;   //!
    TBranch        *b_pim1_beta;   //!
    TBranch        *b_pim1_dedx;   //!
@@ -231,12 +203,6 @@ public :
    TBranch        *b_pim1_p;   //!
    TBranch        *b_pim1_phi;   //!
    TBranch        *b_pim1_q;   //!
-  //TBranch        *b_pim1_sim_id;   //!
-  //TBranch        *b_pim1_sim_p;   //!
-  //TBranch        *b_pim1_sim_parentid;   //!
-  //TBranch        *b_pim1_sim_vertex_x;   //!
-  //TBranch        *b_pim1_sim_vertex_y;   //!
-  //TBranch        *b_pim1_sim_vertex_z;   //!
    TBranch        *b_pim1_theta;   //!
    TBranch        *b_pim2_beta;   //!
    TBranch        *b_pim2_dedx;   //!
@@ -244,27 +210,13 @@ public :
    TBranch        *b_pim2_p;   //!
    TBranch        *b_pim2_phi;   //!
    TBranch        *b_pim2_q;   //!
-  //TBranch        *b_pim2_sim_id;   //!
-  //TBranch        *b_pim2_sim_p;   //!
-  //TBranch        *b_pim2_sim_parentid;   //!
-  //TBranch        *b_pim2_sim_vertex_x;   //!
-  //TBranch        *b_pim2_sim_vertex_y;   //!
-  //TBranch        *b_pim2_sim_vertex_z;   //!
    TBranch        *b_pim2_theta;   //!
-  //TBranch        *b_pim_sim_id;   //!
-  //TBranch        *b_pim_sim_parentid;   //!
    TBranch        *b_pip_beta;   //!
    TBranch        *b_pip_dedx;   //!
    TBranch        *b_pip_m;   //!
    TBranch        *b_pip_p;   //!
    TBranch        *b_pip_phi;   //!
    TBranch        *b_pip_q;   //!
-  //TBranch        *b_pip_sim_id;   //!
-  //TBranch        *b_pip_sim_p;   //!
-  //TBranch        *b_pip_sim_parentid;   //!
-  //TBranch        *b_pip_sim_vertex_x;   //!
-  //TBranch        *b_pip_sim_vertex_y;   //!
-  //TBranch        *b_pip_sim_vertex_z;   //!
    TBranch        *b_pip_theta;   //!
    TBranch        *b_simon_cuts;   //!
    TBranch        *b_totalmult;   //!
@@ -289,8 +241,8 @@ public :
    TBranch        *b_ver_pip_pim_y;   //!
    TBranch        *b_ver_pip_pim_z;   //!
 
-   ppimpippim(TTree *tree=0);
-   virtual ~ppimpippim();
+   ssmear(TTree *tree=0);
+   virtual ~ssmear();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -302,35 +254,35 @@ public :
 
 #endif
 
-#ifdef ppimpippim_cxx
-ppimpippim::ppimpippim(TTree *tree) : fChain(0) 
+#ifdef ssmear_cxx
+ssmear::ssmear(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/lustre/nyx/hades/user/knowakow/PNB/FAT/PPIMPIPPIM/pNb_dedex_buffer_in_FAT_new_dist.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../TMVAeval_DataDriven/pp_after_TMVA_DD_z_pNb_n6+4.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/lustre/nyx/hades/user/knowakow/PNB/FAT/PPIMPIPPIM/pNb_dedex_buffer_in_FAT_new_dist.root");
+         f = new TFile("../TMVAeval_DataDriven/pp_after_TMVA_DD_z_pNb_n6+4.root");
       }
-      f->GetObject("ppimpippim_results",tree);
+      f->GetObject("ppimpippim",tree);
 
    }
    Init(tree);
 }
 
-ppimpippim::~ppimpippim()
+ssmear::~ssmear()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t ppimpippim::GetEntry(Long64_t entry)
+Int_t ssmear::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t ppimpippim::LoadTree(Long64_t entry)
+Long64_t ssmear::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -343,7 +295,7 @@ Long64_t ppimpippim::LoadTree(Long64_t entry)
    return centry;
 }
 
-void ppimpippim::Init(TTree *tree)
+void ssmear::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -405,6 +357,8 @@ void ppimpippim::Init(TTree *tree)
    fChain->SetBranchAddress("m_inv_pip_pim1", &m_inv_pip_pim1, &b_m_inv_pip_pim1);
    fChain->SetBranchAddress("m_inv_pip_pim2", &m_inv_pip_pim2, &b_m_inv_pip_pim2);
    fChain->SetBranchAddress("miss_mass_kp", &miss_mass_kp, &b_miss_mass_kp);
+   fChain->SetBranchAddress("mlp_output", &mlp_output, &b_mlp_output);
+   fChain->SetBranchAddress("mlp_response", &mlp_response, &b_mlp_response);
    fChain->SetBranchAddress("oa_lambda", &oa_lambda, &b_oa_lambda);
    fChain->SetBranchAddress("oa_lambda_1", &oa_lambda_1, &b_oa_lambda_1);
    fChain->SetBranchAddress("oa_lambda_2", &oa_lambda_2, &b_oa_lambda_2);
@@ -421,12 +375,6 @@ void ppimpippim::Init(TTree *tree)
    fChain->SetBranchAddress("p_p", &p_p, &b_p_p);
    fChain->SetBranchAddress("p_phi", &p_phi, &b_p_phi);
    fChain->SetBranchAddress("p_q", &p_q, &b_p_q);
-   //fChain->SetBranchAddress("p_sim_id", &p_sim_id, &b_p_sim_id);
-   //fChain->SetBranchAddress("p_sim_p", &p_sim_p, &b_p_sim_p);
-   //fChain->SetBranchAddress("p_sim_parentid", &p_sim_parentid, &b_p_sim_parentid);
-   //fChain->SetBranchAddress("p_sim_vertex_x", &p_sim_vertex_x, &b_p_sim_vertex_x);
-   //fChain->SetBranchAddress("p_sim_vertex_y", &p_sim_vertex_y, &b_p_sim_vertex_y);
-   //fChain->SetBranchAddress("p_sim_vertex_z", &p_sim_vertex_z, &b_p_sim_vertex_z);
    fChain->SetBranchAddress("p_theta", &p_theta, &b_p_theta);
    fChain->SetBranchAddress("pim1_beta", &pim1_beta, &b_pim1_beta);
    fChain->SetBranchAddress("pim1_dedx", &pim1_dedx, &b_pim1_dedx);
@@ -434,12 +382,6 @@ void ppimpippim::Init(TTree *tree)
    fChain->SetBranchAddress("pim1_p", &pim1_p, &b_pim1_p);
    fChain->SetBranchAddress("pim1_phi", &pim1_phi, &b_pim1_phi);
    fChain->SetBranchAddress("pim1_q", &pim1_q, &b_pim1_q);
-   //fChain->SetBranchAddress("pim1_sim_id", &pim1_sim_id, &b_pim1_sim_id);
-   //fChain->SetBranchAddress("pim1_sim_p", &pim1_sim_p, &b_pim1_sim_p);
-   //fChain->SetBranchAddress("pim1_sim_parentid", &pim1_sim_parentid, &b_pim1_sim_parentid);
-   //fChain->SetBranchAddress("pim1_sim_vertex_x", &pim1_sim_vertex_x, &b_pim1_sim_vertex_x);
-   //fChain->SetBranchAddress("pim1_sim_vertex_y", &pim1_sim_vertex_y, &b_pim1_sim_vertex_y);
-   //fChain->SetBranchAddress("pim1_sim_vertex_z", &pim1_sim_vertex_z, &b_pim1_sim_vertex_z);
    fChain->SetBranchAddress("pim1_theta", &pim1_theta, &b_pim1_theta);
    fChain->SetBranchAddress("pim2_beta", &pim2_beta, &b_pim2_beta);
    fChain->SetBranchAddress("pim2_dedx", &pim2_dedx, &b_pim2_dedx);
@@ -447,27 +389,13 @@ void ppimpippim::Init(TTree *tree)
    fChain->SetBranchAddress("pim2_p", &pim2_p, &b_pim2_p);
    fChain->SetBranchAddress("pim2_phi", &pim2_phi, &b_pim2_phi);
    fChain->SetBranchAddress("pim2_q", &pim2_q, &b_pim2_q);
-   //fChain->SetBranchAddress("pim2_sim_id", &pim2_sim_id, &b_pim2_sim_id);
-   //fChain->SetBranchAddress("pim2_sim_p", &pim2_sim_p, &b_pim2_sim_p);
-   //fChain->SetBranchAddress("pim2_sim_parentid", &pim2_sim_parentid, &b_pim2_sim_parentid);
-   //fChain->SetBranchAddress("pim2_sim_vertex_x", &pim2_sim_vertex_x, &b_pim2_sim_vertex_x);
-   //fChain->SetBranchAddress("pim2_sim_vertex_y", &pim2_sim_vertex_y, &b_pim2_sim_vertex_y);
-   //fChain->SetBranchAddress("pim2_sim_vertex_z", &pim2_sim_vertex_z, &b_pim2_sim_vertex_z);
    fChain->SetBranchAddress("pim2_theta", &pim2_theta, &b_pim2_theta);
-   //fChain->SetBranchAddress("pim_sim_id", &pim_sim_id, &b_pim_sim_id);
-   //fChain->SetBranchAddress("pim_sim_parentid", &pim_sim_parentid, &b_pim_sim_parentid);
    fChain->SetBranchAddress("pip_beta", &pip_beta, &b_pip_beta);
    fChain->SetBranchAddress("pip_dedx", &pip_dedx, &b_pip_dedx);
    fChain->SetBranchAddress("pip_m", &pip_m, &b_pip_m);
    fChain->SetBranchAddress("pip_p", &pip_p, &b_pip_p);
    fChain->SetBranchAddress("pip_phi", &pip_phi, &b_pip_phi);
    fChain->SetBranchAddress("pip_q", &pip_q, &b_pip_q);
-   //fChain->SetBranchAddress("pip_sim_id", &pip_sim_id, &b_pip_sim_id);
-   //fChain->SetBranchAddress("pip_sim_p", &pip_sim_p, &b_pip_sim_p);
-   //fChain->SetBranchAddress("pip_sim_parentid", &pip_sim_parentid, &b_pip_sim_parentid);
-   //fChain->SetBranchAddress("pip_sim_vertex_x", &pip_sim_vertex_x, &b_pip_sim_vertex_x);
-   //fChain->SetBranchAddress("pip_sim_vertex_y", &pip_sim_vertex_y, &b_pip_sim_vertex_y);
-   //fChain->SetBranchAddress("pip_sim_vertex_z", &pip_sim_vertex_z, &b_pip_sim_vertex_z);
    fChain->SetBranchAddress("pip_theta", &pip_theta, &b_pip_theta);
    fChain->SetBranchAddress("simon_cuts", &simon_cuts, &b_simon_cuts);
    fChain->SetBranchAddress("totalmult", &totalmult, &b_totalmult);
@@ -494,7 +422,7 @@ void ppimpippim::Init(TTree *tree)
    Notify();
 }
 
-Bool_t ppimpippim::Notify()
+Bool_t ssmear::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -505,18 +433,18 @@ Bool_t ppimpippim::Notify()
    return kTRUE;
 }
 
-void ppimpippim::Show(Long64_t entry)
+void ssmear::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t ppimpippim::Cut(Long64_t entry)
+Int_t ssmear::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef ppimpippim_cxx
+#endif // #ifdef ssmear_cxx
