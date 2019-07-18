@@ -35,10 +35,11 @@ void ssmear::Loop()
   // METHOD2: replace line
   //    fChain->GetEntry(jentry);       //read all branches
   //by  b_branchname->GetEntry(ientry); //read only this branch
-  const int steps=100;
-  const double xmin=800;
-  const double xmax=1500;
+  const int steps=600;
+  const double xmin=400;
+  const double xmax=1600;
   TH1F *pip_pim_spectrum[steps];
+  TH2F *miss_mass_K0=new TH2F("miss_mass_K0","missing mass vs #pi^{+} #pi^{-}",1000,xmin,xmax,600,200,800);
   TF1 *gaus[steps];
   TF1 *sig[steps];
   TF1 *bg[steps];
@@ -94,7 +95,8 @@ void ssmear::Loop()
 	  || isBest_new<1
 	  )
 	continue;
-
+      
+      miss_mass_kp->Fill(miss_mass_kp,m_inv_pip_pim);
       for(int i=0;i<steps;i++)
 	{
 	  double miss_thr=cut[i];
