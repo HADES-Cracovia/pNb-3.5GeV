@@ -1,10 +1,10 @@
-void pluto_macro(Int_t nEvt=1000) {  // pi- + C12 --> pi- + pi+ + X
+void pluto_C12(Int_t nEvt=1000) {  // pi- + C12 --> pi- + pi+ + X
 
   // Plot implemented C12 Fermi distribution with:
   //
   // root [0] makeDistributionManager()->Exec("nucleus_fermi:gamma");  // init plugin
   // root [1] makeDistributionManager()->LinkDB();
-  // root [2] PChannelModel *fFermi = makeDynamicData()->GetParticleSecondaryModel("93Nb", "fermi");  // get Fermi dist
+  // root [2] PChannelModel *fFermi = makeDynamicData()->GetParticleSecondaryModel("12C", "fermi");  // get Fermi dist
   // root [3] fFermi->Draw();  // plot it
   //
 
@@ -17,19 +17,20 @@ void pluto_macro(Int_t nEvt=1000) {  // pi- + C12 --> pi- + pi+ + X
   makeDistributionManager()->Exec("nucleus_fermi");
 
   //Add a new composite particle (target_id*1000 * beam_id)
-  makeStaticData()->AddParticle(754009,"pi- + 93Nb",86.54174+0.139570);
+  makeStaticData()->AddParticle(614009,"pi- + 12C",11.174862+0.139570);
   //Creates again a symbolic link:
-  makeStaticData()->AddAlias("pi- + 93Nb","pi-+93Nb");
+  makeStaticData()->AddAlias("pi- + 12C","pi-+12C");
 
-  //adds a decay by using the "pi- + 93Nb" particle as created above:
-  makeStaticData()->AddDecay(-1, "pi- + 93Nb -> (pi- + p) + 92Zr (quasi-free)","pi- + 93Nb","pi- + p,92Zr", 1.0 );
+  //adds a decay by using the "pi- + 12C" particle as created above:
+  makeStaticData()->AddDecay(-1, "pi- + 12C -> (pi- + p) + 11B (quasi-free)","pi- + 12C","pi- + p,11B", 1.0 );
 
   //This is the fermi model (contributed by M. Dieterle and L. Witthauer, Basel):
-  PFermiMomentumGA * pmodel = new PFermiMomentumGA("pi-p_in_93Nb@pi- + 93Nb_to_pi- + p_92Zr", "Quasi-free particle production <nucleus_fermi>",-1);
+  PFermiMomentumGA * pmodel = new PFermiMomentumGA("pi-p_in_12C@pi- + 12C_to_pi- + p_11B", "Quasi-free particle production <nucleus_fermi>",-1);
+  
   pmodel->Add("q,parent");
   pmodel->Add("pi-,grandparent,beam");
-  pmodel->Add("93Nb,grandparent,target");
-  pmodel->Add("92Zr,daughter,spectator");
+  pmodel->Add("12C,grandparent,target");
+  pmodel->Add("11B,daughter,spectator");
   pmodel->Add("q,daughter,composite");
   //    pmodel->Add("q1,daughter,composite");
   pmodel->Add("p,granddaughter,participant");
@@ -37,8 +38,8 @@ void pluto_macro(Int_t nEvt=1000) {  // pi- + C12 --> pi- + pi+ + X
   makeDistributionManager()->Add(pmodel);
 
   //  pi- beam momentum = 1.7 GeV/c
-  //  PReaction *Reac = new PReaction ("_P1=1.7","pi-","93Nb","(pi- p) pi- pi+ n (92Zr)","pim_C12_2pion",0,0,0,0);  // phase space
-  PReaction *Reac = new PReaction ("_P1=.69","pi-","93Nb","(pi- p) eta [dilepton [e+ e-] g] n (92Zr)","pim_Nb93_2ele",0,0,0,0); // via rho0
+  //  PReaction *Reac = new PReaction ("_P1=1.7","pi-","12C","(pi- p) pi- pi+ n (11B)","pim_C12_2pion",0,0,0,0);  // phase space
+  PReaction *Reac = new PReaction ("_P1=.69","pi-","12C","(pi- p) eta [dilepton [e+ e-] g] n (11B)","pim_C12_2ele",0,0,0,0); // via rho0
 
   TH1F * histo_Mmiss = new TH1F("Mmiss","missing mass",200,0.6,1.4);
   TH1F * histo_CMS = new TH1F("CMS","Centrum of Mass Energy",200,1.0,2.0);
@@ -65,7 +66,7 @@ void pluto_macro(Int_t nEvt=1000) {  // pi- + C12 --> pi- + pi+ + X
   histo_CMS->Draw();
 
   // save histogram
-  TFile *out = new TFile("pim_Nb93_eta.root","update");
+  TFile *out = new TFile("pim_C12_eta.root","update");
   histo_Mmiss->Write();
   histo_CMS->Write();
   histo_inv->Write();

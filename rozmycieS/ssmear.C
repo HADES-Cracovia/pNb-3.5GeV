@@ -5,6 +5,7 @@
 #include <TCanvas.h>
 #include <TF1.h>
 #include <TH1F.h>
+#include <TH2F.h>
 #include "hntuple.h"
 #include "TMVA/Reader.h"
 #include <TGraph.h>
@@ -35,8 +36,8 @@ void ssmear::Loop()
   // METHOD2: replace line
   //    fChain->GetEntry(jentry);       //read all branches
   //by  b_branchname->GetEntry(ientry); //read only this branch
-  const int steps=600;
-  const double xmin=400;
+  const int steps=400;
+  const double xmin=-400;
   const double xmax=1600;
   TH1F *pip_pim_spectrum[steps];
   TH2F *miss_mass_K0=new TH2F("miss_mass_K0","missing mass vs #pi^{+} #pi^{-}",1000,xmin,xmax,600,200,800);
@@ -96,7 +97,7 @@ void ssmear::Loop()
 	  )
 	continue;
       
-      miss_mass_kp->Fill(miss_mass_kp,m_inv_pip_pim);
+      miss_mass_K0->Fill(miss_mass_kp,m_inv_pip_pim);
       for(int i=0;i<steps;i++)
 	{
 	  double miss_thr=cut[i];
