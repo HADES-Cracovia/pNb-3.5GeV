@@ -1,4 +1,4 @@
-void pluto_pNb93(Int_t nEvt=1000) {  // p + C12 --> p + pi+ + X
+void pluto_pNb93(Int_t nEvt=10000) {  // p + Nb93 --> p + K0S + Lambda + pi+ + X
 
   // Plot implemented C12 Fermi distribution with:
   //
@@ -41,18 +41,20 @@ void pluto_pNb93(Int_t nEvt=1000) {  // p + C12 --> p + pi+ + X
   //  PReaction *Reac = new PReaction ("_P1=1.7","p","12C","(p p) p pi+ n (11B)","pim_C12_2pion",0,0,0,0);  // phase space
   PReaction *Reac = new PReaction ("_P1=4.3","p","93Nb","(p p) K0S pi+ Lambda p (92Zr)","p_93Nb_LambdaK0",0,0,0,0); // via rho0
 
-  TH1F * histo_Mmiss = new TH1F("Mmiss","missing mass",200,0.6,1.4);
-  TH1F * histo_CMS = new TH1F("CMS","Centrum of Mass Energy",800,1.0,4.0);
-  TH1F * histo_inv = new TH1F("inv","inv mass",120,0.0,.6);
+  TH1F * histo_Mmiss = new TH1F("Mmiss","missing mass",500,0,2);
+  TH1F * histo_CMS = new TH1F("CMS","Centrum of Mass Energy",750,1.0,4.0);
+  TH1F * histo_inv = new TH1F("inv","inv mass",250,1,2);
 
 
-  Reac->Do("p = P3E(0,0,.69,[p]->E());");  // set up p beam
-  Reac->Do("q3= P3E([K0S]->Px()+[Lambda]->Px(),[K0S]->Py()+[Lambda]->Py(),[K0S]->Pz()+[Lambda]->Pz()-0.69,[K0S]->E()+[Lambda]->E()-0.7039-0.938);");
-  Reac->Do("q1= P3E([K0S]->Px()+[Lambda]->Px(),[K0S]->Py()+[Lambda]->Py(),[K0S]->Pz()+[Lambda]->Pz(),[K0S]->E()+[Lambda]->E());");
+  Reac->Do("p = P3E(0,0,4.338,[beam]->E());");  // set up p beam
+  //ac->Do("q3= P3E([K0S]->Px()+[Lambda]->Px(),[K0S]->Py()+[Lambda]->Py(),[K0S]->Pz()+[Lambda]->Pz()-0.69,[K0S]->E()+[Lambda]->E()-0.7039-0.938);");
+  Reac->Do("q1= P3E([K0S]->Px()+[Lambda]->Px(),[K0S]->Py()+[Lambda]->Py(),[K0S]->Pz()+[Lambda]->Pz(),[K0S]->E()+[Lambda]->E());");//inv mas of registered particles
   Reac->Do("q2= P3E([K0S]->Px()+[Lambda]->Px()+[p]->Px()+[pi+]->Px(),[K0S]->Py()+[Lambda]->Py()+[p]->Py()+[pi+]->Py(),[K0S]->Pz()+[Lambda]->Pz()+[p]->Pz()+[pi+]->Pz(),[K0S]->E()+[Lambda]->E()+[p]->E()+[pi+]->E());");
+  Reac->Do("q3= P3E(-[K0S]->Px()-[Lambda]->Px(),-[K0S]->Py()-[Lambda]->Py(),4.338-[K0S]->Pz()-[Lambda]->Pz(),5.376544163-[K0S]->E()-[Lambda]->E());");//miss mass
   
   Reac->Do(histo_CMS," _x = q2->M();");  // fill total CMS
   Reac->Do(histo_inv," _x = q1->M();");  // fill inv. mass
+  Reac->Do(histo_Mmiss,"_x = q3->M();"); //fill missing mass
 
 
   Reac->Print();
@@ -60,9 +62,10 @@ void pluto_pNb93(Int_t nEvt=1000) {  // p + C12 --> p + pi+ + X
 
   //   histo_Mmiss->Draw();
   histo_CMS->Draw();
+  histo_inv->Draw();
 
   // save histogram
-  TFile *out = new TFile("pim_C12_eta.root","update");
+  TFile *out = new TFile("p_93Nb_LambdaK0_pictres.root","update");
   histo_Mmiss->Write();
   histo_CMS->Write();
   histo_inv->Write();
