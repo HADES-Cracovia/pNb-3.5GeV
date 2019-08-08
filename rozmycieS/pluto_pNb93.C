@@ -22,7 +22,7 @@ void pluto_pNb93(Int_t nEvt=10000) {  // p + Nb93 --> p + K0S + Lambda + pi+ + X
   makeStaticData()->AddAlias("p + 93Nb","p+93Nb");
 
   //adds a decay by using the "p + 12C" particle as created above:
-  makeStaticData()->AddDecay(-1, "p + 12C -> (p + p) + 92Zr (quasi-free)","p + 92Zr","p + p,92Zr", 1.0 );
+  makeStaticData()->AddDecay(-1, "p + 93Nb -> (p + p) + 92Zr (quasi-free)","p + 92Zr","p + p,92Zr", 1.0 );
 
   //This is the fermi model (contributed by M. Dieterle and L. Witthauer, Basel):
   PFermiMomentumGA * pmodel = new PFermiMomentumGA("pp_in_93Nb@p + 93Nb_to_p + p_92Zr", "Quasi-free particle production <nucleus_fermi>",-1);
@@ -39,14 +39,14 @@ void pluto_pNb93(Int_t nEvt=10000) {  // p + Nb93 --> p + K0S + Lambda + pi+ + X
 
   //  p beam momentum = 1.7 GeV/c
   //  PReaction *Reac = new PReaction ("_P1=1.7","p","12C","(p p) p pi+ n (11B)","pim_C12_2pion",0,0,0,0);  // phase space
-  PReaction *Reac = new PReaction ("_P1=4.3","p","93Nb","(p p) K0S pi+ Lambda p (92Zr)","p_93Nb_LambdaK0",0,0,0,0); // via rho0
+  PReaction *Reac = new PReaction ("_P1=4.338","p","93Nb","(p p) K0S pi+ Lambda p (92Zr)","p_93Nb_LambdaK0",0,0,0,0); // via rho0
 
   TH1F * histo_Mmiss = new TH1F("Mmiss","missing mass",500,0,2);
   TH1F * histo_CMS = new TH1F("CMS","Centrum of Mass Energy",750,1.0,4.0);
   TH1F * histo_inv = new TH1F("inv","inv mass",250,1,2);
+  TH1F * histo_beam_Ek = new TH1F("histo_beam_Ek","Beam kinetic energy",200,0,4);
 
-
-  Reac->Do("p = P3E(0,0,4.338,[beam]->E());");  // set up p beam
+  Reac->Do("p1 = P3E(0,0,4.338,[p]->E());");  // set up p beam
   //ac->Do("q3= P3E([K0S]->Px()+[Lambda]->Px(),[K0S]->Py()+[Lambda]->Py(),[K0S]->Pz()+[Lambda]->Pz()-0.69,[K0S]->E()+[Lambda]->E()-0.7039-0.938);");
   Reac->Do("q1= P3E([K0S]->Px()+[Lambda]->Px(),[K0S]->Py()+[Lambda]->Py(),[K0S]->Pz()+[Lambda]->Pz(),[K0S]->E()+[Lambda]->E());");//inv mas of registered particles
   Reac->Do("q2= P3E([K0S]->Px()+[Lambda]->Px()+[p]->Px()+[pi+]->Px(),[K0S]->Py()+[Lambda]->Py()+[p]->Py()+[pi+]->Py(),[K0S]->Pz()+[Lambda]->Pz()+[p]->Pz()+[pi+]->Pz(),[K0S]->E()+[Lambda]->E()+[p]->E()+[pi+]->E());");
@@ -55,7 +55,7 @@ void pluto_pNb93(Int_t nEvt=10000) {  // p + Nb93 --> p + K0S + Lambda + pi+ + X
   Reac->Do(histo_CMS," _x = q2->M();");  // fill total CMS
   Reac->Do(histo_inv," _x = q1->M();");  // fill inv. mass
   Reac->Do(histo_Mmiss,"_x = q3->M();"); //fill missing mass
-
+  //Reac->Do(histo_beam_Ek,"_x = p1->E();");// fill kinetic energy of beam
 
   Reac->Print();
   Reac->loop(nEvt);  // Number of events
@@ -69,6 +69,7 @@ void pluto_pNb93(Int_t nEvt=10000) {  // p + Nb93 --> p + K0S + Lambda + pi+ + X
   histo_Mmiss->Write();
   histo_CMS->Write();
   histo_inv->Write();
+  histo_beam_Ek->Write();
   out->Close();
 
 }
