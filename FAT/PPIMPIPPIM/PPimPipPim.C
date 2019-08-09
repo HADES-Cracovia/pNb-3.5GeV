@@ -459,6 +459,11 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
       lambda_mom_z=gammappim1->Z();
       lorentz_lambda1115=*gammappim1;
       lorentz_k0=*gammapim2pip;
+
+      ver_pip_pim=vertex(ver_p_pim.Pt(),ver_p_pim.Z(),lorentz_lambda1115,ver_pip_pim.Pt(),ver_pip_pim.Z(),lorentz_k0);
+      TVector3 ver_to_ver=ver_p_pim-ver_pip_pim;
+      dist_ver_to_ver=ver_to_ver.Mag();
+      oa_lambda=R2D*openingangle(ver_to_ver,lorentz_lambda1115.Vect());
     }
   else
     {
@@ -481,6 +486,11 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
       lambda_mom_z=gammappim2->Z();
       lorentz_lambda1115=*gammappim2;
       lorentz_k0=*gammapim1pip;
+
+      ver_pip_pim=vertex(ver_p_pim.Pt(),ver_p_pim.Z(),lorentz_lambda1115,ver_pip_pim.Pt(),ver_pip_pim.Z(),lorentz_k0);
+      TVector3 ver_to_ver=ver_p_pim-ver_pip_pim;
+      dist_ver_to_ver=ver_to_ver.Mag();
+      oa_lambda=R2D*openingangle(ver_to_ver,lorentz_lambda1115.Vect());
     }
 
   bool simon_cut=(oa_p_pim > 15
