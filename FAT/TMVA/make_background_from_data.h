@@ -256,9 +256,9 @@ make_background_from_data::make_background_from_data(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/lustre/nyx/hades/user/knowakow/PNB/FAT/PPIMPIPPIM/pNb_dedex_buffer_in_FAT_new_dist.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/lustre/nyx/hades/user/knowakow/PNB/FAT/PPIMPIPPIM/pNb_dedex_buffer_in_FAT_new_vertex.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/lustre/nyx/hades/user/knowakow/PNB/FAT/PPIMPIPPIM/pNb_dedex_buffer_in_FAT_new_dist.root");
+         f = new TFile("/lustre/nyx/hades/user/knowakow/PNB/FAT/PPIMPIPPIM/pNb_dedex_buffer_in_FAT_new_vertex.root");
       }
       f->GetObject("ppimpippim_results",tree);
 

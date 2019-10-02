@@ -94,6 +94,7 @@ void ssmear::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       if (mlp_output<0.58 
 	  || isBest_new<1
+	  || !(m_inv_p_pim<1120 && m_inv_p_pim>1110)
 	  )
 	continue;
       
