@@ -340,7 +340,12 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
   *gammapim2pip= *pim2 + *pip;
   *gammappim1pippim2=*pim1 +*pim2 + *pip + *p;
   *miss=*beam-*gammappim1pippim2;
-      
+
+  //sigma candidates
+  *gammappim1pim2= *p+*pim1+*pim2;
+  *gammappim1pip=*p+*pim1+*pip;
+  *gammappim2pip=*p+*pim2+*pip;
+  
   //*ppim1 = *p + *pim1;
   //*p_delta = *p;
   //*pim1_delta = *pim1;
@@ -423,6 +428,8 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
   int pim_no, pim_sim_id, pim_sim_parentid;
   Float_t m_inv_ppim;
   Float_t m_inv_pippim;
+  Float_t m_inv_ppimpim;
+  Float_t m_inv_ppimpip;
   Float_t dist_p_pim;
   Float_t dist_pip_pim;
   Float_t oa_lambda;
@@ -443,6 +450,8 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
       pim_no=1;
       m_inv_ppim=m_inv_ppim1;
       m_inv_pippim=m_inv_pippim2;
+      m_inv_ppimpip=gammappim1pip->M();
+      m_inv_ppimpim=gammappim1pim2->M();
       dist_p_pim=dist_p_pim1;
       dist_pip_pim=dist_pip_pim2;
       oa_lambda=oa_lambda_1;
@@ -460,6 +469,7 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
       lorentz_lambda1115=*gammappim1;
       lorentz_k0=*gammapim2pip;
 
+      //new vertex_pip_pim
       ver_pip_pim=vertex(ver_p_pim.Pt(),ver_p_pim.Z(),lorentz_lambda1115,ver_pip_pim.Pt(),ver_pip_pim.Z(),lorentz_k0);
       TVector3 ver_to_ver=ver_p_pim-ver_pip_pim;
       dist_ver_to_ver=ver_to_ver.Mag();
@@ -470,6 +480,8 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
       pim_no=2;
       m_inv_ppim=m_inv_ppim2;
       m_inv_pippim=m_inv_pippim1;
+      m_inv_ppimpip=gammappim2pip->M();
+      m_inv_ppimpim=gammappim1pim2->M();
       dist_p_pim=dist_p_pim2;
       dist_pip_pim=dist_pip_pim1;
       oa_lambda=oa_lambda_2;
@@ -487,6 +499,7 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
       lorentz_lambda1115=*gammappim2;
       lorentz_k0=*gammapim1pip;
 
+      //new vertex_pip_pim
       ver_pip_pim=vertex(ver_p_pim.Pt(),ver_p_pim.Z(),lorentz_lambda1115,ver_pip_pim.Pt(),ver_pip_pim.Z(),lorentz_k0);
       TVector3 ver_to_ver=ver_p_pim-ver_pip_pim;
       dist_ver_to_ver=ver_to_ver.Mag();
@@ -612,10 +625,15 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
   (*tlo)["dist_p_eVert"]=dist_p_eVert;
   (*tlo)["dist_pim_eVert"]=dist_pim_eVert;
   
-	  
+
+  
   (*tlo)["m_inv_p_pim1"] = m_inv_ppim1;
   (*tlo)["m_inv_p_pim2"] = m_inv_ppim2;
   (*tlo)["m_inv_p_pim"]=m_inv_ppim;
+
+
+  (*tlo)["m_inv_p_pim_pim"]=m_inv_ppimpim;
+  (*tlo)["m_inv_p_pim_pip"]=m_inv_ppimpip;
 
   (*tlo)["m_inv_pip_pim1"] = m_inv_pippim1;
   (*tlo)["m_inv_pip_pim2"] = m_inv_pippim2;
@@ -659,10 +677,8 @@ void PPimPipPim::filler( const PPimPipPim_ID_buffer& s,int event_mult, double WE
   (*tlo)["oa_pim1_pip"]=oa_pim1_pip;
   (*tlo)["oa_pim2_pip"]=oa_pim2_pip;
 	 
-  (*tlo)["miss_mass_kp"]=miss->M();
   (*tlo)["lambda_mom_z"]=lambda_mom_z;
   (*tlo)["simon_cuts"]=simon_cut;
-	 
   (*tlo)["miss_mass_kp"]=miss->M();
 
   (*tlo)["lambda_pt"]=lambda_pt;
