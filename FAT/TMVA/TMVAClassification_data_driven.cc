@@ -22,13 +22,13 @@
 using namespace std;
 
 //______________________________________________________________________________
-void TMVAClassification_data_driven(TString extraSuffix = "_newVertex", Long64_t DesEntries = -1) {
+void TMVAClassification_data_driven(TString extraSuffix = "_find_optimal", Long64_t DesEntries = -1) {
   TMVA::Tools::Instance();
 
   cout << "==> Start TMVAClassification" << endl;
 
   //TString NameSuffix = (treeFile.Contains("_") ? treeFile(treeFile.First('_'), treeFile.Last('.') - treeFile.First('_')) : TString("New")) + extraSuffix;
-  TFile* outputFile = TFile::Open("TMVATraining_data_driven_experiment" + extraSuffix + ".root", "RECREATE");
+  TFile* outputFile = TFile::Open("TMVATraining_data_driven_old_data_simon_cuts" + extraSuffix + ".root", "RECREATE");
 
   if(outputFile==0)
     cout<<"uninicialized output file"<<endl;
@@ -93,7 +93,9 @@ void TMVAClassification_data_driven(TString extraSuffix = "_newVertex", Long64_t
   //#warning Momentum diabled!
 
   //TFile* input    = TFile::Open(treeFile, "UPDATE");
-  TFile* input2   = TFile::Open("input_from_data_miss_mass_new_vertex.root", "UPDATE");
+  //TFile* input2   = TFile::Open("input_from_data_miss_mass_new_vertex.root", "UPDATE");
+  //TFile* input2   = TFile::Open("input_from_data_miss_mass_1.root", "UPDATE");
+  TFile* input2= TFile::Open("input_from_data_new_vertex_narrow_mass_cut_simon_cut.root","UPDATE");
   cout<<"load input file"<<endl;
   //TTree* tSigAll  = (TTree*) input->Get("signal");
   //TTree* tBackAll = (TTree*) input->Get("background");
@@ -104,12 +106,12 @@ void TMVAClassification_data_driven(TString extraSuffix = "_newVertex", Long64_t
   else
     cout<<"background data load"<<endl;
   
-  Long64_t MaxEntries = 1000000;//TMath::Min(tSignalData->GetEntries(),tBackData->GetEntries());
+  Long64_t MaxEntries = 200000;//TMath::Min(tSignalData->GetEntries(),tBackData->GetEntries());
 //if (DesEntries > 0 && DesEntries < MaxEntries)
 //  MaxEntries = DesEntries;
   
-  TTree* tSig  = tSignalData -> CloneTree(MaxEntries);
-  TTree* tBack = tBackData -> CloneTree(MaxEntries);
+  TTree* tSig  = tSignalData -> CloneTree();
+  TTree* tBack = tBackData -> CloneTree();
   
   //TTree* tBackDataSel =tBackData-> CloneTree(MaxEntries);
   //TTree* tSig  = tSigAll ->CloneTree();
@@ -125,21 +127,21 @@ void TMVAClassification_data_driven(TString extraSuffix = "_newVertex", Long64_t
 
 
   //factory->BookMethod(TMVA::Types::kMLP, "kMLP_ce_600_n2_no_ev", "!H:!V:NCycles=600:HiddenLayers=N,N:NeuronType=sigmoid:NeuronInputType=sum:EstimatorType=CE:TrainingMethod=BP:VarTransform=N:BPMode=sequential:CalculateErrors=True");
-  factory->BookMethod(TMVA::Types::kMLP, "kMLP_pca_ce_600_n2_no_ev", "!H:!V:NCycles=600:HiddenLayers=N,N:NeuronType=sigmoid:NeuronInputType=sum:EstimatorType=CE:TrainingMethod=BP:VarTransform=N,P:BPMode=sequential:CalculateErrors=True");
+  factory->BookMethod(TMVA::Types::kMLP, "kMLP_ce_600_n6_no_ev", "!H:!V:NCycles=600:HiddenLayers=N,N,N,N,N,N:NeuronType=sigmoid:NeuronInputType=sum:EstimatorType=CE:TrainingMethod=BP:VarTransform=N:BPMode=sequential:CalculateErrors=True");
   
-  factory->BookMethod(TMVA::Types::kMLP, "kMLP_pca_ce_600_(n4+2)_no_ev", "!H:!V:NCycles=600:HiddenLayers=N+2,N+2,N+2:NeuronType=sigmoid:NeuronInputType=sum:EstimatorType=CE:TrainingMethod=BP:VarTransform=N,P:BPMode=sequential:CalculateErrors=True");
+  factory->BookMethod(TMVA::Types::kMLP, "kMLP_pca_ce_600_(n6+2)_no_ev", "!H:!V:NCycles=600:HiddenLayers=N+2,N+2,N+2,N+2,N+2:NeuronType=sigmoid:NeuronInputType=sum:EstimatorType=CE:TrainingMethod=BP:VarTransform=N,P:BPMode=sequential:CalculateErrors=True");
 
   factory->BookMethod(TMVA::Types::kMLP, "kMLP_pca_ce_600_(n6+4)_no_ev", "!H:!V:NCycles=600:HiddenLayers=N+4,N+4,N+4,N+4,N+4,N+4:NeuronType=sigmoid:NeuronInputType=sum:EstimatorType=CE:TrainingMethod=BP:VarTransform=N,P:BPMode=sequential:CalculateErrors=True");
   
-  factory->BookMethod( TMVA::Types::kLikelihood, "Likelihood", "VarTransform=N,P" );
+  //factory->BookMethod( TMVA::Types::kLikelihood, "Likelihood", "VarTransform=N,P" );
 
-  factory->BookMethod( TMVA::Types::kBDT, "BDT_60", "UseYesNoLeaf=False:nCuts=60" );
+  //factory->BookMethod( TMVA::Types::kBDT, "BDT_60", "UseYesNoLeaf=False:nCuts=60" );
 
-  factory->BookMethod( TMVA::Types::kBDT, "BDT_20", "UseYesNoLeaf=False:nCuts=20" );
+  //factory->BookMethod( TMVA::Types::kBDT, "BDT_20", "UseYesNoLeaf=False:nCuts=20" );
 
-  factory->BookMethod( TMVA::Types::kBDT, "BDT_80", "UseYesNoLeaf=False:nCuts=80" );
+  //factory->BookMethod( TMVA::Types::kBDT, "BDT_80", "UseYesNoLeaf=False:nCuts=80" );
   
-  factory->BookMethod( TMVA::Types::kCuts,"RecCuts","!V:FitMethod=GA");
+  //factory->BookMethod( TMVA::Types::kCuts,"RecCuts","!V:FitMethod=GA");
   
   //factory->BookMethod( TMVA::Types::kDNN, "DNN_d_0.1", "Layout:RELU|N,RELU|N,TANH:TrainingStrategy = LearningRate=1e-1, BatchSize=256| LearningRate=1e-2, BatchSize=256| LearningRate=1e-3, BatchSize=256:DropConfig=0.1:VarTransform=N,P");
   //factory->BookMethod( TMVA::Types::kDNN, "DNN_d_0.2", "Layout:RELU|N,RELU|N,TANH:TrainingStrategy = LearningRate=1e-1, BatchSize=256| LearningRate=1e-2, BatchSize=256| LearningRate=1e-3, BatchSize=256:DropConfig=0.2:VarTransform=N,P");

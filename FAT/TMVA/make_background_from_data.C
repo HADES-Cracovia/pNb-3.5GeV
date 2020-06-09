@@ -36,7 +36,7 @@ void make_background_from_data::Loop()
   if(fChain == 0)
     return;
 
-  TFile* outputFile = new TFile("input_from_data_miss_mass_new_vertex.root","recreate");
+  TFile* outputFile = new TFile("input_from_data_new_vertex_narrow_mass_cut_simon_cut.root","recreate");
   if( outputFile == 0 )
     {
       cout << "Error: file exampleEvents.root not found" << endl;
@@ -99,31 +99,31 @@ void make_background_from_data::Loop()
 
   
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry=0; jentry<nentries;jentry++) {
-    Long64_t ientry = LoadTree(jentry);
-    if (ientry < 0) break;
-    nb = fChain->GetEntry(jentry);   nbytes += nb;
+  for (Long64_t jentry=0; jentry<nentries;jentry++)
+    {
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) break;
+      nb = fChain->GetEntry(jentry);   nbytes += nb;
 
-    if(jentry%100000==0)
-      cout<<(double)jentry/((double)nentries_true/100)<<" %"<<endl;
+      if(jentry%100000==0)
+	cout<<(double)jentry/((double)nentries_true/100)<<" %"<<endl;
     
-    if ((m_inv_p_pim<1110 ||m_inv_p_pim>1120)
-        && isBest_new==1
-	//&& miss_mass_kp>1077
-	)
-      background_data->Fill();
+      if ((m_inv_p_pim<1110 ||m_inv_p_pim>1120)
+	  && m_inv_p_pim>900 && m_inv_p_pim<1500
+	  && isBest_new==1
+	  && simon_cuts==1//&& miss_mass_kp>1077
+	  )
+	background_data->Fill();
     
-    else
-      {
-	if(isBest_new==1
-	   //&& miss_mass_kp>1077
-	   &&m_inv_p_pim<1160
-	   &&m_inv_p_pim>970
-	   )
-	  
-	  signal_data->Fill();
-      }
-  }
+      if(isBest_new==1
+	 //&& miss_mass_kp>1077
+	 &&m_inv_p_pim<1120
+	 &&m_inv_p_pim>1110
+	 && simon_cuts==1
+	 )
+	signal_data->Fill();
+    
+    }
   
   signal_data->Write();
   background_data->Write();

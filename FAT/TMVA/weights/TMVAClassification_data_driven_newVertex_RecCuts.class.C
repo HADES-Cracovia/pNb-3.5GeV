@@ -10,9 +10,9 @@ Method         : Cuts::RecCuts
 TMVA Release   : 4.2.0         [262656]
 ROOT Release   : 5.34/34       [336418]
 Creator        : knowakow
-Date           : Fri Aug 16 07:38:41 2019
+Date           : Wed Oct 16 15:58:28 2019
 Host           : Linux lxbuild05 3.16.0-4-amd64 #1 SMP Debian 3.16.7-ckt20-1+deb8u4 (2016-02-29) x86_64 GNU/Linux
-Dir            : /lustre/nyx/hades/user/knowakow/PNB/FAT/TMVA
+Dir            : /lustre/hades/user/knowakow/PNB/FAT/TMVA
 Training events: 973194
 Analysis type  : [Classification]
 
@@ -86,23 +86,23 @@ VarProp[0]: "NotEnforced" [Categorisation of cuts]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 17
-dist_p_pim                    dist_p_pim                    dist_p_pim                    dist_p_pim                    mm                                'F'    [8.06744174042e-06,494.472930908]
-dist_pip_pim                  dist_pip_pim                  dist_pip_pim                  dist_pip_pim                  mm                                'F'    [2.10382295336e-05,528.975280762]
-eVert_x                       eVert_x                       eVert_x                       eVert_x                       mm                                'F'    [-615.262084961,358.787536621]
+dist_p_pim                    dist_p_pim                    dist_p_pim                    dist_p_pim                    mm                                'F'    [6.13162728769e-06,492.172912598]
+dist_pip_pim                  dist_pip_pim                  dist_pip_pim                  dist_pip_pim                  mm                                'F'    [1.23587478811e-05,449.807678223]
+eVert_x                       eVert_x                       eVert_x                       eVert_x                       mm                                'F'    [-615.262084961,335.988464355]
 eVert_y                       eVert_y                       eVert_y                       eVert_y                       mm                                'F'    [-849.907897949,467.457519531]
 eVert_z                       eVert_z                       eVert_z                       eVert_z                       mm                                'F'    [-445.660125732,1203.86328125]
-ver_pip_pim_x                 ver_pip_pim_x                 ver_pip_pim_x                 ver_pip_pim_x                 mm                                'F'    [-39461.546875,10237.6660156]
-ver_pip_pim_y                 ver_pip_pim_y                 ver_pip_pim_y                 ver_pip_pim_y                 mm                                'F'    [-17174.0703125,56158.5039062]
-ver_pip_pim_z                 ver_pip_pim_z                 ver_pip_pim_z                 ver_pip_pim_z                 mm                                'F'    [-8593.43652344,16841.5273438]
-ver_p_pim_x                   ver_p_pim_x                   ver_p_pim_x                   ver_p_pim_x                   mm                                'F'    [-38084.8515625,6029.96435547]
-ver_p_pim_y                   ver_p_pim_y                   ver_p_pim_y                   ver_p_pim_y                   mm                                'F'    [-94022.8125,5036.78759766]
-ver_p_pim_z                   ver_p_pim_z                   ver_p_pim_z                   ver_p_pim_z                   mm                                'F'    [-44827.8710938,4267.82421875]
-oa_lambda                     oa_lambda                     oa_lambda                     oa_lambda                     deg                               'F'    [0.00681060459465,179.963439941]
-dist_p_eVert                  dist_p_eVert                  dist_p_eVert                  dist_p_eVert                  mm                                'F'    [0.00406167190522,1070.93823242]
+ver_pip_pim_x                 ver_pip_pim_x                 ver_pip_pim_x                 ver_pip_pim_x                 mm                                'F'    [-3195.20800781,7194.85205078]
+ver_pip_pim_y                 ver_pip_pim_y                 ver_pip_pim_y                 ver_pip_pim_y                 mm                                'F'    [-2597.13549805,10262.6113281]
+ver_pip_pim_z                 ver_pip_pim_z                 ver_pip_pim_z                 ver_pip_pim_z                 mm                                'F'    [-3485.55004883,4462.01318359]
+ver_p_pim_x                   ver_p_pim_x                   ver_p_pim_x                   ver_p_pim_x                   mm                                'F'    [-38059.9140625,6029.96435547]
+ver_p_pim_y                   ver_p_pim_y                   ver_p_pim_y                   ver_p_pim_y                   mm                                'F'    [-6661.46386719,49100.96875]
+ver_p_pim_z                   ver_p_pim_z                   ver_p_pim_z                   ver_p_pim_z                   mm                                'F'    [-4591.98974609,62011.3125]
+oa_lambda                     oa_lambda                     oa_lambda                     oa_lambda                     deg                               'F'    [0.00556036923081,179.974716187]
+dist_p_eVert                  dist_p_eVert                  dist_p_eVert                  dist_p_eVert                  mm                                'F'    [0.00610703369603,1070.93823242]
 dist_pim_eVert                dist_pim_eVert                dist_pim_eVert                dist_pim_eVert                mm                                'F'    [0.00498456507921,1601.27880859]
-dist_lambda_eVert             dist_lambda_eVert             dist_lambda_eVert             dist_lambda_eVert             mm                                'F'    [0.00745113147423,1365.93615723]
-dist_lambda_ver_pip_pim       dist_lambda_ver_pip_pim       dist_lambda_ver_pip_pim       dist_lambda_ver_pip_pim       mm                                'F'    [0.00175328587648,33227.2773438]
-dist_ver_to_ver               dist_ver_to_ver               dist_ver_to_ver               dist_ver_to_ver               mm                                'F'    [0.0691033899784,158208.984375]
+dist_lambda_eVert             dist_lambda_eVert             dist_lambda_eVert             dist_lambda_eVert             mm                                'F'    [0.00605770107359,1365.93615723]
+dist_lambda_ver_pip_pim       dist_lambda_ver_pip_pim       dist_lambda_ver_pip_pim       dist_lambda_ver_pip_pim       mm                                'F'    [0.00836985651404,12262.4375]
+dist_ver_to_ver               dist_ver_to_ver               dist_ver_to_ver               dist_ver_to_ver               mm                                'F'    [0.052158344537,87804.34375]
 NSpec 0
 
 

@@ -84,7 +84,7 @@ int main()
   gammappim1pip= new TLorentzVector(0,0,0,0);
   gammappim2pip= new TLorentzVector(0,0,0,0);
   gammappimpip= new TLorentzVector(0,0,0,0);
-  
+  gammappim1pim2= new TLorentzVector(0,0,0,0); 
 
   
   ppi = new TLorentzVector(0,0,0,0);

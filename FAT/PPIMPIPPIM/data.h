@@ -96,7 +96,7 @@ namespace PATData {
   extern TLorentzVector *gammappim1pip;
   extern TLorentzVector *gammappim2pip;
   extern TLorentzVector *gammappimpip;
-  
+  extern TLorentzVector *gammappim1pim2;  
 
   extern TLorentzVector *ppi;
   extern TLorentzVector *ppi_miss;
