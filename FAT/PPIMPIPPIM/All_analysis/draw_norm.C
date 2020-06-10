@@ -146,7 +146,7 @@ int draw_norm(void)
   TFile *fileL1520= new TFile("SB_sim_L1520pippim.root","READ");
   TFile *fileLK0=new TFile("SB_sim_LK0ppip.root","READ");
   TFile *fileExp= new TFile("SB_experiment.root","READ");
-  TFile *fileEM=new TFile("output_eventMixing.root","READ");
+  TFile *fileEM=new TFile("nowa_kolejnosc.root","READ");
 
   
   TH1F *hexperiment_L=(TH1F*)fileExp->Get("hMPPim_TMVA_K0mass");
@@ -387,6 +387,14 @@ int draw_norm(void)
   //hclean_L1520->Scale(cs_sig);
 
   hclean_EM->Add(hEM_data,hEM_background,1,-1);
+  //scale Event mixing to data
+  double int_min_1=1570;
+  double int_max_1=1850;
+
+  double EM_int=hclean_EM->Integral(hclean_EM->FindBin(int_min_1),hclean_EM->FindBin(int_max_1));
+  double sig_EM_int=hclean_experiment->Integral(hclean_experiment->FindBin(int_min_1),hclean_experiment->FindBin(int_max_1));
+
+  hclean_EM->Scale(sig_EM_int/EM_int);
   
   //scale signal to difference between signal and background
   double int_min=1410;
@@ -394,13 +402,13 @@ int draw_norm(void)
   double err_sum;
   
   double sig_int=hclean_L1520->Integral(hclean_L1520->FindBin(int_min),hclean_L1520->FindBin(int_max));
-  double backgroud_int=hclean_background->Integral(hclean_background->FindBin(int_min),hclean_background->FindBin(int_max));
+  double backgroud_int=hclean_EM->Integral(hclean_EM->FindBin(int_min),hclean_EM->FindBin(int_max));
   double experiment_int=hclean_experiment->Integral(hclean_experiment->FindBin(int_min),hclean_experiment->FindBin(int_max));
 
   hclean_L1520_ren->Add(hclean_L1520,1);
   hclean_L1520_ren->Scale((experiment_int-backgroud_int)/sig_int);
   hclean_sum_ren->Add(hclean_L1520_ren,1);
-  hclean_sum_ren->Add(hclean_background,1);
+  hclean_sum_ren->Add(hclean_EM,1);
 
   int rebin_res=2;  
   TCanvas *cRes=new TCanvas("cRes","cRes");
@@ -605,16 +613,17 @@ int draw_norm(void)
   //hclean_experiment->Rebin(rebin);
   //hclean_background->SetLineColor(kRed);
   //hclean_background->Rebin(rebin);
-  hclean_background->Draw("samee2");
-  setHistogramStyleSimul(hclean_background);
-  hclean_background->SetFillStyle(3125);
+  //hclean_background->Draw("samee2");
+  //setHistogramStyleSimul(hclean_background);
+  //hclean_background->SetFillStyle(3125);
   
   hclean_L1520_ren->SetLineColor(kGreen+3);
   hclean_L1520_ren->Rebin(rebin);
   setHistogramStyleSimul(hclean_L1520_ren);
   hclean_L1520_ren->SetFillStyle(3154);
   hclean_L1520_ren->Draw("samee2");
-  
+
+  hclean_EM->Draw("same");
 
   hclean_sum_ren->Rebin(rebin);
   hclean_sum_ren->SetLineColor(kMagenta);
@@ -623,6 +632,7 @@ int draw_norm(void)
   hclean_sum_ren->SetFillStyle(3145);
   hclean_sum_ren->Draw("samee2");
   
+  
 
   cClean_ren->cd(2);
   hpure_signal->Rebin(rebin);
@@ -630,7 +640,7 @@ int draw_norm(void)
   hpure_signal->Draw("e1");
     
   //fit Voigt to data
-  hpure_signal->Add(hclean_experiment,hclean_background,1,-1);
+  hpure_signal->Add(hclean_experiment,hclean_EM,1,-1);
   setHistogramStyleData(hpure_signal);
   voigt->SetParameter(0,2412);
   voigt->SetParameter(1,1500);

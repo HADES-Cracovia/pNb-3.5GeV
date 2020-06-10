@@ -64,33 +64,7 @@ void EventMixing::Loop(char*  output)
       if(jentry%50000==0)
 	cout<<(double)jentry/nentries *100<<"%"<<endl;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
-      if(!isL)
-	{
-	  if(Cut(ientry) && hypothesis==1)
-	    {
-	      double F = 1.006;
-	      //double F=1;
-	      TVector3 v1, v2;
-	      v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
-	      v2.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
-	      p.SetVectM( v1, 938.272013 );
-	      pim1.SetVectM( v2, 139.57018 );
-	      isL=true;
-	      continue;
-	    }
-	  if(Cut(ientry) && hypothesis==2)
-	    {
-	      double F = 1.006;
-	      //double F=1;
-	      TVector3 v1, v2;
-	      v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
-	      v2.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
-	      p.SetVectM( v1, 938.272013 );
-	      pim1.SetVectM( v2, 139.57018 );
-	      isL=true;
-	      continue;
-	    }
-	}
+
       if(!isK0 && isL)
 	{
 	  if(Cut(ientry) && hypothesis==1)
@@ -134,6 +108,34 @@ void EventMixing::Loop(char*  output)
 	  isK0=false;
 	  isL=false;
 	}
+
+      if(!isL)
+	{
+	  if(Cut(ientry) && hypothesis==1)
+	    {
+	      double F = 1.006;
+	      //double F=1;
+	      TVector3 v1, v2;
+	      v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+	      v2.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
+	      p.SetVectM( v1, 938.272013 );
+	      pim1.SetVectM( v2, 139.57018 );
+	      isL=true;
+	    }
+	  if(Cut(ientry) && hypothesis==2)
+	    {
+	      double F = 1.006;
+	      //double F=1;
+	      TVector3 v1, v2;
+	      v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+	      v2.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
+	      p.SetVectM( v1, 938.272013 );
+	      pim1.SetVectM( v2, 139.57018 );
+	      isL=true;
+	    }
+	}
+      
+      
       
     }
   //normalize background to signal
