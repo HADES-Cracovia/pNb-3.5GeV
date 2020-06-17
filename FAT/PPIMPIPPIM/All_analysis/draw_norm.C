@@ -40,7 +40,8 @@ void setHistogramStyleSimul(TH1* hist)
   hist->SetMarkerStyle(8);
   hist->SetFillColor(hist->GetLineColor());
   set_Y_name(hist);
-
+  hist->SetFillStyle(3145);
+  
   //hist->GetXaxis()->SetLabelFont(42);
   hist->GetXaxis()->SetNdivisions(508);
   //hist->GetXaxis()->SetLabelSize(0.05);
@@ -121,12 +122,12 @@ void scale_error(TH1* hist, double err,bool verbose=0)
   
 }
 
-
+/*
 void normalize(TH1* hist)
 {
   for (Int_t j=1; j<hist->GetNbinsX()+1; ++j)
     {
-      double scale=1.0/(3.13 * TMath::Power(10,8)) *1000; /*to get micro barn*/
+      double scale=1.0/(3.13 * TMath::Power(10,8)) *1000; //to get micro barn
       double binErr=hist->GetBinError(j);
       hist->SetBinContent(j, hist->GetBinContent(j) / hist->GetBinWidth(j) *scale);
       //hist->SetBinError( j, TMath::Sqrt( hist->GetBinContent(j) ) );
@@ -134,8 +135,7 @@ void normalize(TH1* hist)
       hist->GetYaxis()->SetTitle("#frac{dN}{dE} [#frac{#mu b}{MeV}]");
     }
 
-}  
-
+}  */
 
 int draw_norm(void)
 {
@@ -246,6 +246,74 @@ int draw_norm(void)
   TH1F *hEM_background=(TH1F*)fileEM->Get("h_m_inv_p_pim_pip_pim_SB");
   hEM_background->SetName("hEM_background");
   hEM_background->Sumw2();
+
+//w part
+  TH1F *hexperiment_L1520_w=(TH1F*)fileExp->Get("hL1520_w");
+  hexperiment_L1520_w->SetName("hexperiment_L1520_w");
+  hexperiment_L1520_w->Sumw2();
+  TH1F *hL1520_L1520_w=(TH1F*)fileL1520->Get("hL1520_w");
+  hL1520_L1520_w->SetName("hL1520_L1520_w");
+  hL1520_L1520_w->Sumw2(kFALSE);
+  TH1F *hLDpp_L1520_w=(TH1F*)fileExp->Get("hL1520_w");
+  hLDpp_L1520_w->SetName("hLDpp_L1520_w");
+  hLDpp_L1520_w->Sumw2(kFALSE);
+  TH1F *hSDpp_L1520_w=(TH1F*)fileExp->Get("hL1520_w");
+  hSDpp_L1520_w->SetName("hSDpp_L1520_w");
+  hSDpp_L1520_w->Sumw2(kFALSE);
+  TH1F *hS1385_L1520_w=(TH1F*)fileExp->Get("hL1520_w");
+  hS1385_L1520_w->SetName("hS1385_L1520_w");
+  hS1385_L1520_w->Sumw2(kFALSE);
+
+  TH1F *hexperiment_L1520_w_SB=(TH1F*)fileExp->Get("hL1520_w_SB");
+  hexperiment_L1520_w_SB->SetName("hexperiment_L1520_w_SB");
+  hexperiment_L1520_w_SB->Sumw2();
+  TH1F *hL1520_L1520_w_SB=(TH1F*)fileL1520->Get("hL1520_w_SB");
+  hL1520_L1520_w_SB->SetName("hL1520_L1520_w_SB");
+  hL1520_L1520_w_SB->Sumw2(kFALSE);
+  TH1F *hLDpp_L1520_w_SB=(TH1F*)fileExp->Get("hL1520_w_SB");
+  hLDpp_L1520_w_SB->SetName("hLDpp_L1520_w_SB");
+  hLDpp_L1520_w_SB->Sumw2(kFALSE);
+  TH1F *hSDpp_L1520_w_SB=(TH1F*)fileExp->Get("hL1520_w_SB");
+  hSDpp_L1520_w_SB->SetName("hSDpp_L1520_w_SB");
+  hSDpp_L1520_w_SB->Sumw2(kFALSE);
+  TH1F *hS1385_L1520_w_SB=(TH1F*)fileExp->Get("hL1520_w_SB");
+  hS1385_L1520_w_SB->SetName("hS1385_L1520_w_SB");
+  hS1385_L1520_w_SB->Sumw2(kFALSE);
+  //the and w
+
+  //pt part
+  TH1F *hexperiment_L1520_pt=(TH1F*)fileExp->Get("hL1520_pt");
+  hexperiment_L1520_pt->SetName("hexperiment_L1520_pt");
+  hexperiment_L1520_pt->Sumw2();
+  TH1F *hL1520_L1520_pt=(TH1F*)fileL1520->Get("hL1520_pt");
+  hL1520_L1520_pt->SetName("hL1520_L1520_pt");
+  hL1520_L1520_pt->Sumw2(kFALSE);
+  TH1F *hLDpp_L1520_pt=(TH1F*)fileExp->Get("hL1520_pt");
+  hLDpp_L1520_pt->SetName("hLDpp_L1520_pt");
+  hLDpp_L1520_pt->Sumw2(kFALSE);
+  TH1F *hSDpp_L1520_pt=(TH1F*)fileExp->Get("hL1520_pt");
+  hSDpp_L1520_pt->SetName("hSDpp_L1520_pt");
+  hSDpp_L1520_pt->Sumw2(kFALSE);
+  TH1F *hS1385_L1520_pt=(TH1F*)fileExp->Get("hL1520_pt");
+  hS1385_L1520_pt->SetName("hS1385_L1520_pt");
+  hS1385_L1520_pt->Sumw2(kFALSE);    
+
+  TH1F *hexperiment_L1520_pt_SB=(TH1F*)fileExp->Get("hL1520_pt_SB");
+  hexperiment_L1520_pt_SB->SetName("hexperiment_L1520_pt_SB");
+  hexperiment_L1520_pt_SB->Sumw2();
+  TH1F *hL1520_L1520_pt_SB=(TH1F*)fileL1520->Get("hL1520_pt_SB");
+  hL1520_L1520_pt_SB->SetName("hL1520_L1520_pt_SB");
+  hL1520_L1520_pt_SB->Sumw2(kFALSE);
+  TH1F *hLDpp_L1520_pt_SB=(TH1F*)fileExp->Get("hL1520_pt_SB");
+  hLDpp_L1520_pt_SB->SetName("hLDpp_L1520_pt_SB");
+  hLDpp_L1520_pt_SB->Sumw2(kFALSE);
+  TH1F *hSDpp_L1520_pt_SB=(TH1F*)fileExp->Get("hL1520_pt_SB");
+  hSDpp_L1520_pt_SB->SetName("hSDpp_L1520_pt_SB");
+  hSDpp_L1520_pt_SB->Sumw2(kFALSE);
+  TH1F *hS1385_L1520_pt_SB=(TH1F*)fileExp->Get("hL1520_pt_SB");
+  hS1385_L1520_pt_SB->SetName("hS1385_L1520_pt_SB");
+  hS1385_L1520_pt_SB->Sumw2(kFALSE);
+  //the and pt
   
   TH1F *hsum_background=(TH1F*)hS1385_background->Clone("hsum_background");
   TH1F *hclean_background=(TH1F*)hS1385_background->Clone("hclean_background");
@@ -265,6 +333,23 @@ int draw_norm(void)
   TH1F *hclean_sum_ren_PipPim=(TH1F*)hL1520_hMPipPim_background->Clone("hclean_sum_ren_PipPim");
   TH1F *hpure_signal_PipPim=(TH1F*)hL1520_hMPipPim_background->Clone("hpure_signal_PipPim");
   TH1F *hclean_EM=(TH1F*)hEM_data->Clone("hclean_EM");
+
+  //pt and w
+  TH1F *hsum_w_background=(TH1F*)hSDpp_L1520_w_SB->Clone("hsum_w_background");
+  TH1F *hsum_pt_background=(TH1F*)hSDpp_L1520_pt_SB->Clone("hsum_pt_background");
+
+  TH1F *hsum_w_background_SB=(TH1F*)hSDpp_L1520_w_SB->Clone("hsum_w_background_SB");
+  TH1F *hsum_pt_background_SB=(TH1F*)hSDpp_L1520_pt_SB->Clone("hsum_pt_background_SB");
+
+  TH1F *hclean_w_background=(TH1F*)hSDpp_L1520_w_SB->Clone("hclean_w_background");
+  TH1F *hclean_pt_background=(TH1F*)hSDpp_L1520_pt_SB->Clone("hclean_pt_background");
+  TH1F *hclean_w_L1520=(TH1F*)hSDpp_L1520_w_SB->Clone("hclean_w_L1520");
+  TH1F *hclean_pt_L1520=(TH1F*)hSDpp_L1520_pt_SB->Clone("hclean_pt_L1520");
+  TH1F *hclean_w_experiment=(TH1F*)hSDpp_L1520_w_SB->Clone("hclean_w_experiment");
+  TH1F *hclean_pt_experiment=(TH1F*)hSDpp_L1520_pt_SB->Clone("hclean_pt_experiment");
+  TH1F *hclean_w_experiment_sum=(TH1F*)hSDpp_L1520_w_SB->Clone("hclean_w_experiment");
+  TH1F *hclean_pt_experiment_sum=(TH1F*)hSDpp_L1520_pt_SB->Clone("hclean_pt_experiment");
+  //pt and w the end
   
   hsum_background->Reset();
   hclean_background->Reset();
@@ -286,6 +371,20 @@ int draw_norm(void)
   hclean_sum_ren_PipPim->Reset();
   hpure_signal_PipPim->Reset();
 
+
+  hsum_w_background->Reset();
+  hsum_pt_background->Reset();
+  hsum_w_background_SB->Reset();
+  hsum_pt_background_SB->Reset();
+  hclean_w_background->Reset();
+  hclean_pt_background->Reset();
+  hclean_w_L1520->Reset();
+  hclean_pt_L1520->Reset();
+  hclean_w_experiment->Reset();
+  hclean_pt_experiment->Reset();
+  hclean_w_experiment_sum->Reset();
+  hclean_pt_experiment_sum->Reset();
+                   
   //scale according to CS
   //double nsim=40*TMath::Power(10,6);//number of simulated events
   double arbitrary_scaling=1;
@@ -319,7 +418,14 @@ int draw_norm(void)
   hL1520_hMPipPim_background->Scale(cs[3]);
   hsim_L->Scale(cs[4]);
   hsim_K0->Scale(cs[4]);
-
+  hS1385_L1520_pt_SB->Scale(cs[0]);
+  hSDpp_L1520_pt_SB->Scale(cs[1]);
+  hLDpp_L1520_pt_SB->Scale(cs[2]);
+  hL1520_L1520_pt_SB->Scale(cs[3]);
+  hS1385_L1520_w_SB->Scale(cs[0]);
+  hSDpp_L1520_w_SB->Scale(cs[1]);
+  hLDpp_L1520_w_SB->Scale(cs[2]);
+  hL1520_L1520_w_SB->Scale(cs[3]); 
   /*  hS1385_background->Sumw2();
   hSDpp_background->Sumw2();
   hLDpp_background->Sumw2();
@@ -333,7 +439,14 @@ int draw_norm(void)
   scale_error(hSDpp_hMPipPim_background,err[1]);
   scale_error(hLDpp_hMPipPim_background,err[2]);
   scale_error(hL1520_hMPipPim_background,err[3]);
-  
+  scale_error(hS1385_L1520_pt_SB,err[0]);
+  scale_error(hSDpp_L1520_pt_SB,err[1]);
+  scale_error(hLDpp_L1520_pt_SB,err[2]);
+  scale_error(hL1520_L1520_pt_SB,err[3]);
+  scale_error(hS1385_L1520_w_SB,err[0]);
+  scale_error(hSDpp_L1520_w_SB,err[1]);
+  scale_error(hLDpp_L1520_w_SB,err[2]);
+  scale_error(hL1520_L1520_w_SB,err[3]);
   
   hS1385_data->Scale(cs[0]);
   hSDpp_data->Scale(cs[1]);
@@ -343,6 +456,14 @@ int draw_norm(void)
   hSDpp_hMPipPim_signal->Scale(cs[1]);
   hLDpp_hMPipPim_signal->Scale(cs[2]);
   hL1520_hMPipPim_signal->Scale(cs[3]);
+  hS1385_L1520_pt->Scale(cs[0]);
+  hSDpp_L1520_pt->Scale(cs[1]);
+  hLDpp_L1520_pt->Scale(cs[2]);
+  hL1520_L1520_pt->Scale(cs[3]);
+  hS1385_L1520_w->Scale(cs[0]);
+  hSDpp_L1520_w->Scale(cs[1]);
+  hLDpp_L1520_w->Scale(cs[2]);
+  hL1520_L1520_w->Scale(cs[3]);
   /*
   hS1385_data->Sumw2();
   hSDpp_data->Sumw2();
@@ -357,14 +478,30 @@ int draw_norm(void)
   scale_error(hSDpp_hMPipPim_signal,err[1]);
   scale_error(hLDpp_hMPipPim_signal,err[2]);
   scale_error(hL1520_hMPipPim_signal,err[3]);
-    
+  scale_error(hS1385_L1520_pt,err[0]);
+  scale_error(hSDpp_L1520_pt,err[1]);
+  scale_error(hLDpp_L1520_pt,err[2]);
+  scale_error(hL1520_L1520_pt,err[3]);
+  scale_error(hS1385_L1520_w,err[0]);
+  scale_error(hSDpp_L1520_w,err[1]);
+  scale_error(hLDpp_L1520_w,err[2]);
+  scale_error(hL1520_L1520_w,err[3]);
+  
   hsum_background->Add(hS1385_background);
   hsum_background->Add(hSDpp_background);
   hsum_background->Add(hLDpp_background);
   hsum_background_PipPim->Add(hS1385_hMPipPim_background);
   hsum_background_PipPim->Add(hSDpp_hMPipPim_background);
   hsum_background_PipPim->Add(hLDpp_hMPipPim_background);
- 
+
+  hsum_pt_background_SB->Add(hS1385_L1520_pt_SB);
+  hsum_pt_background_SB->Add(hSDpp_L1520_pt_SB);
+  hsum_pt_background_SB->Add(hLDpp_L1520_pt_SB);
+
+  hsum_w_background_SB->Add(hS1385_L1520_w_SB);
+  hsum_w_background_SB->Add(hSDpp_L1520_w_SB);
+  hsum_w_background_SB->Add(hLDpp_L1520_w_SB);
+  
   hsum_data->Add(hS1385_data);
   hsum_data->Add(hSDpp_data);
   hsum_data->Add(hLDpp_data);
@@ -372,6 +509,14 @@ int draw_norm(void)
   hsum_hMPipPim_signal->Add(hSDpp_hMPipPim_signal);
   hsum_hMPipPim_signal->Add(hLDpp_hMPipPim_signal);
 
+  hsum_pt_background->Add(hS1385_L1520_pt);
+  hsum_pt_background->Add(hSDpp_L1520_pt);
+  hsum_pt_background->Add(hLDpp_L1520_pt);
+
+  hsum_w_background->Add(hS1385_L1520_w);
+  hsum_w_background->Add(hSDpp_L1520_w);
+  hsum_w_background->Add(hLDpp_L1520_w);
+  
   hclean_background->Add(hsum_data,hsum_background,1,-1);
   hclean_experiment->Add(hexperiment_data,hexperiment_background,1,-1);
   hclean_L1520->Add(hL1520_data,hL1520_background,1,-1);
@@ -383,6 +528,16 @@ int draw_norm(void)
   hclean_experiment_PipPim->Add(hexperiment_hMPipPim_signal,hexperiment_hMPipPim_background,1,-1);
   hclean_L1520_PipPim->Add(hL1520_hMPipPim_signal,hL1520_hMPipPim_background,1,-1);
   hclean_sum_PipPim->Add(hclean_L1520_PipPim,hclean_background_PipPim,1,1);
+
+  hclean_w_background->Add(hsum_w_background,hsum_w_background_SB,1,-1);
+  hclean_pt_background->Add(hsum_pt_background,hsum_pt_background_SB,1,-1);
+  hclean_w_L1520->Add(hL1520_L1520_w,hL1520_L1520_w_SB,1,-1);
+  hclean_pt_L1520->Add(hL1520_L1520_pt,hL1520_L1520_pt_SB,1,-1);
+  hclean_pt_experiment->Add(hexperiment_L1520_pt,hexperiment_L1520_pt_SB,1,-1);
+  hclean_w_experiment->Add(hexperiment_L1520_w,hexperiment_L1520_w_SB,1,-1);
+
+  hclean_w_experiment_sum->Add(hclean_w_L1520,hclean_w_background,1,1);
+  hclean_pt_experiment_sum->Add(hclean_pt_L1520,hclean_pt_background,1,1);
   //cs_sig=1/(hclean_L1520->Integral())*20;
   //hclean_L1520->Scale(cs_sig);
 
@@ -410,6 +565,82 @@ int draw_norm(void)
   hclean_sum_ren->Add(hclean_L1520_ren,1);
   hclean_sum_ren->Add(hclean_EM,1);
 
+  TCanvas *cPt_simul=new TCanvas("cPt_simul","transver momentum for simulated channels");
+  cPt_simul->Divide(2,2);
+  cPt_simul->cd(1);
+  hS1385_L1520_pt->Draw("e1");
+  hS1385_L1520_pt_SB->Draw("samee1");
+  hS1385_L1520_pt_SB->SetLineColor(kRed);
+  cPt_simul->cd(2);
+  hSDpp_L1520_pt->Draw("e1");
+  hSDpp_L1520_pt_SB->Draw("samee1");
+  hSDpp_L1520_pt_SB->SetLineColor(kRed);
+  cPt_simul->cd(3);
+  hLDpp_L1520_pt->Draw("e1");
+  hLDpp_L1520_pt_SB->Draw("samee1");
+  hLDpp_L1520_pt_SB->SetLineColor(kRed);
+  cPt_simul->cd(4);
+  hL1520_L1520_pt->Draw("e1");
+  hL1520_L1520_pt_SB->Draw("samee1");
+  hL1520_L1520_pt_SB->SetLineColor(kRed);
+
+  TCanvas *cW_simul=new TCanvas("cW_simul","rapidity for simulated channels");
+  cW_simul->Divide(2,2);
+  cW_simul->cd(1);
+  hS1385_L1520_w->Draw("e1");
+  hS1385_L1520_w_SB->Draw("samee1");
+  hS1385_L1520_w_SB->SetLineColor(kRed);
+  cW_simul->cd(2);
+  hSDpp_L1520_w->Draw("e1");
+  hSDpp_L1520_w_SB->Draw("samee1");
+  hSDpp_L1520_w_SB->SetLineColor(kRed);
+  cW_simul->cd(3);
+  hLDpp_L1520_w->Draw("e1");
+  hLDpp_L1520_w_SB->Draw("samee1");
+  hLDpp_L1520_w_SB->SetLineColor(kRed);
+  cW_simul->cd(4);
+  hL1520_L1520_w->Draw("e1");
+  hL1520_L1520_w_SB->Draw("samee1");
+  hL1520_L1520_w_SB->SetLineColor(kRed);
+
+  TCanvas* cPt_signal=new TCanvas("cPt_signal", "p_{t} for signal");
+  cPt_signal->Divide(2);
+  cPt_signal->cd(1);
+  hexperiment_L1520_pt->Draw("e1");
+  hexperiment_L1520_pt_SB->Draw("samee1");
+  hexperiment_L1520_pt_SB->SetLineColor(kRed);
+  cPt_signal->cd(2);
+  hclean_pt_experiment->Draw("e1");
+  setHistogramStyleData(hclean_pt_experiment);
+  hclean_pt_L1520->Draw("samee2");
+  hclean_pt_L1520->SetLineColor(kGreen);
+  setHistogramStyleSimul(hclean_pt_L1520);
+  hclean_pt_background->Draw("samee2");
+  hclean_pt_background->SetLineColor(kRed);
+  setHistogramStyleSimul(hclean_pt_background);
+  hclean_pt_experiment_sum->Draw("samee2");
+  hclean_pt_experiment_sum->SetLineColor(kMagenta);
+  setHistogramStyleSimul(hclean_pt_experiment_sum);
+
+  TCanvas* cW_signal=new TCanvas("cW_signal", "rapidity for signal");
+  cW_signal->Divide(2);
+  cW_signal->cd(1);
+  hexperiment_L1520_w->Draw("e1");
+  hexperiment_L1520_w_SB->Draw("samee1");
+  hexperiment_L1520_w_SB->SetLineColor(kRed);
+  cW_signal->cd(2);
+  hclean_w_experiment->Draw("e1");
+  setHistogramStyleData(hclean_w_experiment);
+  hclean_w_L1520->Draw("samee2");
+  hclean_w_L1520->SetLineColor(kGreen);
+  setHistogramStyleSimul(hclean_w_L1520);
+  hclean_w_background->Draw("samee2");
+  hclean_w_background->SetLineColor(kRed);
+  setHistogramStyleSimul(hclean_w_background);
+  hclean_w_experiment_sum->Draw("samee2");
+  hclean_w_experiment_sum->SetLineColor(kMagenta);
+  setHistogramStyleSimul(hclean_w_experiment_sum);
+  
   int rebin_res=2;  
   TCanvas *cRes=new TCanvas("cRes","cRes");
   cRes->Divide(2,2);
@@ -899,6 +1130,40 @@ TCanvas* cL=new TCanvas("cL", "Signal for final state p #pi^{+} #L^{0} K^{0}");
   fL1116_experiment_fit->Write();
   fL1116_experiment_sig->Write();
 
+  hexperiment_L1520_w->Draw();
+  hL1520_L1520_w->Draw();
+  hLDpp_L1520_w->Draw();
+  hSDpp_L1520_w->Draw();
+  hS1385_L1520_w->Draw();
+
+  hexperiment_L1520_w_SB->Draw();
+  hL1520_L1520_w_SB->Draw();
+  hLDpp_L1520_w_SB->Draw();
+  hSDpp_L1520_w_SB->Draw();
+  hS1385_L1520_w_SB->Draw();
+
+  hexperiment_L1520_pt->Draw();
+  hL1520_L1520_pt->Draw();
+  hLDpp_L1520_pt->Draw();
+  hSDpp_L1520_pt->Draw();
+  hS1385_L1520_pt->Draw();
+
+  hexperiment_L1520_pt_SB->Draw();
+  hL1520_L1520_pt_SB->Draw();
+  hLDpp_L1520_pt_SB->Draw();
+  hSDpp_L1520_pt_SB->Draw();
+  hS1385_L1520_pt_SB->Draw();
+
+  hsum_w_background->Write();
+  hsum_pt_background->Write();
+  hsum_w_background_SB->Write();
+  hsum_pt_background_SB->Write();
+  hclean_w_background->Write();
+  hclean_pt_background->Write();
+  hclean_w_L1520->Write();
+  hclean_pt_L1520->Write();
+  hclean_w_experiment->Write();
+  hclean_pt_experiment->Write();
   
   line1->Write();
   line2->Write();
@@ -919,5 +1184,9 @@ TCanvas* cL=new TCanvas("cL", "Signal for final state p #pi^{+} #L^{0} K^{0}");
   cLK0->Write();
   cK0->Write();
   cL->Write();
+  cPt_simul->Write();
+  cW_simul->Write();
+  cPt_signal->Write();
+  cW_signal->Write();
 }
 

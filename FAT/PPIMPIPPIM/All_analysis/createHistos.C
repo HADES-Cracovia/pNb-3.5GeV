@@ -95,6 +95,11 @@ void createHistos::Loop(char* output)
   TH1F* hMPipPim_TMVA_Lmass=new TH1F("hMPipPim_TMVA_Lmass","M^{inv}_{#pi^{+} #pi^{-}} after MLP and a gate for #Lambda; M^{inv}_{#pi^{+} #pi^{-}} [MeV];N",KdM,Kmin,Kmax);
   TH1F* hMPPim_TMVAMass=new TH1F("hMPPim_TMVAMass","M^{inv}_{p #pi^{-}} after MLP and a #Delta^{++} mass cut; M^{inv}_{p #pi^{-}} [MeV];N",LdM,Lmin,Lmax);
   TH1F* hMPipPim_TMVAMass=new TH1F("hMPipPim_TMVAMass","M^{inv}_{#pi^{+} #pi^{-}} after MLP and a #Delta^{++} mass cut; M^{inv}_{#pi^{+} #pi^{-}} [MeV];N",KdM,Kmin,Kmax);
+
+  TH1F* hL1520_w=new TH1F("hL1520_w","Rapidity for #Lambda (1520) events; w",10,0.6,1.2);
+  TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",10,0,800);
+  TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",10,0.6,1.2);
+  TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",10,0,800);
   
   hMPPim_TMVA_K0mass->Sumw2();
   hMPipPim_TMVA_Lmass->Sumw2();
@@ -129,6 +134,24 @@ void createHistos::Loop(char* output)
 	  miss_m_vs_pip_p_start->Fill(miss_mass_kp,m_inv_p_pip);
 	  p_pim_vs_pip_pim_start->Fill(m_inv_p_pim,m_inv_pip_pim);
 
+	  //set 4-vectors
+	  const double D2R = 1.74532925199432955e-02;
+	  const double R2D = 57.2957795130823229;
+
+	  double F = 1.006;
+	  TVector3 v1, v2, v3, v4;
+	  v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+	  v3.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
+	  v2.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
+	  v4.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
+
+	  p.SetVectM( v1, 938.272013 );
+	  pim1.SetVectM( v2, 139.57018 );
+	  pip.SetVectM( v3, 139.57018 );
+	  pim2.SetVectM( v4, 139.57018 );
+	  ppimpippim=p+pim1+pim2+pip;
+	  //end of 4-vectors
+	  
 	  if(mlp_output>mlp_cut)
 	    {
 	      hMPPim_TMVA->Fill(m_inv_p_pim);
@@ -183,21 +206,35 @@ void createHistos::Loop(char* output)
 	{
 	  data->Fill(m_inv_p_pim_pip_pim);
 	  miss_m_vs_pip_pim->Fill(miss_mass_kp,m_inv_pip_pim);	  
-	  hMPipPim_signal->Fill(m_inv_pip_pim);
+	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
+	    {
+	      hL1520_pt->Fill(ppimpippim.Pt());
+	      hL1520_w->Fill(ppimpippim.Rapidity());
+	      hMPipPim_signal->Fill(m_inv_pip_pim);
+	    } 
 	}
 
       if(m_inv_p_pim<1116.-sidebandmin && m_inv_p_pim>1116.-sidebandmax)
 	{
 	  background->Fill(m_inv_p_pim_pip_pim);
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
-	  hMPipPim_background->Fill(m_inv_pip_pim);
+	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
+	    {
+	      hL1520_pt_SB->Fill(ppimpippim.Pt());
+	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
+	      hMPipPim_background->Fill(m_inv_pip_pim);
+	    }
 	}
       if(m_inv_p_pim>1116.+sidebandmin && m_inv_p_pim<1116.+sidebandmax)
 	{
 	  background->Fill(m_inv_p_pim_pip_pim);
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
-	  hMPipPim_background->Fill(m_inv_pip_pim);
-	
+	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
+	    {
+	      hL1520_pt_SB->Fill(ppimpippim.Pt());
+	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
+	      hMPipPim_background->Fill(m_inv_pip_pim);
+	    }
 	}
     }
 
@@ -244,6 +281,9 @@ void createHistos::Loop(char* output)
 
   background->Scale(intB/intsideband);
   hMPipPim_background->Scale(intB/intsideband);
+  scale(hL1520_pt_SB,intB/intsideband);
+  scale(hL1520_w_SB,intB/intsideband);
+
   //Fill random signal
   //TF1* L1520Spectral=new TF1("L1520Spectral","100*exp(-0.5*((x-1520)/16)**2)",xmin,xmax);
   TF1* L1520Spectral=new TF1("L1520Spectral","TMath::BreitWigner(x,1519.5,15.6)",xmin,xmax);
@@ -259,31 +299,33 @@ void createHistos::Loop(char* output)
 
   //Fit K0 i L1116
   double r_f=4; //r_f rebin fit histograms
-  L1116_fit->SetParameters(1751,1115,3.26,2.2,-99418,178,-0.079);
+  L1116_fit->SetParameters(1596,1115,3.7,0.46,-99199.6,178,-0.0796);
   hMPPim_TMVA_K0mass->Rebin(r_f);
-  L1116_fit->SetRange(1107,1120);
-  hMPPim_TMVA_K0mass->Fit(L1116_fit,"R0");
-  L1116_fit->SetRange(1100,1130);
+  L1116_fit->SetRange(1088,1140);
+  hMPPim_TMVA_K0mass->Fit(L1116_fit,"R");
+  /*L1116_fit->SetRange(1100,1130);
   hMPPim_TMVA_K0mass->Fit(L1116_fit,"R0");
   L1116_fit->SetRange(1090,1140);
   hMPPim_TMVA_K0mass->Fit(L1116_fit,"R0");
+  */  
   L1116_signal->SetParameters(L1116_fit->GetParameter(0),L1116_fit->GetParameter(1),L1116_fit->GetParameter(2),L1116_fit->GetParameter(3));
   L1116_signal->SetLineColor(kGreen-2);
-  //L1116_signal->Draw("same");
+  L1116_signal->Draw("same");
 
-  K0_fit->SetParameters(1174,495,4.3,10,1051,-3.2,0.002);
+  K0_fit->SetParameters(903,495,5.67,4.31,826,-2.28,0.0016);
   hMPipPim_TMVA_Lmass->Rebin(r_f);
-  K0_fit->SetRange(480,506);
-  hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
-  K0_fit->SetRange(476,510);
+  K0_fit->SetRange(414,582);
+  hMPipPim_TMVA_Lmass->Fit(K0_fit,"R");
+  /*K0_fit->SetRange(476,510);
   hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
   K0_fit->SetRange(436,583);
   hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
   K0_fit->SetRange(398,566);
   hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
+  */  
   K0_signal->SetParameters(K0_fit->GetParameter(0),K0_fit->GetParameter(1),K0_fit->GetParameter(2),K0_fit->GetParameter(3));
   K0_signal->SetLineColor(kGreen-2);
-  //K0_signal->Draw("same");
+  K0_signal->Draw("same");
 
   
   dedx_lambda->Write();
@@ -329,7 +371,12 @@ void createHistos::Loop(char* output)
   K0_signal->Write();
   L1116_fit->Write();
   L1116_signal->Write();
-   
+
+  hL1520_w->Write();
+  hL1520_pt->Write();
+  hL1520_w_SB->Write();
+  hL1520_pt_SB->Write();
+  
   line1->Write("line1");
   line2->Write("line2");
   line3->Write("line3");
@@ -353,6 +400,11 @@ void createHistos::Loop(char* output)
   hMPPim_TMVAMass->Delete();
   hMPipPim_TMVAMass->Delete();
 
+  hL1520_w->Delete();
+  hL1520_pt->Delete();
+  hL1520_w_SB->Delete();
+  hL1520_pt_SB->Delete();
+  
   K0_fit->Delete();
   K0_signal->Delete();
   L1116_fit->Delete();
