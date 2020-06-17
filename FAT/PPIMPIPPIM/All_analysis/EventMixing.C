@@ -47,6 +47,11 @@ void EventMixing::Loop(char*  output)
   TH1F* h_m_inv_p_pim=new TH1F("h_m_inv_p_pim","A #Lambda(1116) invariant mass; M_{p #pi^{-}[MeV]};N",bin*2,xmin,xmax);
   TH1F* h_m_inv_p_pim_pip_pim_signal=new TH1F("h_m_inv_p_pim_pip_pim_signal","A #Lambda(1520) invariant mass from event mixing for signal; M_{p #pi^{-} #pi^{+} #pi^{-} [MeV]};N",bin,xmin,xmax);
   TH1F* h_m_inv_p_pim_pip_pim_SB=new TH1F("h_m_inv_p_pim_pip_pim_SB","A #Lambda(1520) invariant mass from event mixing for SB; M_{p #pi^{-} #pi^{+} #pi^{-} [MeV]};N",bin,xmin,xmax);
+  TH1F* hL1520_w=new TH1F("hL1520_w","Rapidity for #Lambda (1520) events; w",30,0,1.5);
+  TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",30,0,1600);
+  TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",30,0,1.5);
+  TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",30,0,1600);
+  
   bool isL=false;
   bool isK0=false;
   double sidebandmin=10;
@@ -98,12 +103,22 @@ void EventMixing::Loop(char*  output)
 	  if(l1116.M()<1116+sidebandmin && l1116.M()>1116-sidebandmin)
 	    {
 	      h_m_inv_p_pim_pip_pim_signal->Fill(l1520.M());
+	      if(l1520.M()>1440 && l1520.M()<1600)
+		{
+		  hL1520_pt->Fill(l1520.Pt());
+		  hL1520_w->Fill(l1520.Rapidity());
+		}
 	    }
 	  if((l1116.M()<1116+sidebandmax && l1116.M()>1116+sidebandmin)
 	     ||(l1116.M()>1116-sidebandmax && l1116.M()<1116-sidebandmin)
 	     )
 	    {
 	      h_m_inv_p_pim_pip_pim_SB->Fill(l1520.M());
+	      if(l1520.M()>1440 && l1520.M()<1600)
+		{
+		  hL1520_pt_SB->Fill(l1520.Pt());
+		  hL1520_w_SB->Fill(l1520.Rapidity());
+		}
 	    }
 	  isK0=false;
 	  isL=false;
@@ -180,6 +195,9 @@ void EventMixing::Loop(char*  output)
   cout<<"all in signal range: "<<intAll<<endl;
 
   h_m_inv_p_pim_pip_pim_SB->Scale(intB/intsideband);
+  hL1520_pt_SB->Scale(intB/intsideband);
+  hL1520_w_SB->Scale(intB/intsideband);
+
   
   cFit1116->Write();
   outFileData->Write();

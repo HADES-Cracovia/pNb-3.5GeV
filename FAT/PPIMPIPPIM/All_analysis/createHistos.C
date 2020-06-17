@@ -11,8 +11,21 @@
 #include <iostream>
 #include <TF1.h>
 #include <TLine.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
 
 using namespace std;
+void scale(TH1F* hist, double s)
+{
+  //hist->Scale(s);
+
+  for (Int_t j=1; j<hist->GetNbinsX()+1; ++j)
+    {
+      hist->SetBinContent( j, hist->GetBinContent(j)*s );
+      hist->SetBinError( j, hist->GetBinError(j)*s );
+    }
+
+}
 
 void createHistos::Loop(char* output)
 {
@@ -96,10 +109,10 @@ void createHistos::Loop(char* output)
   TH1F* hMPPim_TMVAMass=new TH1F("hMPPim_TMVAMass","M^{inv}_{p #pi^{-}} after MLP and a #Delta^{++} mass cut; M^{inv}_{p #pi^{-}} [MeV];N",LdM,Lmin,Lmax);
   TH1F* hMPipPim_TMVAMass=new TH1F("hMPipPim_TMVAMass","M^{inv}_{#pi^{+} #pi^{-}} after MLP and a #Delta^{++} mass cut; M^{inv}_{#pi^{+} #pi^{-}} [MeV];N",KdM,Kmin,Kmax);
 
-  TH1F* hL1520_w=new TH1F("hL1520_w","Rapidity for #Lambda (1520) events; w",10,0.6,1.2);
-  TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",10,0,800);
-  TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",10,0.6,1.2);
-  TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",10,0,800);
+  TH1F* hL1520_w=new TH1F("hL1520_w","Rapidity for #Lambda (1520) events; w",30,0,1.5);
+  TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",30,0,1600);
+  TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",30,0,1.5);
+  TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",30,0,1600);
   
   hMPPim_TMVA_K0mass->Sumw2();
   hMPipPim_TMVA_Lmass->Sumw2();
@@ -118,6 +131,8 @@ void createHistos::Loop(char* output)
   Long64_t nbytes = 0, nb = 0;
   step =(int)nentries/15;
 
+  TLorentzVector p,pim1,pip,pim2,ppimpippim;
+  
   for (Long64_t jentry=0; jentry<nentries;jentry++)
     {
       Long64_t ientry = LoadTree(jentry);
@@ -279,8 +294,8 @@ void createHistos::Loop(char* output)
   cout<<"signal integral: "<<intS<<endl<<"beckground integral: "<<intB<<endl<<"sideband integral: "<<intsideband<<endl;
   cout<<"all in signal range: "<<intAll<<endl;
 
-  background->Scale(intB/intsideband);
-  hMPipPim_background->Scale(intB/intsideband);
+  scale(background,intB/intsideband);
+  scale(hMPipPim_background,intB/intsideband);
   scale(hL1520_pt_SB,intB/intsideband);
   scale(hL1520_w_SB,intB/intsideband);
 

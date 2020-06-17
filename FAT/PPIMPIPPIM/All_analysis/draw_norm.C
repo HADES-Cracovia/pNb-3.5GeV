@@ -1130,29 +1130,29 @@ TCanvas* cL=new TCanvas("cL", "Signal for final state p #pi^{+} #L^{0} K^{0}");
   fL1116_experiment_fit->Write();
   fL1116_experiment_sig->Write();
 
-  hexperiment_L1520_w->Draw();
-  hL1520_L1520_w->Draw();
-  hLDpp_L1520_w->Draw();
-  hSDpp_L1520_w->Draw();
-  hS1385_L1520_w->Draw();
+  hexperiment_L1520_w->Write();
+  hL1520_L1520_w->Write();
+  hLDpp_L1520_w->Write();
+  hSDpp_L1520_w->Write();
+  hS1385_L1520_w->Write();
 
-  hexperiment_L1520_w_SB->Draw();
-  hL1520_L1520_w_SB->Draw();
-  hLDpp_L1520_w_SB->Draw();
-  hSDpp_L1520_w_SB->Draw();
-  hS1385_L1520_w_SB->Draw();
+  hexperiment_L1520_w_SB->Write();
+  hL1520_L1520_w_SB->Write();
+  hLDpp_L1520_w_SB->Write();
+  hSDpp_L1520_w_SB->Write();
+  hS1385_L1520_w_SB->Write();
 
-  hexperiment_L1520_pt->Draw();
-  hL1520_L1520_pt->Draw();
-  hLDpp_L1520_pt->Draw();
-  hSDpp_L1520_pt->Draw();
-  hS1385_L1520_pt->Draw();
+  hexperiment_L1520_pt->Write();
+  hL1520_L1520_pt->Write();
+  hLDpp_L1520_pt->Write();
+  hSDpp_L1520_pt->Write();
+  hS1385_L1520_pt->Write();
 
-  hexperiment_L1520_pt_SB->Draw();
-  hL1520_L1520_pt_SB->Draw();
-  hLDpp_L1520_pt_SB->Draw();
-  hSDpp_L1520_pt_SB->Draw();
-  hS1385_L1520_pt_SB->Draw();
+  hexperiment_L1520_pt_SB->Write();
+  hL1520_L1520_pt_SB->Write();
+  hLDpp_L1520_pt_SB->Write();
+  hSDpp_L1520_pt_SB->Write();
+  hS1385_L1520_pt_SB->Write();
 
   hsum_w_background->Write();
   hsum_pt_background->Write();
