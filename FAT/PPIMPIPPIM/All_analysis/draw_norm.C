@@ -637,17 +637,18 @@ int draw_norm(void)
       hexperiment_L1520_pt_SB->SetLineColor(kRed);
 
       cPt_signal->cd(2);
-      hclean_pt_experiment->Draw("e1");
+      //hclean_pt_experiment->Draw("e1");
       hclean_pt_experiment->Rebin(rebin_sig);
       setHistogramStyleData(hclean_pt_experiment);
-      hclean_pt_EM->Draw("samee1");
-      hclean_pt_EM->SetLineColor(kGreen-2);
-      hclean_pt_EM->Rebin(rebin_sig);
-      setHistogramStyleData(hclean_pt_EM);
       hclean_pt_experiment_sum->Draw("samee1");
       hclean_pt_experiment_sum->Rebin(rebin_sig);
-      hclean_pt_experiment_sum->SetLineColor(kMagenta);
+      hclean_pt_experiment_sum->SetLineColor(kGreen-2);
       setHistogramStyleData(hclean_pt_experiment_sum);
+      hclean_pt_EM->Draw("samee1");
+      hclean_pt_EM->SetLineColor(kRed);
+      hclean_pt_EM->Rebin(rebin_sig);
+      setHistogramStyleData(hclean_pt_EM);
+      
       /*hclean_pt_L1520->Draw("samee2");
   hclean_pt_L1520->SetLineColor(kGreen);
   setHistogramStyleSimul(hclean_pt_L1520);
@@ -666,17 +667,18 @@ int draw_norm(void)
       hexperiment_L1520_w_SB->SetLineColor(kRed);
 
       cW_signal->cd(2);
-      hclean_w_experiment->Draw("e1");
+      //hclean_w_experiment->Draw("e1");
       hclean_w_experiment->Rebin(rebin_sig);
       setHistogramStyleData(hclean_w_experiment);
-      hclean_w_EM->Draw("samee1");
-      hclean_w_EM->SetLineColor(kGreen-2);
-      hclean_w_EM->Rebin(rebin_sig);
-      setHistogramStyleData(hclean_w_EM);
       hclean_w_experiment_sum->Draw("samee1");
       hclean_w_experiment_sum->Rebin(rebin_sig);
-      hclean_w_experiment_sum->SetLineColor(kMagenta);
+      hclean_w_experiment_sum->SetLineColor(kGreen-2);
       setHistogramStyleData(hclean_w_experiment_sum);
+      hclean_w_EM->Draw("samee1");
+      hclean_w_EM->SetLineColor(kRed);
+      hclean_w_EM->Rebin(rebin_sig);
+      setHistogramStyleData(hclean_w_EM);
+      
       /*hclean_w_L1520->Draw("samee2");
 	hclean_w_L1520->SetLineColor(kGreen);
 	setHistogramStyleSimul(hclean_w_L1520);
@@ -852,7 +854,7 @@ int draw_norm(void)
 
       hclean_EM->Rebin(rebin);
       hclean_EM->Draw("samee1");
-      hclean_EM->SetLineColor(kGreen);
+      hclean_EM->SetLineColor(kRed);
       setHistogramStyleData(hclean_EM);
 
       int rebin_pippim=2;
@@ -898,7 +900,7 @@ int draw_norm(void)
       hclean_L1520_ren->Rebin(rebin);
       setHistogramStyleSimul(hclean_L1520_ren);
       hclean_L1520_ren->SetFillStyle(3154);
-      hclean_L1520_ren->Draw("samee2");
+      //hclean_L1520_ren->Draw("samee2");
 
       hclean_EM->Draw("same");
 
@@ -907,7 +909,7 @@ int draw_norm(void)
       hclean_sum_ren->SetFillColor(kMagenta);
       setHistogramStyleSimul(hclean_sum_ren);
       hclean_sum_ren->SetFillStyle(3145);
-      hclean_sum_ren->Draw("samee2");
+      //hclean_sum_ren->Draw("samee2");
 
 
 
@@ -936,8 +938,8 @@ int draw_norm(void)
       sprintf(text4, "#sigma = %.2f MeV",voigt->GetParameter(2));
       sprintf(text5, "#Gamma = %.2f MeV",voigt->GetParameter(3));
       sprintf(text6, "#bar{M_{p #pi^{-} #pi^{+} #pi^{-}}} = %.1f MeV",voigt->GetParameter(1));
-      sprintf(text7, "#int_{1400 MeV}^{1620 MeV} = %.2f ",voigt->Integral(1400,1620)/hpure_signal->GetBinWidth(2));
-      sprintf(text8, "#sum_{1400 MeV}^{1620 MeV} = %.2f ",hpure_signal->Integral(hpure_signal->FindBin(1400),hpure_signal->FindBin(1620)));
+      sprintf(text7, "#int_{1400 MeV}^{1620 MeV} = %.1f ",voigt->Integral(1400,1620)/hpure_signal->GetBinWidth(2));
+      sprintf(text8, "#sum_{1400 MeV}^{1620 MeV} = %.1f #pm %.1f ",hpure_signal->Integral(hpure_signal->FindBin(1400),hpure_signal->FindBin(1620)),hist_error(hpure_signal,1400,1620));
       printFormula1->SetNDC();
       printFormula1->SetTextFont(32);
       printFormula1->SetTextColor(1);
