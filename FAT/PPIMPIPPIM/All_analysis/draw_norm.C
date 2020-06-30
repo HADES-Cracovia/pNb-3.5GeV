@@ -145,7 +145,8 @@ int draw_norm(void)
   TFile *fileL1520= new TFile("SB_sim_L1520pippim.root","READ");
   TFile *fileLK0=new TFile("SB_sim_LK0ppip.root","READ");
   TFile *fileExp= new TFile("SB_experiment.root","READ");
-  TFile *fileEM=new TFile("nowa_kolejnosc.root","READ");
+  //TFile *fileEM=new TFile("nowa_kolejnosc.root","READ");
+  TFile *fileEM=new TFile("EM2.root","READ");
 
 
   TH1F *hexperiment_L=(TH1F*)fileExp->Get("hMPPim_TMVA_K0mass");
@@ -413,13 +414,14 @@ int draw_norm(void)
        9.26/1000*scale/(nsim*downscale)*nuc_factor,//SDpp
        29.45/1000*scale/(nsim*downscale)*nuc_factor,//LDpp
        5.6/1000*scale/(100*100000*downscale)*nuc_factor,//L(1520)pK+->Lpi+pi-pK+
-       (2.57+14.05+9.26+29.45)/1000*scale/(100*100000*downscale)*0.5*nuc_factor//L K0 p pi+ (0.5 because of Ks i Kl)
+       (3.5+2.57+14.05+9.26+29.45)/1000*scale/(100*100000*downscale)*0.5*nuc_factor//L K0 p pi+ (0.5 because of Ks i Kl)
       };
-      double err[4]=
+      double err[5]=
 	{2.25/14.05,//S1385
 	 1.47/9.26,//SDpp
 	 2.55/29.45,//LDpp
-	 2/5.6//L(1520)pK+->Lpi+pi-pK+
+	 2/5.6,//L(1520)pK+->Lpi+pi-pK+
+	 TMath::Sqrt(2.06*2.06+1.67*1.67+0.65*0.65+1.+1.+2.*2.+3.5*0.2*3.5*0.2)*0.5*nuc_factor
 	};
       double cs_sig;
       // cs in \mu barns, have to me re-calculated to mb!!
@@ -563,8 +565,8 @@ int draw_norm(void)
 
       hclean_EM->Add(hEM_data,hEM_background,1,-1);
       //scale Event mixing to data
-      double int_min_1=1570;
-      double int_max_1=1850;
+      double int_min_1=1650;
+      double int_max_1=1980;
 
       double EM_int=hclean_EM->Integral(hclean_EM->FindBin(int_min_1),hclean_EM->FindBin(int_max_1));
       double sig_EM_int=hclean_experiment->Integral(hclean_experiment->FindBin(int_min_1),hclean_experiment->FindBin(int_max_1));
@@ -660,12 +662,18 @@ int draw_norm(void)
   setHistogramStyleSimul(hclean_pt_experiment_sum);
       */
       TCanvas* cW_signal=new TCanvas("cW_signal", "rapidity for signal");
+      TLine* line_Wmean=new TLine(hclean_w_experiment_sum->GetMean(),0,hclean_w_experiment_sum->GetMean(),150);
+      line_Wmean->SetLineWidth(4);
+      line_Wmean->SetLineColor(kGreen-2);
+      line_Wmean->SetLineStyle(10);
+
+      
       cW_signal->Divide(2);
       cW_signal->cd(1);
       hexperiment_L1520_w->Draw("e1");
       hexperiment_L1520_w_SB->Draw("samee1");
       hexperiment_L1520_w_SB->SetLineColor(kRed);
-
+     
       cW_signal->cd(2);
       //hclean_w_experiment->Draw("e1");
       hclean_w_experiment->Rebin(rebin_sig);
@@ -678,6 +686,7 @@ int draw_norm(void)
       hclean_w_EM->SetLineColor(kRed);
       hclean_w_EM->Rebin(rebin_sig);
       setHistogramStyleData(hclean_w_EM);
+      line_Wmean->Draw();
       
       /*hclean_w_L1520->Draw("samee2");
 	hclean_w_L1520->SetLineColor(kGreen);
@@ -831,7 +840,7 @@ int draw_norm(void)
 
       hclean_experiment->Draw("e1");
       hclean_experiment->Rebin(rebin);
-      hclean_experiment->GetXaxis()->SetRangeUser(1360,1780);
+      hclean_experiment->GetXaxis()->SetRangeUser(1360,2300);
       setHistogramStyleData(hclean_experiment);
 
       hclean_background->SetLineColor(kRed);
@@ -924,6 +933,7 @@ int draw_norm(void)
       voigt->SetParameter(0,2412);
       voigt->SetParameter(1,1500);
       voigt->SetParameter(2,5);
+      voigt->FixParameter(2,21.21);
       voigt->SetParameter(3,50);
       hpure_signal->Fit(voigt,"RL");
       hpure_signal->Fit(voigt,"RL");
@@ -994,7 +1004,7 @@ int draw_norm(void)
       cout<<"Integral for inclusive L(1520) production:"<<endl;
       cout<<hclean_L1520_ren->Integral()<<endl;
       cout<<"C-S for pp->pK0L(1520):"<<endl;
-      cout<<"5.6 \mu b:"<<endl;
+      cout<<"5.6*93^{2/3} \mu b:"<<endl;
       cout<<"inclusive L(1520) production C-S:"<<endl;
       cout<<5.6*(experiment_int-backgroud_int)/sig_int<<endl;
       cout<<"a scaling factor"<<endl;
@@ -1137,7 +1147,7 @@ int draw_norm(void)
       L_sim_bg->Draw("same");
 
       TLatex *printFormula4 = new TLatex();
-      double nuc_cs=(2.57+14.05+9.26+29.45)*nuc_factor;
+      double nuc_cs=(3.5+2.57+14.05+9.26+29.45+5.0+3.5+2.3+14)*0.5*nuc_factor;
       double high4=0.85;
       double cs_L_sim,cs_L,cs_L_err;
       cs_L=hsigL_pure->IntegralAndError(hsigL_pure->FindBin(1100),hsigL_pure->FindBin(1130),cs_L_err);
@@ -1145,12 +1155,12 @@ int draw_norm(void)
       //cout<<cs_L_sim<<" "<<cs_L<<" "<<cs_L_err<<endl;
       char text15[10000];
       char text16[10000];
-      sprintf(text15, " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.1f #mu b",nuc_cs);
+      sprintf(text15, " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.0f #pm %0.0f #mu b",nuc_cs,err_sum[4]);
       sprintf(text16, "#sigma_{exp} = %.0f #pm %.0f #mu b",nuc_cs*cs_L/cs_L_sim,nuc_cs*cs_L_err/cs_L_sim);
       printFormula4->SetNDC();
       printFormula4->SetTextFont(32);
       printFormula4->SetTextColor(1);
-      printFormula4->SetTextSize(0.05);
+      printFormula4->SetTextSize(0.04);
       printFormula4->SetTextAlign(13);
       printFormula4->DrawLatex(0.35,high4, text15);
       printFormula4->DrawLatex(0.35,high4-printFormula->GetTextSize()*2, text16);
@@ -1178,17 +1188,71 @@ int draw_norm(void)
       
       char text17[10000];
       char text18[10000];
-      sprintf(text17, " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.1f #mu b",nuc_cs);
+      sprintf(text17,  " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.0f #pm %0.0f #mu b",nuc_cs,err_sum[4]);
       sprintf(text18, "#sigma_{exp} = %.0f #pm %.0f #mu b",nuc_cs*cs_K0/cs_K0_sim,nuc_cs*cs_K0_err/cs_K0_sim);
       printFormula5->SetNDC();
       printFormula5->SetTextFont(32);
       printFormula5->SetTextColor(1);
-      printFormula5->SetTextSize(0.05);
+      printFormula5->SetTextSize(0.04);
       printFormula5->SetTextAlign(13);
       printFormula5->DrawLatex(0.3,high4, text17);
       printFormula5->DrawLatex(0.35,high4-printFormula->GetTextSize()*2, text18);
 
+      TCanvas* cWithoutSB=new TCanvas("cWithoutSB","cWithoutSB");
+      TH1F* h1520_exp_EM=(TH1F*)hexperiment_data->Clone("h1520_exp_EM");
+      TH1F* hEM_data_sclad=(TH1F*)hEM_data->Clone("hEM_data_sclad");
+
+      double int_min_2=1550;
+      double int_max_2=1990;
+      double int_exp=hexperiment_data->Integral(hexperiment_data->FindBin(int_min_2),hexperiment_data->FindBin(int_max_2));
+      double int_EM_bg=hEM_data->Integral(hEM_data->FindBin(int_min_2),hEM_data->FindBin(int_max_2));
+
+      hEM_data_sclad->Scale(int_exp/int_EM_bg);
       
+      h1520_exp_EM->Add(hEM_data_sclad,-1);
+      cWithoutSB->Divide(2);
+
+      cWithoutSB->cd(1);
+      hexperiment_data->SetAxisRange(1300,2000);
+      hexperiment_data->Draw();
+      hEM_data_sclad->SetLineColor(kCyan-2);
+      hEM_data_sclad->SetMarkerColor(kCyan-2);
+      setHistogramStyleData(hEM_data);
+      hEM_data_sclad->Draw("same");
+
+      cWithoutSB->cd(2);
+      TF1* voigt2= new TF1("voigt2","[0]*TMath::Voigt(x-[1],[2],[3],4)",1380,1750);
+      h1520_exp_EM->Draw();
+      voigt2->SetParameter(0,2412);
+      voigt2->SetParameter(1,1520);
+      voigt2->SetParameter(2,5);
+      voigt2->FixParameter(2,21.21);
+      voigt2->SetParameter(3,50);
+      h1520_exp_EM->Fit(voigt2,"RL");
+      
+
+      TLatex *printFormula6 = new TLatex();
+      double high=0.85;
+      char text19[10000];
+      char text20[10000];
+      char text21[10000];
+      char text22[10000];
+      char text23[10000];
+      sprintf(text19, "#sigma = %.2f MeV",voigt2->GetParameter(2));
+      sprintf(text20, "#Gamma = %.2f MeV",voigt2->GetParameter(3));
+      sprintf(text21, "#bar{M_{p #pi^{-} #pi^{+} #pi^{-}}} = %.1f MeV",voigt2->GetParameter(1));
+      sprintf(text22, "#int_{1400 MeV}^{1620 MeV} = %.1f ",voigt2->Integral(1400,1620)/h1520_exp_EM->GetBinWidth(2));
+      sprintf(text23, "#sum_{1400 MeV}^{1620 MeV} = %.1f #pm %.1f ",h1520_exp_EM->Integral(h1520_exp_EM->FindBin(1400),h1520_exp_EM->FindBin(1620)),hist_error(h1520_exp_EM,1400,1620));
+      printFormula6->SetNDC();
+      printFormula6->SetTextFont(32);
+      printFormula6->SetTextColor(1);
+      printFormula6->SetTextSize(0.04);
+      printFormula6->SetTextAlign(13);
+      printFormula6->DrawLatex(0.5,high,text19);
+      printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize(),text20);
+      printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*2,text21);
+      printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*4,text22);
+      printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*7,text23);
       
       //save all
       TFile* output=new TFile("final_output.root","recreate");
@@ -1289,4 +1353,5 @@ int draw_norm(void)
       cW_simul->Write();
       cPt_signal->Write();
       cW_signal->Write();
+      cWithoutSB->Write();
 }
