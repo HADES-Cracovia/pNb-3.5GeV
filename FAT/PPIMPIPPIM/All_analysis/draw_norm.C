@@ -632,6 +632,11 @@ int draw_norm(void)
 
       int rebin_sig=2;
       TCanvas* cPt_signal=new TCanvas("cPt_signal", "p_{t} for signal");
+      TLine* line_Ptmean=new TLine(hclean_pt_experiment->GetMean(),0,hclean_pt_experiment->GetMean(),100);
+      line_Ptmean->SetLineWidth(4);
+      line_Ptmean->SetLineColor(kGreen-2);
+      line_Ptmean->SetLineStyle(10); 
+
       cPt_signal->Divide(2);
       cPt_signal->cd(1);
       hexperiment_L1520_pt->Draw("e1");
@@ -650,7 +655,7 @@ int draw_norm(void)
       hclean_pt_EM->SetLineColor(kRed);
       hclean_pt_EM->Rebin(rebin_sig);
       setHistogramStyleData(hclean_pt_EM);
-      
+      line_Ptmean->Draw("same");
       /*hclean_pt_L1520->Draw("samee2");
   hclean_pt_L1520->SetLineColor(kGreen);
   setHistogramStyleSimul(hclean_pt_L1520);
