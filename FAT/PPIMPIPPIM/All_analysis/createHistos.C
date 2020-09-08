@@ -61,6 +61,10 @@ void createHistos::Loop(char* output)
   const int nsignal=20;
   double sidebandmin=10;
   double sidebandmax=22;
+  double mlp_cut=0.62;
+  double oa_cut=10;
+  double dist_cut=50;
+  
   TLine* line1=new TLine(1116-sidebandmax,0,1116-sidebandmax,120);
   TLine* line2=new TLine(1116-sidebandmin,0,1116-sidebandmin,120);
   TLine* line3=new TLine(1116+sidebandmin,0,1116+sidebandmin,120);
@@ -124,7 +128,6 @@ void createHistos::Loop(char* output)
   cutFile->GetObject("CUTG",graph_cut);
   cutFile->Close();
 
-  double mlp_cut=0.62;
   TFile *MyFile = new TFile(output,"recreate");
  
   Long64_t nentries = fChain->GetEntries();
@@ -205,8 +208,8 @@ void createHistos::Loop(char* output)
 	 ||mlp_output<mlp_cut
 	 //||miss_mass_kp<1200 //replaced by graphical cut
 	 ||m_inv_pip_pim>410 //replaced by graphical cut
-	 ||dist_ver_to_ver<50
-	 ||(oa_lambda>10)
+	 ||dist_ver_to_ver<dist_cut
+	 ||(oa_lambda>oa_cut)
 	 //||!(graph_cut->IsInside(miss_mass_kp,m_inv_pip_pim))
 	 //||p_theta>20 //to clean up proton sample
 	 //||dist_pip_pim>5

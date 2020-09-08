@@ -582,6 +582,7 @@ int draw_norm(void)
       double int_min=1410;
       double int_max=1600;
       double err_sum;
+      double err_sum_EM;
 
       double sig_int=hclean_L1520->Integral(hclean_L1520->FindBin(int_min),hclean_L1520->FindBin(int_max));
       double backgroud_int=hclean_EM->Integral(hclean_EM->FindBin(int_min),hclean_EM->FindBin(int_max));
@@ -953,8 +954,8 @@ int draw_norm(void)
       sprintf(text4, "#sigma = %.2f MeV",voigt->GetParameter(2));
       sprintf(text5, "#Gamma = %.2f MeV",voigt->GetParameter(3));
       sprintf(text6, "#bar{M_{p #pi^{-} #pi^{+} #pi^{-}}} = %.1f MeV",voigt->GetParameter(1));
-      sprintf(text7, "#int_{1400 MeV}^{1620 MeV} = %.1f ",voigt->Integral(1400,1620)/hpure_signal->GetBinWidth(2));
-      sprintf(text8, "#sum_{1400 MeV}^{1620 MeV} = %.1f #pm %.1f ",hpure_signal->Integral(hpure_signal->FindBin(1400),hpure_signal->FindBin(1620)),hist_error(hpure_signal,1400,1620));
+      sprintf(text7, "#int_{1400 MeV}^{1620 MeV} = %.1f ",voigt->Integral(int_min,int_max)/hpure_signal->GetBinWidth(2));
+      sprintf(text8, "#sum_{1400 MeV}^{1620 MeV} = %.1f #pm %.1f ",hpure_signal->Integral(hpure_signal->FindBin(int_min),hpure_signal->FindBin(int_max)),hist_error(hpure_signal,int_min,int_max));
       printFormula1->SetNDC();
       printFormula1->SetTextFont(32);
       printFormula1->SetTextColor(1);
@@ -965,8 +966,7 @@ int draw_norm(void)
       printFormula1->DrawLatex(0.5,high-printFormula1->GetTextSize()*2,text6);
       printFormula1->DrawLatex(0.5,high-printFormula1->GetTextSize()*4,text7);
       printFormula1->DrawLatex(0.5,high-printFormula1->GetTextSize()*7,text8);
-
-
+      
       TCanvas *cSB=new TCanvas("cSB","Spectrum for side-band");
       hexperiment_SB_spectrum->SetAxisRange(1050,1250);
       setHistogramStyleData(hexperiment_SB_spectrum);
@@ -1001,22 +1001,6 @@ int draw_norm(void)
       printFormula->DrawLatex(0.6,high-printFormula->GetTextSize(), text2);
       printFormula->DrawLatex(0.6,high-printFormula->GetTextSize()*2 , text3);
 
-
-      err_sum=hist_error(hpure_signal,int_min,int_max);
-
-      cout<<"Integral for pK0L(1520) (CS from Laura paper):"<<endl;
-      cout<<hclean_L1520->Integral()<<endl;
-      cout<<"Integral for inclusive L(1520) production:"<<endl;
-      cout<<hclean_L1520_ren->Integral()<<endl;
-      cout<<"C-S for pp->pK0L(1520):"<<endl;
-      cout<<"5.6*93^{2/3} \mu b:"<<endl;
-      cout<<"inclusive L(1520) production C-S:"<<endl;
-      cout<<5.6*(experiment_int-backgroud_int)/sig_int<<endl;
-      cout<<"a scaling factor"<<endl;
-      cout<<(experiment_int-backgroud_int)/sig_int<<endl;
-      cout<<"****************error estimation****************"<<endl;
-      cout<<"error sum= "<<err_sum<<endl;
-      cout<<endl<<endl;
 
       int npx=300;
       TCanvas* cL=new TCanvas("cL", "Signal for final state p #pi^{+} #L^{0} K^{0}");
@@ -1246,8 +1230,8 @@ int draw_norm(void)
       sprintf(text19, "#sigma = %.2f MeV",voigt2->GetParameter(2));
       sprintf(text20, "#Gamma = %.2f MeV",voigt2->GetParameter(3));
       sprintf(text21, "#bar{M_{p #pi^{-} #pi^{+} #pi^{-}}} = %.1f MeV",voigt2->GetParameter(1));
-      sprintf(text22, "#int_{1400 MeV}^{1620 MeV} = %.1f ",voigt2->Integral(1400,1620)/h1520_exp_EM->GetBinWidth(2));
-      sprintf(text23, "#sum_{1400 MeV}^{1620 MeV} = %.1f #pm %.1f ",h1520_exp_EM->Integral(h1520_exp_EM->FindBin(1400),h1520_exp_EM->FindBin(1620)),hist_error(h1520_exp_EM,1400,1620));
+      sprintf(text22, "#int_{1400 MeV}^{1620 MeV} = %.1f ",voigt2->Integral(int_min,int_max)/h1520_exp_EM->GetBinWidth(2));
+      sprintf(text23, "#sum_{1400 MeV}^{1620 MeV} = %.1f #pm %.1f ",h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max)),hist_error(h1520_exp_EM,int_min,int_max));
       printFormula6->SetNDC();
       printFormula6->SetTextFont(32);
       printFormula6->SetTextColor(1);
@@ -1258,6 +1242,33 @@ int draw_norm(void)
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*2,text21);
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*4,text22);
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*7,text23);
+
+      double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
+
+      err_sum=hist_error(hpure_signal,int_min,int_max);
+      err_sum_EM=hist_error(h1520_exp_EM,int_min,int_max);
+
+      double int_sim_SB=hclean_L1520->Integral(hclean_L1520->FindBin(int_min),hclean_L1520->FindBin(int_max));
+      double int_sim_wo_SB=hL1520_data->Integral(hL1520_data->FindBin(int_min),hL1520_data->FindBin(int_max));
+      cout<<"Integral for pK0L(1520) (CS from Laura paper), after SB:"<<endl;
+      cout<<int_sim_SB<<endl;
+      cout<<"Integral for pK0L(1520) (CS from Laura paper), without SB:"<<endl;
+      cout<<int_sim_wo_SB<<endl;
+      //cout<<"Integral for inclusive L(1520) production:"<<endl;
+      //cout<<hclean_L1520_ren->Integral()<<endl;
+      cout<<"C-S for pp->pK0L(1520):"<<endl;
+      cout<<"5.6*93^{2/3} \mu b:"<<endl;
+      cout<<"inclusive L(1520) production C-S, with SB:"<<endl;
+      cout<<5.6*nuc_factor*(hpure_signal->Integral(hpure_signal->FindBin(int_min),hpure_signal->FindBin(int_max)))/sig_int<<endl;
+      cout<<"inclusive L(1520) production C-S, without SB:"<<endl;
+      cout<<5.6*nuc_factor*(sig_int_EM/hL1520_data->Integral(hL1520_data->FindBin(int_min),hL1520_data->FindBin(int_max)))<<endl;
+      cout<<"a scaling factor"<<endl;
+      cout<<(experiment_int-backgroud_int)/sig_int<<endl;
+      cout<<"****************error estimation****************"<<endl;
+      cout<<"error sum= "<<err_sum/int_sim_SB*5.6*nuc_factor<<"\mu b"<<endl;
+      cout<<"error sum EM= "<<err_sum_EM/int_sim_wo_SB*5.6*nuc_factor<<"\mu b"<<endl;
+      cout<<endl<<endl;
+
       
       //save all
       TFile* output=new TFile("final_output.root","recreate");
