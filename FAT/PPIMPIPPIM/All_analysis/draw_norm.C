@@ -565,7 +565,7 @@ int draw_norm(void)
 
       hclean_EM->Add(hEM_data,hEM_background,1,-1);
       //scale Event mixing to data
-      double int_min_1=1650;
+      double int_min_1=1690;
       double int_max_1=1980;
 
       double EM_int=hclean_EM->Integral(hclean_EM->FindBin(int_min_1),hclean_EM->FindBin(int_max_1));
@@ -1191,8 +1191,8 @@ int draw_norm(void)
       TH1F* h1520_exp_EM=(TH1F*)hexperiment_data->Clone("h1520_exp_EM");
       TH1F* hEM_data_sclad=(TH1F*)hEM_data->Clone("hEM_data_sclad");
 
-      double int_min_2=1550;
-      double int_max_2=1990;
+      double int_min_2=int_min_1;//1550;
+      double int_max_2=int_max_1;//1990;
       double int_exp=hexperiment_data->Integral(hexperiment_data->FindBin(int_min_2),hexperiment_data->FindBin(int_max_2));
       double int_EM_bg=hEM_data->Integral(hEM_data->FindBin(int_min_2),hEM_data->FindBin(int_max_2));
 
@@ -1259,7 +1259,7 @@ int draw_norm(void)
       cout<<"C-S for pp->pK0L(1520):"<<endl;
       cout<<"5.6*93^{2/3} \mu b:"<<endl;
       cout<<"inclusive L(1520) production C-S, with SB:"<<endl;
-      cout<<5.6*nuc_factor*(hpure_signal->Integral(hpure_signal->FindBin(int_min),hpure_signal->FindBin(int_max)))/sig_int<<endl;
+      cout<<5.6*nuc_factor*(hpure_signal->Integral(hpure_signal->FindBin(int_min),hpure_signal->FindBin(int_max)))/int_sim_SB<<endl;
       cout<<"inclusive L(1520) production C-S, without SB:"<<endl;
       cout<<5.6*nuc_factor*(sig_int_EM/hL1520_data->Integral(hL1520_data->FindBin(int_min),hL1520_data->FindBin(int_max)))<<endl;
       cout<<"a scaling factor"<<endl;
