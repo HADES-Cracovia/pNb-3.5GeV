@@ -73,6 +73,8 @@ public :
    Float_t         m_inv_p_pim2;
    Float_t         m_inv_p_pim_pip_pim;
    Float_t         m_inv_p_pip;
+  Float_t         m_inv_p_pim_pip;
+  Float_t         m_inv_p_pim_pim;
    Float_t         m_inv_pip_pim;
    Float_t         m_inv_pip_pim1;
    Float_t         m_inv_pip_pim2;
@@ -187,6 +189,8 @@ public :
    TBranch        *b_lambda_theta;   //!
    TBranch        *b_lambda_w;   //!
    TBranch        *b_m_inv_p_pim;   //!
+  TBranch        *b_m_inv_p_pim_pip;   //!
+  TBranch        *b_m_inv_p_pim_pim;   //!
    TBranch        *b_m_inv_p_pim1;   //!
    TBranch        *b_m_inv_p_pim2;   //!
    TBranch        *b_m_inv_p_pim_pip_pim;   //!
@@ -378,6 +382,8 @@ void createHistos::Init(TTree *tree)
    fChain->SetBranchAddress("lambda_theta", &lambda_theta, &b_lambda_theta);
    fChain->SetBranchAddress("lambda_w", &lambda_w, &b_lambda_w);
    fChain->SetBranchAddress("m_inv_p_pim", &m_inv_p_pim, &b_m_inv_p_pim);
+   fChain->SetBranchAddress("m_inv_p_pim_pip", &m_inv_p_pim_pip, &b_m_inv_p_pim_pip);
+   fChain->SetBranchAddress("m_inv_p_pim_pim", &m_inv_p_pim_pim, &b_m_inv_p_pim_pim);
    fChain->SetBranchAddress("m_inv_p_pim1", &m_inv_p_pim1, &b_m_inv_p_pim1);
    fChain->SetBranchAddress("m_inv_p_pim2", &m_inv_p_pim2, &b_m_inv_p_pim2);
    fChain->SetBranchAddress("m_inv_p_pim_pip_pim", &m_inv_p_pim_pip_pim, &b_m_inv_p_pim_pip_pim);
