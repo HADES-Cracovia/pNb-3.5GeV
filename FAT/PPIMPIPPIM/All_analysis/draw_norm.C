@@ -578,7 +578,7 @@ int draw_norm(void)
 
       hclean_EM->Add(hEM_data,hEM_background,1,-1);
       //scale Event mixing to data
-      double int_min_1=1690;
+      double int_min_1=1500;
       double int_max_1=1980;
 
       double EM_int=hclean_EM->Integral(hclean_EM->FindBin(int_min_1),hclean_EM->FindBin(int_max_1));
@@ -1256,6 +1256,27 @@ int draw_norm(void)
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*4,text22);
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*7,text23);
 
+
+      TCanvas *cSigma=new TCanvas("cSigma","cSigma");
+      cSigma->Divide(2,2);
+      cSigma->cd(1);
+      hMPPimPim->Draw("e1");
+      hMPPimPim_EM->Draw("samee1");
+      hMPPimPim_EM->Scale(int_exp/int_EM_bg);
+      hMPPimPim_EM->SetLineColor(kRed);
+      setHistogramStyleData(hMPPimPim_EM);
+      setHistogramStyleData(hMPPimPim);
+      cSigma->cd(2);
+      hMPPimPip->Draw("e1");
+      hMPPimPip_EM->Draw("samee1");
+      hMPPimPip_EM->Scale(int_exp/int_EM_bg);
+      hMPPimPip_EM->SetLineColor(kRed);
+      setHistogramStyleData(hMPPimPip);
+      setHistogramStyleData(hMPPimPip_EM);
+      cSigma->cd(3);
+      cSigma->cd(4);
+
+      
       double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
 
       err_sum=hist_error(hpure_signal,int_min,int_max);
@@ -1387,4 +1408,8 @@ int draw_norm(void)
       hMPPimPim->Write();
       hMPPimPip->Write();
       h2MPPimPip_MPPimPim->Write();
+
+      hMPPimPim_EM->Write();
+      hMPPimPip_EM->Write();
+      h2MPPimPip_MPPimPim_EM->Write();
 }
