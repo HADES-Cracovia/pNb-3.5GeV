@@ -328,6 +328,7 @@ int draw_norm(void)
   hEM_L1520_pt_SB->Sumw2();
   //the and pt
   //Dalitz plot and 3-particle final states
+  /*
   TH1F *hMPPimPip=(TH1F*)fileExp->Get("hMPPimPip");
   TH1F *hMPPimPim=(TH1F*)fileExp->Get("hMPPimPim");
   TH2F *h2MPPimPip_MPPimPim=(TH2F*)fileExp->Get("h2MPPimPip_MPPimPim");
@@ -338,7 +339,7 @@ int draw_norm(void)
   hMPPimPim_EM->SetName("hMPPimPim_EM");
   TH2F *h2MPPimPip_MPPimPim_EM=(TH2F*)fileEM->Get("h2MPPimPip_MPPimPim");
   h2MPPimPip_MPPimPim_EM->SetName("h2MPPimPip_MPPimPim_EM");
-  
+  */
   //The end of Dalitz plot and 3-particle final states
   
   TH1F *hsum_background=(TH1F*)hS1385_background->Clone("hsum_background");
@@ -1256,7 +1257,7 @@ int draw_norm(void)
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*4,text22);
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*7,text23);
 
-
+      /*
       TCanvas *cSigma=new TCanvas("cSigma","cSigma");
       cSigma->Divide(2,2);
       cSigma->cd(1);
@@ -1275,7 +1276,7 @@ int draw_norm(void)
       setHistogramStyleData(hMPPimPip_EM);
       cSigma->cd(3);
       cSigma->cd(4);
-
+      */
       
       double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
 
@@ -1404,7 +1405,7 @@ int draw_norm(void)
       cPt_signal->Write();
       cW_signal->Write();
       cWithoutSB->Write();
-
+      /*
       hMPPimPim->Write();
       hMPPimPip->Write();
       h2MPPimPip_MPPimPim->Write();
@@ -1412,4 +1413,5 @@ int draw_norm(void)
       hMPPimPim_EM->Write();
       hMPPimPip_EM->Write();
       h2MPPimPip_MPPimPim_EM->Write();
+      */
 }
