@@ -328,7 +328,7 @@ int draw_norm(void)
   hEM_L1520_pt_SB->Sumw2();
   //the and pt
   //Dalitz plot and 3-particle final states
-  /*
+  
   TH1F *hMPPimPip=(TH1F*)fileExp->Get("hMPPimPip");
   TH1F *hMPPimPim=(TH1F*)fileExp->Get("hMPPimPim");
   TH2F *h2MPPimPip_MPPimPim=(TH2F*)fileExp->Get("h2MPPimPip_MPPimPim");
@@ -339,7 +339,7 @@ int draw_norm(void)
   hMPPimPim_EM->SetName("hMPPimPim_EM");
   TH2F *h2MPPimPip_MPPimPim_EM=(TH2F*)fileEM->Get("h2MPPimPip_MPPimPim");
   h2MPPimPip_MPPimPim_EM->SetName("h2MPPimPip_MPPimPim_EM");
-  */
+  
   //The end of Dalitz plot and 3-particle final states
   
   TH1F *hsum_background=(TH1F*)hS1385_background->Clone("hsum_background");
@@ -579,7 +579,7 @@ int draw_norm(void)
 
       hclean_EM->Add(hEM_data,hEM_background,1,-1);
       //scale Event mixing to data
-      double int_min_1=1500;
+      double int_min_1=1700;
       double int_max_1=1980;
 
       double EM_int=hclean_EM->Integral(hclean_EM->FindBin(int_min_1),hclean_EM->FindBin(int_max_1));
@@ -1257,26 +1257,40 @@ int draw_norm(void)
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*4,text22);
       printFormula6->DrawLatex(0.5,high-printFormula6->GetTextSize()*7,text23);
 
-      /*
+      
       TCanvas *cSigma=new TCanvas("cSigma","cSigma");
+      TH1F* hMPPimPim_clean=(TH1F*)hMPPimPim->Clone("hMPPimPim_clean");
+      TH1F* hMPPimPip_clean=(TH1F*)hMPPimPip->Clone("hMPPimPip_clean");
+      TH2F* h2MPPimPip_MPPimPim_clean=(TH2F*)h2MPPimPip_MPPimPim->Clone("h2MPPimPip_MPPimPim_clean");
       cSigma->Divide(2,2);
       cSigma->cd(1);
       hMPPimPim->Draw("e1");
       hMPPimPim_EM->Draw("samee1");
+      hMPPimPim_clean->Draw("samee1");
       hMPPimPim_EM->Scale(int_exp/int_EM_bg);
+      hMPPimPim_clean->Add(hMPPimPim_EM,-1);
       hMPPimPim_EM->SetLineColor(kRed);
+      hMPPimPim_clean->SetLineColor(kGreen);
       setHistogramStyleData(hMPPimPim_EM);
       setHistogramStyleData(hMPPimPim);
+      setHistogramStyleData(hMPPimPim_clean);
       cSigma->cd(2);
       hMPPimPip->Draw("e1");
       hMPPimPip_EM->Draw("samee1");
+      hMPPimPip_clean->Draw("samee1");
       hMPPimPip_EM->Scale(int_exp/int_EM_bg);
+      hMPPimPip_clean->Add(hMPPimPip_EM,-1);
       hMPPimPip_EM->SetLineColor(kRed);
+      hMPPimPip_clean->SetLineColor(kGreen);
       setHistogramStyleData(hMPPimPip);
       setHistogramStyleData(hMPPimPip_EM);
+      setHistogramStyleData(hMPPimPip_clean);
       cSigma->cd(3);
+      h2MPPimPip_MPPimPim->Draw("colz");
       cSigma->cd(4);
-      */
+      h2MPPimPip_MPPimPim_EM->Scale(int_exp/int_EM_bg);
+      h2MPPimPip_MPPimPim_clean->Add(h2MPPimPip_MPPimPim_EM,-1);
+      h2MPPimPip_MPPimPim_clean->Draw("colz");
       
       double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
 
@@ -1405,7 +1419,8 @@ int draw_norm(void)
       cPt_signal->Write();
       cW_signal->Write();
       cWithoutSB->Write();
-      /*
+      cSigma->Write();
+      
       hMPPimPim->Write();
       hMPPimPip->Write();
       h2MPPimPip_MPPimPim->Write();
@@ -1413,5 +1428,5 @@ int draw_norm(void)
       hMPPimPim_EM->Write();
       hMPPimPip_EM->Write();
       h2MPPimPip_MPPimPim_EM->Write();
-      */
+      
 }
