@@ -10,8 +10,8 @@ using namespace std;
 
 int run_all(void)
 {
-  bool experiment=1;//czy brac pod uwage pliki z eksperymentu
-  bool b_TMVAeval=0;//czy uruchamiac przeliczenie sieci na nowo
+  bool experiment=0;//czy brac pod uwage pliki z eksperymentu
+  bool b_TMVAeval=1;//czy uruchamiac przeliczenie sieci na nowo
 
   if(b_TMVAeval)
     {
@@ -20,7 +20,7 @@ int run_all(void)
       TFile* fsim_SDppK0=new TFile("/lustre/nyx/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/../SDppK0_Rafal_part2.root","READ");
       TFile* fsim_S1385pK0=new TFile("/lustre/nyx/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/../S1385pK0_Rafal_part2.root","READ");
       TFile* fsim_LDppK0=new TFile("/lustre/nyx/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/../LDppK0_Rafal_part2.root","READ");
-      TFile* fsim_L1520pippim=new TFile("/lustre/nyx/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/../pp_Lpippim_ver3_new_vertex.root","READ");
+      TFile* fsim_L1520pippim=new TFile("/lustre/nyx/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/../pp_Lpippim_ver4_new_vertex.root","READ");
       TFile* fsim_LK0ppip=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/pp_pK0Lpip_ver2.root","READ");
       cout<<"load trees"<<endl;
       TTree* texperiment;

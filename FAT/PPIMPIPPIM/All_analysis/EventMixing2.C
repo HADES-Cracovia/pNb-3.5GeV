@@ -60,9 +60,13 @@ void EventMixing2::Loop(char*  output)
   TH1F* hL1116_EM=new TH1F("hL1116_EM","#Lambda(1116) from event mixing; M_{p #pi^{-}}^{inv}[MeV]",LdM,Lmin,Lmax);
   TH1F* hK0_EM=new TH1F("hK0_EM","K^{0} from event mixing; M_{p #pi^{-}}^{inv}[MeV]",KdM,Kmin,Kmax);
 
-  TH1F* hMPPimPip=new TH1F("hMPPimPip","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",200,1000,2000);
-  TH1F* hMPPimPim=new TH1F("hMPPimPim","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",200,1000,2000);
+  TH1F* hMPPimPip=new TH1F("hMPPimPip","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",400,1000,2000);
+  TH1F* hMPPimPim=new TH1F("hMPPimPim","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",400,1000,2000);
   TH2F* h2MPPimPip_MPPimPim=new TH2F("h2MPPimPip_MPPimPim","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{p #pi^{-}}[MeV];M^{inv}_{p #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
+
+  TH1F* hMPPimPip_SB=new TH1F("hMPPimPip_SB","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",400,1000,2000);
+  TH1F* hMPPimPim_SB=new TH1F("hMPPimPim_SB","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",400,1000,2000);
+  TH2F* h2MPPimPip_MPPimPim_SB=new TH2F("h2MPPimPip_MPPimPim_SB","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{p #pi^{-}}[MeV];M^{inv}_{p #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
   
   
   int delta=10000;
@@ -161,6 +165,7 @@ void EventMixing2::Loop(char*  output)
 		      {
 			hL1520_pt->Fill(l1520.Pt());
 			hL1520_w->Fill(l1520.Rapidity());
+
 			hMPPimPim->Fill(sigmam.M());
 			hMPPimPip->Fill(sigmap.M());
 			h2MPPimPip_MPPimPim->Fill(sigmap.M(),sigmam.M());
@@ -175,6 +180,10 @@ void EventMixing2::Loop(char*  output)
 		      {
 			hL1520_pt_SB->Fill(l1520.Pt());
 			hL1520_w_SB->Fill(l1520.Rapidity());
+
+			hMPPimPim_SB->Fill(sigmam.M());
+			hMPPimPip_SB->Fill(sigmap.M());
+			h2MPPimPip_MPPimPim_SB->Fill(sigmap.M(),sigmam.M());
 		      }
 		  }
 	      }

@@ -118,9 +118,13 @@ void createHistos::Loop(char* output)
   TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",20,0,1.5);
   TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",30,0,1600);
 
-  TH1F* hMPPimPip=new TH1F("hMPPimPip","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",200,1000,2000);
-  TH1F* hMPPimPim=new TH1F("hMPPimPim","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",200,1000,2000);
-  TH2F* h2MPPimPip_MPPimPim=new TH2F("h2MPPimPip_MPPimPim","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{p #pi^{-}}[MeV];M^{inv}_{p #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
+  TH1F* hMPPimPip=new TH1F("hMPPimPip","Invariant mass for #Lambda #pi^{+};M^{inv}_{#Lambda #pi^{+}}[MeV];counts",400,1000,2000);
+  TH1F* hMPPimPim=new TH1F("hMPPimPim","Invariant mass for #Lambda #pi^{-};M^{inv}_{#Lambda #pi^{-}}[MeV];counts",400,1000,2000);
+  TH2F* h2MPPimPip_MPPimPim=new TH2F("h2MPPimPip_MPPimPim","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{#Lambda #pi^{-}}[MeV];M^{inv}_{#Lambda #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
+
+  TH1F* hMPPimPip_SB=new TH1F("hMPPimPip_SB","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",400,1000,2000);
+  TH1F* hMPPimPim_SB=new TH1F("hMPPimPim_SB","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",400,1000,2000);
+  TH2F* h2MPPimPip_MPPimPim_SB=new TH2F("h2MPPimPip_MPPimPim_SB","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{#Lambda #pi^{-}}[MeV];M^{inv}_{#Lambda #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
   
   hMPPim_TMVA_K0mass->Sumw2();
   hMPipPim_TMVA_Lmass->Sumw2();
@@ -235,6 +239,7 @@ void createHistos::Loop(char* output)
 	      hL1520_pt->Fill(ppimpippim.Pt());
 	      hL1520_w->Fill(ppimpippim.Rapidity());
 	      hMPipPim_signal->Fill(m_inv_pip_pim);
+	      
 	      hMPPimPim->Fill(m_inv_p_pim_pim);
 	      hMPPimPip->Fill(m_inv_p_pim_pip);
 	      h2MPPimPip_MPPimPim->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
@@ -250,6 +255,10 @@ void createHistos::Loop(char* output)
 	      hL1520_pt_SB->Fill(ppimpippim.Pt());
 	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
 	      hMPipPim_background->Fill(m_inv_pip_pim);
+
+	      hMPPimPim_SB->Fill(m_inv_p_pim_pim);
+	      hMPPimPip_SB->Fill(m_inv_p_pim_pip);
+	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 	    }
 	}
       if(m_inv_p_pim>1116.+sidebandmin && m_inv_p_pim<1116.+sidebandmax)
@@ -261,6 +270,10 @@ void createHistos::Loop(char* output)
 	      hL1520_pt_SB->Fill(ppimpippim.Pt());
 	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
 	      hMPipPim_background->Fill(m_inv_pip_pim);
+
+	      hMPPimPim_SB->Fill(m_inv_p_pim_pim);
+	      hMPPimPip_SB->Fill(m_inv_p_pim_pip);
+	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 	    }
 	}
     }
@@ -397,7 +410,11 @@ void createHistos::Loop(char* output)
   hMPPimPim->Write();
   hMPPimPip->Write();
   h2MPPimPip_MPPimPim->Write();
-	  
+
+  hMPPimPim_SB->Write();
+  hMPPimPip_SB->Write();
+  h2MPPimPip_MPPimPim_SB->Write();
+
   
   K0_fit->Write();
   K0_signal->Write();
