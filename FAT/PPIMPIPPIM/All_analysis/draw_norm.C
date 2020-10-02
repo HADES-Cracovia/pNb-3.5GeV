@@ -6,6 +6,17 @@ void set_Y_name(TH1* hist)
   hist->GetYaxis()->SetTitle(name);
 }
 
+void setHistogramStyleThermal(TH1* hist)
+{
+  hist->SetLineColor(kOrange+10);
+  hist->SetLineStyle(5);
+  hist->SetLineWidth(4);
+  hist->SetMarkerColor(hist->GetLineColor());
+  //hist->SetMarkerSize(2);
+  //hist->SetMarkerStyle(8);
+  set_Y_name(hist);
+}
+
 void setHistogramStyleData(TH1* hist)
 {
   hist->SetLineWidth(2);
@@ -139,6 +150,7 @@ void scale_error(TH1* hist, double err,bool verbose=0)
 int draw_norm(void)
 {
   TFile *fileINCLmodel=new TFile("Lambdahist.root","READ");
+  TFile *fileL1520thermal=new TFile("SB_sim_L1520thermal.root","READ");
   TFile *fileS1385 = new TFile("SB_sim_S1385pK0.root","READ");
   TFile *fileSDpp = new TFile("SB_sim_SDppK0.root","READ");
   TFile *fileLDpp = new TFile("SB_sim_LDppK0.root","READ");
@@ -190,6 +202,9 @@ int draw_norm(void)
   hL1520_data->Sumw2(kFALSE);
   TH1F *hsum_data=(TH1F*)hS1385_data->Clone("hsum_data");
   hsum_data->Reset();
+  TH1F *hL1520thermal_data=(TH1F*)fileL1520thermal->Get("data");
+  hL1520thermal_data->SetName("hL1520thermal_data");
+  hL1520thermal_data->Sumw2(kFALSE);
 
   TH1F *hS1385_hMPipPim_signal = (TH1F*)fileS1385->Get("hMPipPim_signal");
   hS1385_hMPipPim_signal->SetName("hS1385_hMPipPim_signal");
@@ -255,6 +270,9 @@ int draw_norm(void)
   TH1F *hL1520_L1520_w=(TH1F*)fileL1520->Get("hL1520_w");
   hL1520_L1520_w->SetName("hL1520_L1520_w");
   hL1520_L1520_w->Sumw2(kFALSE);
+  TH1F *hL1520thermal_L1520_w=(TH1F*)fileL1520thermal->Get("hL1520_w");
+  hL1520thermal_L1520_w->SetName("hL1520thermal_L1520_w");
+  hL1520thermal_L1520_w->Sumw2(kFALSE);
   TH1F *hLDpp_L1520_w=(TH1F*)fileExp->Get("hL1520_w");
   hLDpp_L1520_w->SetName("hLDpp_L1520_w");
   hLDpp_L1520_w->Sumw2(kFALSE);
@@ -295,6 +313,9 @@ int draw_norm(void)
   TH1F *hL1520_L1520_pt=(TH1F*)fileL1520->Get("hL1520_pt");
   hL1520_L1520_pt->SetName("hL1520_L1520_pt");
   hL1520_L1520_pt->Sumw2(kFALSE);
+  TH1F *hL1520thermal_L1520_pt=(TH1F*)fileL1520thermal->Get("hL1520_pt");
+  hL1520thermal_L1520_pt->SetName("hL1520thermal_L1520_pt");
+  hL1520thermal_L1520_pt->Sumw2(kFALSE);
   TH1F *hLDpp_L1520_pt=(TH1F*)fileExp->Get("hL1520_pt");
   hLDpp_L1520_pt->SetName("hLDpp_L1520_pt");
   hLDpp_L1520_pt->Sumw2(kFALSE);
@@ -510,6 +531,7 @@ int draw_norm(void)
   hSDpp_data->Scale(cs[1]);
   hLDpp_data->Scale(cs[2]);
   hL1520_data->Scale(cs[3]);
+  hL1520thermal_data->Scale(cs[4]);
   hS1385_hMPipPim_signal->Scale(cs[0]);
   hSDpp_hMPipPim_signal->Scale(cs[1]);
   hLDpp_hMPipPim_signal->Scale(cs[2]);
@@ -518,10 +540,12 @@ int draw_norm(void)
   hSDpp_L1520_pt->Scale(cs[1]);
   hLDpp_L1520_pt->Scale(cs[2]);
   hL1520_L1520_pt->Scale(cs[3]);
+  hL1520thermal_L1520_pt->Scale(cs[3]);
   hS1385_L1520_w->Scale(cs[0]);
   hSDpp_L1520_w->Scale(cs[1]);
   hLDpp_L1520_w->Scale(cs[2]);
   hL1520_L1520_w->Scale(cs[3]);
+  hL1520thermal_L1520_w->Scale(cs[3]);
   /*
     hS1385_data->Sumw2();
     hSDpp_data->Sumw2();
@@ -532,6 +556,7 @@ int draw_norm(void)
   scale_error(hSDpp_data,err[1]);
   scale_error(hLDpp_data,err[2]);
   scale_error(hL1520_data,err[3]);
+  scale_error(hL1520thermal_data,err[3]);
   scale_error(hS1385_hMPipPim_signal,err[0]);
   scale_error(hSDpp_hMPipPim_signal,err[1]);
   scale_error(hLDpp_hMPipPim_signal,err[2]);
@@ -540,10 +565,12 @@ int draw_norm(void)
   scale_error(hSDpp_L1520_pt,err[1]);
   scale_error(hLDpp_L1520_pt,err[2]);
   scale_error(hL1520_L1520_pt,err[3]);
+  scale_error(hL1520thermal_L1520_pt,err[3]);
   scale_error(hS1385_L1520_w,err[0]);
   scale_error(hSDpp_L1520_w,err[1]);
   scale_error(hLDpp_L1520_w,err[2]);
   scale_error(hL1520_L1520_w,err[3]);
+  scale_error(hL1520thermal_L1520_w,err[3]);
 
   hsum_background->Add(hS1385_background);
   hsum_background->Add(hSDpp_background);
@@ -1277,9 +1304,11 @@ int draw_norm(void)
   hLambda1520_INCL->SetLineColor(kMagenta);
   hLambda1520_INCL->Rebin(8);
   hLambda1520_INCL->Scale(h1520_exp_EM->Integral()/hLambda1520_INCL->Integral());
+  hL1520thermal_data->Rebin(rebin2);
+  hL1520thermal_data->Draw("same")
   setHistogramStyleSimul(hLambda1520_INCL);
   setHistogramStyleData(h1520_exp_EM);
-
+  setHistogramStyleThermal(hL1520thermal_data);
   
   TLatex *printFormula6 = new TLatex();
   double high=0.85;
@@ -1352,6 +1381,7 @@ int draw_norm(void)
   TCanvas *cSigma_simul=new TCanvas("cSigma_simul","cSigma_simul");
 
   hMPPimPip_S1385pK0->Rebin(rebin2);
+  hMPPimPim_S1385pK0->Rebin(rebin2);
   hMPPimPim_L1520pippim->Rebin(rebin2);
   hMPPimPip_L1520pippim->Rebin(rebin2);
   
@@ -1359,9 +1389,16 @@ int draw_norm(void)
   cSigma_simul->cd(1);
   hMPPimPim_clean->Draw("e1");
   hMPPimPim_clean->SetAxisRange(1200,1500);
+  //S1385 K0 p
+  hMPPimPim_S1385pK0->SetLineColor(kRed);
+  setHistogramStyleData(hMPPimPim_S1385pK0);
+  hMPPimPim_S1385pK0->Scale(hMPPimPim_clean->Integral(hMPPimPim_clean->FindBin(1100),hMPPimPim_clean->FindBin(1600))
+				  /hMPPimPim_S1385pK0->Integral(hMPPimPim_S1385pK0->FindBin(1100),hMPPimPim_S1385pK0->FindBin(1600)));
+  hMPPimPim_S1385pK0->Draw("same");
 
-//L1520 K+ p
-  hMPPimPim_L1520pippim->SetLineColor(kMagenta);
+  
+  //L1520 K+ p
+  hMPPimPim_L1520pippim->SetLineColor(kBlue);
   setHistogramStyleData(hMPPimPim_L1520pippim);
   hMPPimPim_L1520pippim->Scale(hMPPimPim_clean->Integral(hMPPimPim_clean->FindBin(1100),hMPPimPim_clean->FindBin(1600))
 				  /hMPPimPim_L1520pippim->Integral(hMPPimPim_L1520pippim->FindBin(1100),hMPPimPim_L1520pippim->FindBin(1600)));
@@ -1379,7 +1416,7 @@ int draw_norm(void)
   hMPPimPip_S1385pK0->Draw("same");
 
   //L1520 K+ p
-  hMPPimPip_L1520pippim->SetLineColor(kMagenta);
+  hMPPimPip_L1520pippim->SetLineColor(kBlue);
   setHistogramStyleData(hMPPimPip_L1520pippim);
   hMPPimPip_L1520pippim->Scale(hMPPimPip_clean->Integral(hMPPimPip_clean->FindBin(1100),hMPPimPip_clean->FindBin(1600))
 				  /hMPPimPip_L1520pippim->Integral(hMPPimPip_L1520pippim->FindBin(1100),hMPPimPip_L1520pippim->FindBin(1600)));
@@ -1421,6 +1458,7 @@ int draw_norm(void)
   hLDpp_data->Write();
   hexperiment_data->Write();
   hL1520_data->Write();
+  hL1520thermal_data->Write();
   hsum_data->Write();
 
   hS1385_background->Write();
@@ -1456,6 +1494,7 @@ int draw_norm(void)
 
   hexperiment_L1520_w->Write();
   hL1520_L1520_w->Write();
+  hL1520thermal_L1520_w->Write();
   hLDpp_L1520_w->Write();
   hSDpp_L1520_w->Write();
   hS1385_L1520_w->Write();
@@ -1468,6 +1507,7 @@ int draw_norm(void)
 
   hexperiment_L1520_pt->Write();
   hL1520_L1520_pt->Write();
+  hL1520thermal_L1520_pt->Write();
   hLDpp_L1520_pt->Write();
   hSDpp_L1520_pt->Write();
   hS1385_L1520_pt->Write();
