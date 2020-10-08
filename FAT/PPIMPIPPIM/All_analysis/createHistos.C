@@ -125,6 +125,8 @@ void createHistos::Loop(char* output)
   TH1F* hMPPimPip_SB=new TH1F("hMPPimPip_SB","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",400,1000,2000);
   TH1F* hMPPimPim_SB=new TH1F("hMPPimPim_SB","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",400,1000,2000);
   TH2F* h2MPPimPip_MPPimPim_SB=new TH2F("h2MPPimPip_MPPimPim_SB","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{#Lambda #pi^{-}}[MeV];M^{inv}_{#Lambda #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
+
+  TH1F* hBetaGamma=new TH1F("hBetaGamma","#beta #gamma for #Lambda(1520) events",100,0,3);
   
   hMPPim_TMVA_K0mass->Sumw2();
   hMPipPim_TMVA_Lmass->Sumw2();
@@ -243,6 +245,8 @@ void createHistos::Loop(char* output)
 	      hMPPimPim->Fill(m_inv_p_pim_pim);
 	      hMPPimPip->Fill(m_inv_p_pim_pip);
 	      h2MPPimPip_MPPimPim->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+
+	      hBetaGamma->Fill(ppimpippim.P()/ppimpippim.M());
 	    } 
 	}
 
@@ -415,6 +419,7 @@ void createHistos::Loop(char* output)
   hMPPimPip_SB->Write();
   h2MPPimPip_MPPimPim_SB->Write();
 
+  hBetaGamma->Write();
   
   K0_fit->Write();
   K0_signal->Write();
@@ -477,6 +482,7 @@ void createHistos::Loop(char* output)
   hMPPimPip->Delete();
   h2MPPimPip_MPPimPim->Delete();
 
+  hBetaGamma->Delete();
   
 
   MyFile->Close();

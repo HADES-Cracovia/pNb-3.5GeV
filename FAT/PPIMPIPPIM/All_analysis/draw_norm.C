@@ -382,6 +382,13 @@ int draw_norm(void)
   h2MPPimPip_MPPimPim_EM->SetName("h2MPPimPip_MPPimPim_EM");
   //the end of Event Mixing part
   //***The end of Dalitz plot and 3-particle final states
+
+  TH1F* hBetaGamma_data=(TH1F*)fileExp->Get("hBetaGamma");
+  hBetaGamma_data->SetName("hBetaGamma_data");
+  TH1F* hBetaGamma_data_EM=(TH1F*)fileEM->Get("hBetaGamma");
+  hBetaGamma_data_EM->SetName("hBetaGamma_data_EM");
+  
+
   
   TH1F *hsum_background=(TH1F*)hS1385_background->Clone("hsum_background");
   TH1F *hclean_background=(TH1F*)hS1385_background->Clone("hclean_background");
@@ -426,6 +433,8 @@ int draw_norm(void)
   TH1F* hMPPimPip_clean=(TH1F*)hMPPimPip->Clone("hMPPimPip_clean");
   TH2F* h2MPPimPip_MPPimPim_clean=(TH2F*)h2MPPimPip_MPPimPim->Clone("h2MPPimPip_MPPimPim_clean");
   //end of Sigmas
+
+  TH1F* hBetaGamma_data_clean=(TH1F*)hBetaGamma_data->Clone("hBetaGamma_data_clean");
   
   hsum_background->Reset();
   hclean_background->Reset();
@@ -649,10 +658,11 @@ int draw_norm(void)
   TH1F* hEM_data_sclad=(TH1F*)hEM_data->Clone("hEM_data_sclad");
 
   hEM_data_sclad->Scale(int_exp/int_EM_bg);
-      
+  hBetaGamma_data_EM->Scale(int_exp/int_EM_bg);
+  
   h1520_exp_EM->Add(hEM_data_sclad,-1);
-  
-  
+
+    
   hclean_EM->Scale(sig_EM_int/EM_int);
   hclean_w_EM->Scale(sig_EM_int/EM_int);
   hclean_pt_EM->Scale(sig_EM_int/EM_int);
@@ -668,7 +678,8 @@ int draw_norm(void)
       
   h2MPPimPip_MPPimPim_EM->Scale(int_exp/int_EM_bg);
   h2MPPimPip_MPPimPim_clean->Add(h2MPPimPip_MPPimPim_EM,-1);
-              
+
+  hBetaGamma_data_clean->Add(hBetaGamma_data_EM,-1);
   double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
    
   //scale signal to difference between signal and background
@@ -752,6 +763,7 @@ int draw_norm(void)
   line_Ptmean->Draw("same");
   hL1520thermal_L1520_pt->Draw("same");
   setHistogramStyleThermal(hL1520thermal_L1520_pt);
+  hclean_pt_L1520->Draw("same");
   /*hclean_pt_L1520->Draw("samee2");
     hclean_pt_L1520->SetLineColor(kGreen);
     setHistogramStyleSimul(hclean_pt_L1520);
@@ -790,7 +802,7 @@ int draw_norm(void)
   line_Wmean->Draw();
   hL1520thermal_L1520_w->Draw("same");
   setHistogramStyleThermal(hL1520thermal_L1520_w);
-      
+  hclean_w_L1520->Draw("same");      
   /*hclean_w_L1520->Draw("samee2");
     hclean_w_L1520->SetLineColor(kGreen);
     setHistogramStyleSimul(hclean_w_L1520);
@@ -1313,6 +1325,7 @@ int draw_norm(void)
   setHistogramStyleSimul(hLambda1520_INCL);
   setHistogramStyleData(h1520_exp_EM);
   setHistogramStyleThermal(hL1520thermal_data);
+  hclean_L1520->Draw("same");
   
   TLatex *printFormula6 = new TLatex();
   double high=0.85;
@@ -1426,18 +1439,27 @@ int draw_norm(void)
 				  /hMPPimPip_L1520pippim->Integral(hMPPimPip_L1520pippim->FindBin(1100),hMPPimPip_L1520pippim->FindBin(1600)));
   hMPPimPip_L1520pippim->Draw("same");
   
-
+  TCanvas* cBetaGamma=new TCanvas("cBetaGamma");
+  hBetaGamma_data->Draw();
+  hBetaGamma_data_EM->Draw("same");
+  hBetaGamma_data_clean->Draw("same");
+  hBetaGamma_data_clean->SetLineColor(kGreen);
+  hBetaGamma_data_EM->SetLineColor(kRed);
+  
   double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
 
   err_sum=hist_error(hpure_signal,int_min,int_max);
   err_sum_EM=hist_error(h1520_exp_EM,int_min,int_max);
 
   double int_sim_SB=hclean_L1520->Integral(hclean_L1520->FindBin(int_min),hclean_L1520->FindBin(int_max));
+  double int_sim_thermal=hL1520thermal_data->Integral(hL1520thermal_data->FindBin(int_min),hL1520thermal_data->FindBin(int_max));
   double int_sim_wo_SB=hL1520_data->Integral(hL1520_data->FindBin(int_min),hL1520_data->FindBin(int_max));
   cout<<"Integral for pK0L(1520) (CS from Laura paper), after SB:"<<endl;
   cout<<int_sim_SB<<endl;
   cout<<"Integral for pK0L(1520) (CS from Laura paper), without SB:"<<endl;
   cout<<int_sim_wo_SB<<endl;
+  cout<<"Integral for pK0L(1520) from thermal source:"<<endl;
+  cout<<int_sim_thermal<<endl;
   //cout<<"Integral for inclusive L(1520) production:"<<endl;
   //cout<<hclean_L1520_ren->Integral()<<endl;
   cout<<"C-S for pp->pK0L(1520):"<<endl;
@@ -1448,6 +1470,8 @@ int draw_norm(void)
   cout<<5.6*nuc_factor*(sig_int_EM/hL1520_data->Integral(hL1520_data->FindBin(int_min),hL1520_data->FindBin(int_max)))<<endl;
   cout<<"a scaling factor"<<endl;
   cout<<(experiment_int-backgroud_int)/sig_int<<endl;
+  cout<<"inclusive L(1520) production C-S, without SB normalized to thermal source:"<<endl;
+  cout<<5.6*nuc_factor*(hpure_signal->Integral(hpure_signal->FindBin(int_min),hpure_signal->FindBin(int_max)))/int_sim_thermal<<endl;
   cout<<"****************error estimation****************"<<endl;
   cout<<"error sum= "<<err_sum/int_sim_SB*5.6*nuc_factor<<"\mu b"<<endl;
   cout<<"error sum EM= "<<err_sum_EM/int_sim_wo_SB*5.6*nuc_factor<<"\mu b"<<endl;
@@ -1533,6 +1557,10 @@ int draw_norm(void)
   hclean_w_experiment->Write();
   hclean_pt_experiment->Write();
 
+  hBetaGamma_data->Write();
+  hBetaGamma_data_EM->Write();
+  hBetaGamma_data_clean->Write();
+  
   line1->Write();
   line2->Write();
   line3->Write();
@@ -1558,7 +1586,8 @@ int draw_norm(void)
   cW_signal->Write();
   cWithoutSB->Write();
   cSigma->Write();
-      
+  cBetaGamma->Write();
+  
   hMPPimPim->Write();
   hMPPimPip->Write();
   h2MPPimPip_MPPimPim->Write();

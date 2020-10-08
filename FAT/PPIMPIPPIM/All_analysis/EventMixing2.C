@@ -68,6 +68,8 @@ void EventMixing2::Loop(char*  output)
   TH1F* hMPPimPim_SB=new TH1F("hMPPimPim_SB","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",400,1000,2000);
   TH2F* h2MPPimPip_MPPimPim_SB=new TH2F("h2MPPimPip_MPPimPim_SB","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{p #pi^{-}}[MeV];M^{inv}_{p #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
   
+  TH1F* hBetaGamma=new TH1F("hBetaGamma","#beta #gamma for #Lambda(1520) events",100,0,3);
+
   
   int delta=10000;
   bool isL=false;
@@ -161,11 +163,13 @@ void EventMixing2::Loop(char*  output)
 		if(l1116.M()<1116+sidebandmin && l1116.M()>1116-sidebandmin)
 		  {
 		    h_m_inv_p_pim_pip_pim_signal->Fill(l1520.M());
+		    		    
 		    if(l1520.M()>1440 && l1520.M()<1600)
 		      {
 			hL1520_pt->Fill(l1520.Pt());
 			hL1520_w->Fill(l1520.Rapidity());
 
+			hBetaGamma->Fill(l1520.P()/l1520.M());
 			hMPPimPim->Fill(sigmam.M());
 			hMPPimPip->Fill(sigmap.M());
 			h2MPPimPip_MPPimPim->Fill(sigmap.M(),sigmam.M());
