@@ -751,6 +751,7 @@ int draw_norm(void)
   cPt_signal->cd(2);
   //hclean_pt_experiment->Draw("e1");
   hclean_pt_experiment->Rebin(rebin_sig);
+  hclean_pt_experiment_sum->GetXaxis()->SetRangeUser(0,1500);
   setHistogramStyleData(hclean_pt_experiment);
   hclean_pt_experiment_sum->Draw("samee1");
   hclean_pt_experiment_sum->Rebin(rebin_sig);
@@ -789,6 +790,7 @@ int draw_norm(void)
      
   cW_signal->cd(2);
   //hclean_w_experiment->Draw("e1");
+  hclean_w_experiment_sum->GetXaxis()->SetRangeUser(0,1.4);
   hclean_w_experiment->Rebin(rebin_sig);
   setHistogramStyleData(hclean_w_experiment);
   hclean_w_experiment_sum->Draw("samee1");
@@ -1587,6 +1589,8 @@ int draw_norm(void)
   cWithoutSB->Write();
   cSigma->Write();
   cBetaGamma->Write();
+  cSigma_simul->Write();
+  
   
   hMPPimPim->Write();
   hMPPimPip->Write();
