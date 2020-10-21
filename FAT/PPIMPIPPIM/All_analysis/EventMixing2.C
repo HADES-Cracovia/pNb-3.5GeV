@@ -39,7 +39,7 @@ void EventMixing2::Loop(char*  output)
   TFile* outFileData = new TFile(output,"recreate");
   if(outFileData!=0)
     std::cout<<"Output file created: "<<output<<endl;
-  TLorentzVector p, pim1, pip, pim2, l1116, l1520, sigmap, sigmam;
+  TLorentzVector p, pim1, pip, pim2, l1116, l1520, sigmap, sigmam, p_l1116,pim_l1116;
   const int bin=250;
   const int xmin=1000; 
   const int xmax=2000;
@@ -69,11 +69,15 @@ void EventMixing2::Loop(char*  output)
   TH2F* h2MPPimPip_MPPimPim_SB=new TH2F("h2MPPimPip_MPPimPim_SB","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{p #pi^{-}}[MeV];M^{inv}_{p #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
   
   TH1F* hBetaGamma=new TH1F("hBetaGamma","#beta #gamma for #Lambda(1520) events",100,0,3);
+  TH1F* h_EM_for_L1116=new TH1F("h_EM_for_L1116","A #Lambda(1116) from event mixing",500,1000,1500);
 
   
   int delta=10000;
   bool isL=false;
   bool isK0=false;
+  bool isp=false;
+  bool ispim=false;
+ 
   double sidebandmin=10;
   double sidebandmax=22;
   const double D2R = 1.74532925199432955e-02;
@@ -102,8 +106,9 @@ void EventMixing2::Loop(char*  output)
 	  //v3.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
 	  p.SetVectM( v1, 938.272013 );
 	  pim1.SetVectM( v2, 139.57018 );
-	  //pim2.SetVectM( v3, 139.57018 );
+	  pim_l1116.SetVectM( v2, 139.57018 );
 	  isL=true;
+	  ispim=true;
 	}
       if(Cut(ientry) && hypothesis==2)
 	{
@@ -115,8 +120,9 @@ void EventMixing2::Loop(char*  output)
 	  //v3.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
 	  p.SetVectM( v1, 938.272013 );
 	  pim1.SetVectM( v2, 139.57018 );
-	  //pim2.SetVectM( v3, 139.57018 );
+	  pim_l1116.SetVectM( v2, 139.57018 );
 	  isL=true;
+	  ispim=true;
 	}
       //if(isL)cout<<"event no. "<<jentry<<" isL "<<isL<<endl;
       if(isL)
@@ -135,23 +141,31 @@ void EventMixing2::Loop(char*  output)
 	      {
 		double F = 1.006;
 		//double F=1;
-		TVector3 v1, v2;
+		TVector3 v1, v2,v3;
 		v1.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
 		v2.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
+		v3.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+
 		pip.SetVectM( v1, 139.57018 );
 		pim2.SetVectM( v2, 139.57018 );
+		p_l1116.SetVectM(v3, 938.272013);
 		isK0=true;
+		isp=true;
 	      }
 	    if(Cut(ientry2) && hypothesis==2)
 	      {
 		double F = 1.006;
 		//double F=1;
-		TVector3 v1, v2;
+		TVector3 v1, v2,v3;
 		v1.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
 		v2.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
+		v3.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+
 		pip.SetVectM( v1, 139.57018 );
 		pim2.SetVectM( v2, 139.57018 );
+		p_l1116.SetVectM(v3, 938.272013);
 		isK0=true;
+		isp=true;
 	      }
 	    if(isK0 && isL)
 	      {
@@ -190,11 +204,17 @@ void EventMixing2::Loop(char*  output)
 			h2MPPimPip_MPPimPim_SB->Fill(sigmap.M(),sigmam.M());
 		      }
 		  }
+	      }//end of if(isK0 && isL)
+	    if(isp==true && ispim==true)
+	      {
+		h_EM_for_L1116->Fill((p_l1116+pim_l1116).M());
 	      }
 	    //if(isK0)cout<<"   event no. "<<jentry+jentry2<<" isK0 "<<isK0<<endl;
 	    isK0=false;
+	    isp=false;
 	  }
       isL=false;
+      ispim=false;
       //SB for K0 L
       
     }

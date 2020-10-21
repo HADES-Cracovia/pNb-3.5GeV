@@ -158,7 +158,7 @@ int draw_norm(void)
   TFile *fileLK0=new TFile("SB_sim_LK0ppip.root","READ");
   TFile *fileExp= new TFile("SB_experiment.root","READ");
   //TFile *fileEM=new TFile("nowa_kolejnosc.root","READ");
-  TFile *fileEM=new TFile("EM2.root","READ");
+  TFile *fileEM=new TFile("EM3.root","READ");
 
 
   TH1F *hexperiment_L=(TH1F*)fileExp->Get("hMPPim_TMVA_K0mass");
@@ -206,6 +206,8 @@ int draw_norm(void)
   hL1520thermal_data->SetName("hL1520thermal_data");
   hL1520thermal_data->Sumw2(kFALSE);
 
+  TH1F* hL1116_EM=(TH1F*)fileEM->Get("h_EM_for_L1116");
+  
   TH1F *hS1385_hMPipPim_signal = (TH1F*)fileS1385->Get("hMPipPim_signal");
   hS1385_hMPipPim_signal->SetName("hS1385_hMPipPim_signal");
   hS1385_hMPipPim_signal->Sumw2(kFALSE);
@@ -1082,6 +1084,12 @@ int draw_norm(void)
   hexperiment_SB_spectrum->SetAxisRange(1050,1250);
   setHistogramStyleData(hexperiment_SB_spectrum);
   hexperiment_SB_spectrum->Draw();
+  hL1116_EM->Draw("same");
+  hL1116_EM->Rebin(2);
+  hL1116_EM->SetLineColor(kRed);
+  hL1116_EM->Scale(hexperiment_SB_spectrum->Integral(hexperiment_SB_spectrum->FindBin(1150),hexperiment_SB_spectrum->FindBin(1250))
+		   /hL1116_EM->Integral(hL1116_EM->FindBin(1150),hL1116_EM->FindBin(1250)));
+  setHistogramStyleData(hexperiment_SB_spectrum);
   fVoigt->Draw("same");
   fVoigt->SetLineColor(kGreen);
   fbg->Draw("same");
@@ -1491,6 +1499,8 @@ int draw_norm(void)
   hL1520thermal_data->Write();
   hsum_data->Write();
 
+  hL1116_EM->Write();
+  
   hS1385_background->Write();
   hSDpp_background->Write();
   hLDpp_background->Write();

@@ -40,7 +40,7 @@ void EventMixing::Loop(char*  output)
   TFile* outFileData = new TFile(output,"recreate");
   if(outFileData!=0)
     std::cout<<"Output file created: "<<output<<endl;
-  TLorentzVector p, pim1, pip, pim2, l1116, l1520;
+  TLorentzVector p, pim1, pip, pim2, l1116, l1520, p_l1116,pim_l1116;
   const int bin=250;
   const int xmin=1000;
   const int xmax=2000;
@@ -51,9 +51,13 @@ void EventMixing::Loop(char*  output)
   TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",30,0,1600);
   TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",20,0,1.5);
   TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",30,0,1600);
+  TH1F* hL1116_EM=new TH1F("hL1116_EM","A #Lambda(1116) from event mixing",500,1000,1500);
   
   bool isL=false;
   bool isK0=false;
+  bool isp=false;
+  bool ispim=false;
+  
   double sidebandmin=10;
   double sidebandmax=22;
   const double D2R = 1.74532925199432955e-02;
@@ -69,7 +73,45 @@ void EventMixing::Loop(char*  output)
       if(jentry%50000==0)
 	cout<<(double)jentry/nentries *100<<"%"<<endl;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
-
+      //part for (L1116)
+      if(Cut(ientry))
+	{
+	  if(!isp && ispim)
+	    {
+	      double F = 1.006;
+	      //double F=1;
+	      TVector3 v1;
+	      v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
+	      p_l1116.SetVectM( v1, 938.272013 );
+	      isp=true;
+	    }
+	  if(!ispim && hypothesis==1)
+	    {
+	      double F = 1.006;
+	      //double F=1;
+	      TVector3 v1;
+	      v1.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
+	      pim_l1116.SetVectM( v1, 139.57018 );
+	      ispim=true;
+	    }
+	  if(!ispim && hypothesis==2)
+	    {
+	      double F = 1.006;
+	      //double F=1;
+	      TVector3 v1;
+	      v1.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
+	      pim_l1116.SetVectM( v1, 139.57018 );
+	      ispim=true;
+	    }
+	  if(ispim==true && isp==true)
+	    {
+	      hL1116_EM->Fill((p_l1116+pim_l1116).M());
+	      ispim=false;
+	      isp=false;
+	    }
+	}
+      
+      //Part for L(1520)
       if(!isK0 && isL)
 	{
 	  if(Cut(ientry) && hypothesis==1)
