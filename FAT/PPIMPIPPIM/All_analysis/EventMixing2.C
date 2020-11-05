@@ -39,7 +39,7 @@ void EventMixing2::Loop(char*  output)
   TFile* outFileData = new TFile(output,"recreate");
   if(outFileData!=0)
     std::cout<<"Output file created: "<<output<<endl;
-  TLorentzVector p, pim1, pip, pim2, l1116, l1520, sigmap, sigmam, p_l1116,pim_l1116;
+  TLorentzVector p, pim1, pip, pim2, l1116, l1520, p_l1116,pim_l1116, pim2_l1116, pip_l1116, sigmap, sigmam;
   const int bin=250;
   const int xmin=1000; 
   const int xmax=2000;
@@ -71,6 +71,11 @@ void EventMixing2::Loop(char*  output)
   TH1F* hBetaGamma=new TH1F("hBetaGamma","#beta #gamma for #Lambda(1520) events",100,0,3);
   TH1F* h_EM_for_L1116=new TH1F("h_EM_for_L1116","A #Lambda(1116) from event mixing",500,1000,1500);
 
+  TH1F* h_m_inv_p_pim_pip_pim_L1116EM=new TH1F("h_m_inv_p_pim_pip_pim_L1116EM","A #Lambda(1520) invariant mass from event mixing for #Lambda(1116); M_{p #pi^{-} #pi^{+} #pi^{-} [MeV]};N",bin,xmin,xmax);
+    
+  TH2F* h2BetaGamma_MPPimPipPim_EM=new TH2F("h2BetaGamma_MPPimPipPim_EM","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
+  TH2F* h2BetaGamma_MPPimPipPim_EM_SB=new TH2F("h2BetaGamma_MPPimPipPim_EM_SB","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
+  
   
   int delta=10000;
   bool isL=false;
@@ -100,13 +105,17 @@ void EventMixing2::Loop(char*  output)
 	{
 	  double F = 1.006;
 	  //double F=1;
-	  TVector3 v1, v2, v3;
+	  TVector3 v1, v2, v3,v4;
 	  v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
 	  v2.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
-	  //v3.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
+	  v3.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
+	  v4.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
+
 	  p.SetVectM( v1, 938.272013 );
 	  pim1.SetVectM( v2, 139.57018 );
 	  pim_l1116.SetVectM( v2, 139.57018 );
+	  pip_l1116.SetVectM( v4, 139.57018 );
+	  pim2_l1116.SetVectM( v3, 139.57018 );
 	  isL=true;
 	  ispim=true;
 	}
@@ -114,13 +123,17 @@ void EventMixing2::Loop(char*  output)
 	{
 	  double F = 1.006;
 	  //double F=1;
-	  TVector3 v1, v2,v3;
+	  TVector3 v1, v2,v3,v4;
 	  v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
 	  v2.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
-	  //v3.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
+	  v3.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
+	  v4.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
+
 	  p.SetVectM( v1, 938.272013 );
 	  pim1.SetVectM( v2, 139.57018 );
 	  pim_l1116.SetVectM( v2, 139.57018 );
+	  pip_l1116.SetVectM( v4, 139.57018 );
+	  pim2_l1116.SetVectM( v3, 139.57018 );
 	  isL=true;
 	  ispim=true;
 	}
@@ -177,7 +190,8 @@ void EventMixing2::Loop(char*  output)
 		if(l1116.M()<1116+sidebandmin && l1116.M()>1116-sidebandmin)
 		  {
 		    h_m_inv_p_pim_pip_pim_signal->Fill(l1520.M());
-		    		    
+		    h2BetaGamma_MPPimPipPim_EM->Fill(l1520.P()/l1520.M(),l1520.M());
+		     		    
 		    if(l1520.M()>1440 && l1520.M()<1600)
 		      {
 			hL1520_pt->Fill(l1520.Pt());
@@ -194,6 +208,8 @@ void EventMixing2::Loop(char*  output)
 		   )
 		  {
 		    h_m_inv_p_pim_pip_pim_SB->Fill(l1520.M());
+		    h2BetaGamma_MPPimPipPim_EM_SB->Fill(l1520.P()/l1520.M(),l1520.M());
+		     
 		    if(l1520.M()>1440 && l1520.M()<1600)
 		      {
 			hL1520_pt_SB->Fill(l1520.Pt());
@@ -208,6 +224,7 @@ void EventMixing2::Loop(char*  output)
 	    if(isp==true && ispim==true)
 	      {
 		h_EM_for_L1116->Fill((p_l1116+pim_l1116).M());
+		h_m_inv_p_pim_pip_pim_L1116EM->Fill((p_l1116+pim_l1116+pim2_l1116+pip_l1116).M());
 	      }
 	    //if(isK0)cout<<"   event no. "<<jentry+jentry2<<" isK0 "<<isK0<<endl;
 	    isK0=false;

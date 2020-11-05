@@ -158,7 +158,7 @@ int draw_norm(void)
   TFile *fileLK0=new TFile("SB_sim_LK0ppip.root","READ");
   TFile *fileExp= new TFile("SB_experiment.root","READ");
   //TFile *fileEM=new TFile("nowa_kolejnosc.root","READ");
-  TFile *fileEM=new TFile("EM3.root","READ");
+  TFile *fileEM=new TFile("EM4.root","READ");
 
 
   TH1F *hexperiment_L=(TH1F*)fileExp->Get("hMPPim_TMVA_K0mass");
@@ -205,8 +205,6 @@ int draw_norm(void)
   TH1F *hL1520thermal_data=(TH1F*)fileL1520thermal->Get("data");
   hL1520thermal_data->SetName("hL1520thermal_data");
   hL1520thermal_data->Sumw2(kFALSE);
-
-  TH1F* hL1116_EM=(TH1F*)fileEM->Get("h_EM_for_L1116");
   
   TH1F *hS1385_hMPipPim_signal = (TH1F*)fileS1385->Get("hMPipPim_signal");
   hS1385_hMPipPim_signal->SetName("hS1385_hMPipPim_signal");
@@ -390,7 +388,12 @@ int draw_norm(void)
   TH1F* hBetaGamma_data_EM=(TH1F*)fileEM->Get("hBetaGamma");
   hBetaGamma_data_EM->SetName("hBetaGamma_data_EM");
   
-
+  TH2F* h2BetaGamma_MPPimPipPim=(TH2F*)fileExp->Get("h2BetaGamma_MPPimPipPim");
+  TH2F* h2BetaGamma_MPPimPipPim_EM=(TH2F*)fileEM->Get("h2BetaGamma_MPPimPipPim_EM");
+  TH1F* hL1116_EM=(TH1F*)fileEM->Get("h_EM_for_L1116");
+  hL1116_EM->SetName("hL1116_EM");
+  TH1F* hL1116_EM2=(TH1F*)hL1116_EM->Clone("hL1116_EM2");
+  hL1116_EM2->SetName("hL1116_EM2");
   
   TH1F *hsum_background=(TH1F*)hS1385_background->Clone("hsum_background");
   TH1F *hclean_background=(TH1F*)hS1385_background->Clone("hclean_background");
@@ -437,6 +440,7 @@ int draw_norm(void)
   //end of Sigmas
 
   TH1F* hBetaGamma_data_clean=(TH1F*)hBetaGamma_data->Clone("hBetaGamma_data_clean");
+  TH2F* h2BetaGamma_MPPimPipPim_clean=(TH2F*)h2BetaGamma_MPPimPipPim->Clone("h2BetaGamma_MPPimPipPim_clean");
   
   hsum_background->Reset();
   hclean_background->Reset();
@@ -542,7 +546,7 @@ int draw_norm(void)
   hSDpp_data->Scale(cs[1]);
   hLDpp_data->Scale(cs[2]);
   hL1520_data->Scale(cs[3]);
-  hL1520thermal_data->Scale(cs[3]*10);
+  hL1520thermal_data->Scale(cs[3]);
   hS1385_hMPipPim_signal->Scale(cs[0]);
   hSDpp_hMPipPim_signal->Scale(cs[1]);
   hLDpp_hMPipPim_signal->Scale(cs[2]);
@@ -551,12 +555,12 @@ int draw_norm(void)
   hSDpp_L1520_pt->Scale(cs[1]);
   hLDpp_L1520_pt->Scale(cs[2]);
   hL1520_L1520_pt->Scale(cs[3]);
-  hL1520thermal_L1520_pt->Scale(cs[3]*10);
+  hL1520thermal_L1520_pt->Scale(cs[3]);
   hS1385_L1520_w->Scale(cs[0]);
   hSDpp_L1520_w->Scale(cs[1]);
   hLDpp_L1520_w->Scale(cs[2]);
   hL1520_L1520_w->Scale(cs[3]);
-  hL1520thermal_L1520_w->Scale(cs[3]*10);
+  hL1520thermal_L1520_w->Scale(cs[3]);
   /*
     hS1385_data->Sumw2();
     hSDpp_data->Sumw2();
@@ -681,9 +685,15 @@ int draw_norm(void)
   h2MPPimPip_MPPimPim_EM->Scale(int_exp/int_EM_bg);
   h2MPPimPip_MPPimPim_clean->Add(h2MPPimPip_MPPimPim_EM,-1);
 
+  h2BetaGamma_MPPimPipPim_EM->Scale(int_exp/int_EM_bg);
+  h2BetaGamma_MPPimPipPim_clean->Add(h2BetaGamma_MPPimPipPim_EM,-1);
+  
   hBetaGamma_data_clean->Add(hBetaGamma_data_EM,-1);
   double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
-   
+
+  cout<<"***Event mixing scaling for p pi- pi+ pi-***"<<endl;
+  cout<<"A scaling factor: "<<int_exp/int_EM_bg<<endl<<endl;
+  cout<<"events in scaled spectrum before scaling: "<<hEM_data->Integral()<<endl<<endl;
   //scale signal to difference between signal and background
   
   double err_sum;
@@ -1081,15 +1091,25 @@ int draw_norm(void)
   printFormula1->DrawLatex(0.5,high-printFormula1->GetTextSize()*7,text8);
       
   TCanvas *cSB=new TCanvas("cSB","Spectrum for side-band");
-  hexperiment_SB_spectrum->SetAxisRange(1050,1250);
+  hexperiment_SB_spectrum->SetAxisRange(1065,1300);
   setHistogramStyleData(hexperiment_SB_spectrum);
   hexperiment_SB_spectrum->Draw();
   hL1116_EM->Draw("same");
+  hL1116_EM2->Draw("same");
   hL1116_EM->Rebin(2);
+  hL1116_EM2->Rebin(2);
   hL1116_EM->SetLineColor(kRed);
-  hL1116_EM->Scale(hexperiment_SB_spectrum->Integral(hexperiment_SB_spectrum->FindBin(1150),hexperiment_SB_spectrum->FindBin(1250))
-		   /hL1116_EM->Integral(hL1116_EM->FindBin(1150),hL1116_EM->FindBin(1250)));
+  hL1116_EM2->SetLineColor(kRed);
+  //hL1116_EM->Scale(hexperiment_SB_spectrum->Integral(hexperiment_SB_spectrum->FindBin(1150),hexperiment_SB_spectrum->FindBin(1250))
+  //		   /hL1116_EM->Integral(hL1116_EM->FindBin(1150),hL1116_EM->FindBin(1250)));
+  hL1116_EM->Scale(hEM_data_sclad->Integral()/hL1116_EM->Integral());
+  //hL1116_EM2->Scale(hEM_data_sclad->Integral()/fbg->Integral(1105,1125));
+  hL1116_EM2->Scale(1/hL1116_EM2->Integral(hL1116_EM2->FindBin(1105),hL1116_EM2->FindBin(1125))*hEM_data_sclad->Integral());
   setHistogramStyleData(hexperiment_SB_spectrum);
+  setHistogramStyleSimul(hL1116_EM);
+  //setHistogramStyleSimul(hL1116_EM2);
+
+  
   fVoigt->Draw("same");
   fVoigt->SetLineColor(kGreen);
   fbg->Draw("same");
@@ -1456,6 +1476,20 @@ int draw_norm(void)
   hBetaGamma_data_clean->SetLineColor(kGreen);
   hBetaGamma_data_EM->SetLineColor(kRed);
   
+  TCanvas* c2DBetaGamma=new TCanvas("c2DBetaGamma");
+  c2DBetaGamma->Divide(2,2);
+  c2DBetaGamma->cd(1);
+  h2BetaGamma_MPPimPipPim->Draw("colz");
+  c2DBetaGamma->cd(2);
+  h2BetaGamma_MPPimPipPim_EM->Draw("colz");
+  c2DBetaGamma->cd(3);
+  h2BetaGamma_MPPimPipPim_clean->Draw("colz");
+
+  TCanvas* cSB_EM_comparison=new TCanvas("cSB_EM_comparison");
+  hexperiment_data->Draw();
+  hexperiment_background->Draw("same");
+  hEM_data_sclad->Draw("same");
+
   double sig_int_EM=h1520_exp_EM->Integral(h1520_exp_EM->FindBin(int_min),h1520_exp_EM->FindBin(int_max));
 
   err_sum=hist_error(hpure_signal,int_min,int_max);
@@ -1500,6 +1534,7 @@ int draw_norm(void)
   hsum_data->Write();
 
   hL1116_EM->Write();
+  hL1116_EM2->Write();
   
   hS1385_background->Write();
   hSDpp_background->Write();
@@ -1600,7 +1635,8 @@ int draw_norm(void)
   cSigma->Write();
   cBetaGamma->Write();
   cSigma_simul->Write();
-  
+  c2DBetaGamma->Write();
+  cSB_EM_comparison->Write();
   
   hMPPimPim->Write();
   hMPPimPip->Write();
@@ -1609,5 +1645,8 @@ int draw_norm(void)
   hMPPimPim_EM->Write();
   hMPPimPip_EM->Write();
   h2MPPimPip_MPPimPim_EM->Write();
-      
+
+  h2BetaGamma_MPPimPipPim->Write();
+  h2BetaGamma_MPPimPipPim_EM->Write();
+  h2BetaGamma_MPPimPipPim_clean->Write();
 }

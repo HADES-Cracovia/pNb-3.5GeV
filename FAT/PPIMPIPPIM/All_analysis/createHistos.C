@@ -127,7 +127,8 @@ void createHistos::Loop(char* output)
   TH2F* h2MPPimPip_MPPimPim_SB=new TH2F("h2MPPimPip_MPPimPim_SB","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{#Lambda #pi^{-}}[MeV];M^{inv}_{#Lambda #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
 
   TH1F* hBetaGamma=new TH1F("hBetaGamma","#beta #gamma for #Lambda(1520) events",100,0,3);
-  
+  TH2F* h2BetaGamma_MPPimPipPim=new TH2F("h2BetaGamma_MPPimPipPim","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
+  TH2F* h2BetaGamma_MPPimPipPim_SB=new TH2F("h2BetaGamma_MPPimPipPim_SB","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
   hMPPim_TMVA_K0mass->Sumw2();
   hMPipPim_TMVA_Lmass->Sumw2();
   
@@ -234,7 +235,7 @@ void createHistos::Loop(char* output)
 	{
 	  data->Fill(m_inv_p_pim_pip_pim);
 	  miss_m_vs_pip_pim->Fill(miss_mass_kp,m_inv_pip_pim);
-	  
+	  h2BetaGamma_MPPimPipPim->Fill(ppimpippim.P()/ppimpippim.M(),m_inv_p_pim_pip_pim);
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 
 	    {
@@ -253,6 +254,8 @@ void createHistos::Loop(char* output)
       if(m_inv_p_pim<1116.-sidebandmin && m_inv_p_pim>1116.-sidebandmax)
 	{
 	  background->Fill(m_inv_p_pim_pip_pim);
+	  h2BetaGamma_MPPimPipPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+	  
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	    {
@@ -268,6 +271,9 @@ void createHistos::Loop(char* output)
       if(m_inv_p_pim>1116.+sidebandmin && m_inv_p_pim<1116.+sidebandmax)
 	{
 	  background->Fill(m_inv_p_pim_pip_pim);
+	  //h2MPPimPip_MPPimPim->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+	  h2BetaGamma_MPPimPipPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+	  
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	    {
@@ -290,7 +296,7 @@ void createHistos::Loop(char* output)
   TF1* fVoigt= new TF1("fVoigt","[0]*TMath::Voigt(x-[1],[2],[3])",1090.00,1156.67);
   TF1* fbg= new TF1("fbg","pol5(0)",1090.00,1156.67);
 
-  fVoigt_bg->SetParameters(585,1115,1.3,2,-126137,160,0.06,-6.5e-5,-7.8e-8,5.0e-11);
+  fVoigt_bg->SetParameters(3369,1115,3.5,1,-158569,166,0.08,-4.73e-5,-7.41e-8,3.2e-11);
   fVoigt_bg->SetParLimits(3,0,2);
   fVoigt_bg->SetParLimits(1,1112,1117);
   fVoigt_bg->SetRange(1106,1122);
@@ -414,7 +420,9 @@ void createHistos::Loop(char* output)
   hMPPimPim->Write();
   hMPPimPip->Write();
   h2MPPimPip_MPPimPim->Write();
-
+  h2BetaGamma_MPPimPipPim->Write();
+  h2BetaGamma_MPPimPipPim_SB->Write();
+  
   hMPPimPim_SB->Write();
   hMPPimPip_SB->Write();
   h2MPPimPip_MPPimPim_SB->Write();
@@ -481,7 +489,9 @@ void createHistos::Loop(char* output)
   hMPPimPim->Delete();
   hMPPimPip->Delete();
   h2MPPimPip_MPPimPim->Delete();
-
+  h2BetaGamma_MPPimPipPim->Delete();
+  h2MPPimPip_MPPimPim_SB->Delete();
+  
   hBetaGamma->Delete();
   
 

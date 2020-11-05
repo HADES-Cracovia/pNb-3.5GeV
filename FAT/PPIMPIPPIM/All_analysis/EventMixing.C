@@ -40,7 +40,7 @@ void EventMixing::Loop(char*  output)
   TFile* outFileData = new TFile(output,"recreate");
   if(outFileData!=0)
     std::cout<<"Output file created: "<<output<<endl;
-  TLorentzVector p, pim1, pip, pim2, l1116, l1520, p_l1116,pim_l1116;
+  TLorentzVector p, pim1, pip, pim2, l1116, l1520, p_l1116,pim_l1116, pim2_l1116, pip_l1116;
   const int bin=250;
   const int xmin=1000;
   const int xmax=2000;
@@ -52,6 +52,7 @@ void EventMixing::Loop(char*  output)
   TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",20,0,1.5);
   TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",30,0,1600);
   TH1F* hL1116_EM=new TH1F("hL1116_EM","A #Lambda(1116) from event mixing",500,1000,1500);
+  TH1F* h_m_inv_p_pim_pip_pim_L1116EM=new TH1F("h_m_inv_p_pim_pip_pim_L1116EM","A #Lambda(1520) invariant mass from event mixing for #Lambda(1116); M_{p #pi^{-} #pi^{+} #pi^{-} [MeV]};N",bin,xmin,xmax);
   
   bool isL=false;
   bool isK0=false;
@@ -83,15 +84,20 @@ void EventMixing::Loop(char*  output)
 	      TVector3 v1;
 	      v1.SetXYZ(F*p_p*sin(D2R*p_theta)*cos(D2R*p_phi),F*p_p*sin(D2R*p_theta)*sin(D2R*p_phi),F*p_p*cos(D2R*p_theta));
 	      p_l1116.SetVectM( v1, 938.272013 );
+	      
 	      isp=true;
 	    }
 	  if(!ispim && hypothesis==1)
 	    {
 	      double F = 1.006;
 	      //double F=1;
-	      TVector3 v1;
+	      TVector3 v1,v2,v3;
 	      v1.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
 	      pim_l1116.SetVectM( v1, 139.57018 );
+	      v2.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
+	      v3.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
+	      pip_l1116.SetVectM( v2, 139.57018 );
+	      pim2_l1116.SetVectM( v3, 139.57018 );
 	      ispim=true;
 	    }
 	  if(!ispim && hypothesis==2)
@@ -101,11 +107,17 @@ void EventMixing::Loop(char*  output)
 	      TVector3 v1;
 	      v1.SetXYZ(F*pim2_p*sin(D2R*pim2_theta)*cos(D2R*pim2_phi),F*pim2_p*sin(D2R*pim2_theta)*sin(D2R*pim2_phi),F*pim2_p*cos(D2R*pim2_theta));
 	      pim_l1116.SetVectM( v1, 139.57018 );
+	      v2.SetXYZ(F*pip_p*sin(D2R*pip_theta)*cos(D2R*pip_phi),F*pip_p*sin(D2R*pip_theta)*sin(D2R*pip_phi),F*pip_p*cos(D2R*pip_theta));
+	      v3.SetXYZ(F*pim1_p*sin(D2R*pim1_theta)*cos(D2R*pim1_phi),F*pim1_p*sin(D2R*pim1_theta)*sin(D2R*pim1_phi),F*pim1_p*cos(D2R*pim1_theta));
+	      pip_l1116.SetVectM( v2, 139.57018 );
+	      pim2_l1116.SetVectM( v3, 139.57018 );
+	     
 	      ispim=true;
 	    }
 	  if(ispim==true && isp==true)
 	    {
 	      hL1116_EM->Fill((p_l1116+pim_l1116).M());
+	      h_m_inv_p_pim_pip_pim_L1116EM->Fill((p_l1116+pim_l1116+pim2_l1116+pip_l1116).M());
 	      ispim=false;
 	      isp=false;
 	    }

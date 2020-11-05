@@ -282,14 +282,16 @@ createHistos::createHistos(TTree *tree) : fChain(0)
   // used to generate this class and read the Tree.
   if (tree == 0)
     {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../TMVAeval_DataDriven/pp_after_TMVA_DD_6n+4_pNb.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA_output_experiement.root");
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../TMVAeval_DataDriven/pp_after_TMVA_DD_6n+4_pNb.root");
       //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../TMVAeval_DataDriven/pp_after_TMVA_DD_6n+4_from_pNb_sigma.root");
       if (!f || !f->IsOpen())
 	{
-	  f = new TFile("../TMVAeval_DataDriven/pp_after_TMVA_DD_6n+4_pNb.root");
+	  f=new TFile("TMVA_output_experiement.root");
+	  //f = new TFile("../TMVAeval_DataDriven/pp_after_TMVA_DD_6n+4_pNb.root");
 	  //f = new TFile("../TMVAeval_DataDriven/pp_after_TMVA_DD_6n+4_from_pNb_sigma.root");
 	}
-      f->GetObject("ppimpippim",tree);
+      f->GetObject("TMVAeval",tree);
 
     }
   Init(tree);
