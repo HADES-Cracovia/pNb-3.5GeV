@@ -490,7 +490,7 @@ int draw_norm(void)
      9.26/1000*scale/(nsim*downscale)*nuc_factor,//SDpp
      29.45/1000*scale/(nsim*downscale)*nuc_factor,//LDpp
      5.6/1000*scale/(100*100000*downscale)*nuc_factor,//L(1520)pK+->Lpi+pi-pK+
-     (3.5+2.57+14.05+9.26+29.45)/1000*scale/(100*100000*downscale)*0.5*nuc_factor//L K0 p pi+ (0.5 because of Ks i Kl)
+     (1.35+3.5+2.3+2.57+5.0+14.05+9.26+29.45)/1000*scale/(100*100000*downscale)*0.5*nuc_factor//L K0 p pi+ (0.5 because of Ks i Kl)
     };
   double err[5]=
     {2.25/14.05,//S1385
