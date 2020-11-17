@@ -13,6 +13,7 @@
 #include <TLine.h>
 #include <TLorentzVector.h>
 #include <TVector3.h>
+#include <fstream>
 
 using namespace std;
 void scale(TH1F* hist, double s)
@@ -26,6 +27,19 @@ void scale(TH1F* hist, double s)
     }
 
 }
+
+void scale(TH2F* hist, double s)
+{
+  //hist->Scale(s);
+
+  for (Int_t j=1; j<hist->GetNbinsX()+1; ++j)
+    {
+      hist->SetBinContent( j, hist->GetBinContent(j)*s );
+      hist->SetBinError( j, hist->GetBinError(j)*s );
+    }
+
+}
+
 
 void createHistos::Loop(char* output)
 {
@@ -64,7 +78,21 @@ void createHistos::Loop(char* output)
   double mlp_cut=0.62;
   double oa_cut=10;
   double dist_cut=50;
-  
+  /*
+  std::fstream in_file {"../cuts.txt", std::ios::in};
+  if(in_file.is_open())
+    {
+      cout<<"Read cuts from external file"<<endl;
+      in_file>>sidebandmin>>sidebandmax>>mlp_cut>>oa_cut>>dist_cut;
+    }
+
+  cout<<"Cuts values:"<<endl;
+  cout<<"sidebandmin: "<<sidebandmin<<endl;
+  cout<<"sidebandmax: "<<sidebandmax<<<end;
+  cout<<"mlp_cut: "<<mlp_cut<<endl;
+  cout<<"oa_cut: "<<oa_cut<<endl;
+  cout<<"dist_cut: "<<dist_cut<<endl;
+  */
   TLine* line1=new TLine(1116-sidebandmax,0,1116-sidebandmax,120);
   TLine* line2=new TLine(1116-sidebandmin,0,1116-sidebandmin,120);
   TLine* line3=new TLine(1116+sidebandmin,0,1116+sidebandmin,120);
@@ -127,6 +155,7 @@ void createHistos::Loop(char* output)
   TH2F* h2MPPimPip_MPPimPim_SB=new TH2F("h2MPPimPip_MPPimPim_SB","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{#Lambda #pi^{-}}[MeV];M^{inv}_{#Lambda #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
 
   TH1F* hBetaGamma=new TH1F("hBetaGamma","#beta #gamma for #Lambda(1520) events",100,0,3);
+  TH1F* hBetaGamma_SB=new TH1F("hBetaGamma_SB","#beta #gamma for SB  events",100,0,3);
   TH2F* h2BetaGamma_MPPimPipPim=new TH2F("h2BetaGamma_MPPimPipPim","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
   TH2F* h2BetaGamma_MPPimPipPim_SB=new TH2F("h2BetaGamma_MPPimPipPim_SB","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
   hMPPim_TMVA_K0mass->Sumw2();
@@ -266,6 +295,7 @@ void createHistos::Loop(char* output)
 	      hMPPimPim_SB->Fill(m_inv_p_pim_pim);
 	      hMPPimPip_SB->Fill(m_inv_p_pim_pip);
 	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
 	    }
 	}
       if(m_inv_p_pim>1116.+sidebandmin && m_inv_p_pim<1116.+sidebandmax)
@@ -284,6 +314,8 @@ void createHistos::Loop(char* output)
 	      hMPPimPim_SB->Fill(m_inv_p_pim_pim);
 	      hMPPimPip_SB->Fill(m_inv_p_pim_pip);
 	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+
+	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
 	    }
 	}
     }
@@ -333,7 +365,11 @@ void createHistos::Loop(char* output)
   scale(hMPipPim_background,intB/intsideband);
   scale(hL1520_pt_SB,intB/intsideband);
   scale(hL1520_w_SB,intB/intsideband);
-
+  scale(hMPPimPip_SB,intB/intsideband);
+  scale(hMPPimPim_SB,intB/intsideband);
+  scale(h2MPPimPip_MPPimPim_SB,intB/intsideband);
+  scale(hBetaGamma_SB,intB/intsideband);
+  scale(h2BetaGamma_MPPimPipPim_SB,intB/intsideband);
   //Fill random signal
   //TF1* L1520Spectral=new TF1("L1520Spectral","100*exp(-0.5*((x-1520)/16)**2)",xmin,xmax);
   TF1* L1520Spectral=new TF1("L1520Spectral","TMath::BreitWigner(x,1519.5,15.6)",xmin,xmax);
@@ -428,6 +464,7 @@ void createHistos::Loop(char* output)
   h2MPPimPip_MPPimPim_SB->Write();
 
   hBetaGamma->Write();
+  hBetaGamma_SB->Write();
   
   K0_fit->Write();
   K0_signal->Write();
@@ -493,7 +530,7 @@ void createHistos::Loop(char* output)
   h2MPPimPip_MPPimPim_SB->Delete();
   
   hBetaGamma->Delete();
-  
+  hBetaGamma_SB->Delete();  
 
   MyFile->Close();
 }

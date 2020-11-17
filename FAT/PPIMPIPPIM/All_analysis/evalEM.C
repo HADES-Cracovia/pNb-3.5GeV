@@ -86,7 +86,7 @@ int evalEM(void)
   TH1F* hL1520_L1520K0_EM=(TH1F*)fL1520K0_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
   hL1520_L1520K0_EM->SetName("hL1520_L1520K0_EM");
   //hL1520_L1520K0_EM->Rebin(2);
- TH1F* hL1520_SsPimKz_EM=(TH1F*)fSsPimKz_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
+  TH1F* hL1520_SsPimKz_EM=(TH1F*)fSsPimKz_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
   hL1520_SsPimKz_EM->SetName("hL1520_SsPimKz_EM");
   //hL1520_SsPimKz_EM->Rebin(2);
  
@@ -119,7 +119,13 @@ int evalEM(void)
   TH1F* hL1520_SsPimKz_SB=(TH1F*)fSsPimKz_SB->Get("background");
   hL1520_SsPimKz_SB->SetName("hL1520_SsPimKz_SB");
   //hL1520_SsPimKz_EM->Rebin(2);
-  
+
+  TF1* fBg_L1520=(TF1*)fL1520_SB->Get("fbg");
+  fBg_L1520->SetName("fBg_L1520");
+  TF1* fBg_L1520K0=(TF1*)fL1520K0_SB->Get("fbg");
+  fBg_L1520K0->SetName("fBg_L1520K0");
+  TF1* fBg_SsPimKz=(TF1*)fSsPimKz_SB->Get("fbg");
+  fBg_SsPimKz->SetName("fBg_SsPimKz");
   
   cout<<"binning for different histograms"<<endl;
   cout<<"hL1116_L1520_perfect: "<<hL1116_L1520_perfect->GetBinWidth(1)<<endl;
@@ -181,6 +187,8 @@ int evalEM(void)
   hL1116_L1520_perfectBG->Draw("samehist");
   StylePerfectBackground(hL1116_L1520_perfectBG);
   //hL1116_L1520_EM_copy->Draw("same");
+  fBg_L1520->Draw("same");
+
   cL1520->cd(2);
   hL1520_L1520->Draw();
   StyleDataPints(hL1520_L1520);
@@ -206,7 +214,9 @@ int evalEM(void)
   StylePerfectSignal(hL1116_L1520K0_perfect);
   hL1116_L1520K0_perfectBG->Draw("samehist");
   StylePerfectBackground(hL1116_L1520K0_perfectBG);
+  fBg_L1520K0->Draw("same");
   //hL1116_L1520K0_EM_copy->Draw("same");
+
   cL1520K0->cd(2);
   hL1520_L1520K0->Draw();
   StyleDataPints(hL1520_L1520K0);
@@ -220,7 +230,7 @@ int evalEM(void)
   hL1520_L1520K0_SB->Draw("same");
   StyleDataPints(hL1520_L1520K0_SB);
 
-TCanvas *cSsPimKz=new TCanvas("cSsPimKz","cSsPimKz");
+  TCanvas *cSsPimKz=new TCanvas("cSsPimKz","cSsPimKz");
   cSsPimKz->Divide(2);
   cSsPimKz->cd(1);
   hL1116_SsPimKz->Draw();
@@ -233,7 +243,8 @@ TCanvas *cSsPimKz=new TCanvas("cSsPimKz","cSsPimKz");
   hL1116_SsPimKz_perfectBG->Draw("samehist");
   StylePerfectBackground(hL1116_SsPimKz_perfectBG);
   //hL1116_SsPimKz_EM_copy->Draw("same");
-  
+  fBg_SsPimKz->Draw("same");
+
   cSsPimKz->cd(2);
   hL1520_SsPimKz->Draw();
   StyleDataPints(hL1520_SsPimKz);
