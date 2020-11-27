@@ -181,7 +181,11 @@ int draw_norm(void)
   TLine* line2=(TLine*)fileExp->Get("line2");
   TLine* line3=(TLine*)fileExp->Get("line3");
   TLine* line4=(TLine*)fileExp->Get("line4");
-
+  line1->SetY2(300);
+  line2->SetY2(300);
+  line3->SetY2(300);
+  line4->SetY2(300);
+  
   TH1F* hLambda1520_INCL=(TH1F*)fileINCLmodel->Get("Lambda1520_2");  
   
   //TFile *output= new TFile("pictures.root","RECREATE");
@@ -827,6 +831,44 @@ int draw_norm(void)
     hclean_w_experiment_sum->SetLineColor(kMagenta);
     setHistogramStyleSimul(hclean_w_experiment_sum);
   */
+  TCanvas *cPt_W_signal=new TCanvas("cPt_W_signal","cPt_W_signal");
+  cPt_W_signal->Divide(2);
+  cPt_W_signal->cd(1);
+  //hclean_pt_experiment->Rebin(rebin_sig);
+  hexperiment_L1520_pt->Draw("samee1");
+  hexperiment_L1520_pt->GetXaxis()->SetRangeUser(0,1500);
+  setHistogramStyleData(hexperiment_L1520_pt);
+  setHistogramStyleData(hclean_pt_experiment);
+  hclean_pt_experiment_sum->Draw("samee1");
+  
+  //hclean_pt_experiment_sum->Rebin(rebin_sig);
+  hclean_pt_experiment_sum->SetLineColor(kGreen-2);
+  setHistogramStyleData(hclean_pt_experiment_sum);
+  hclean_pt_EM->Draw("samee1");
+  hclean_pt_EM->SetLineColor(kRed);
+  //hclean_pt_EM->Rebin(rebin_sig);
+  setHistogramStyleData(hclean_pt_EM);
+  line_Ptmean->Draw("same");
+  //hclean_pt_L1520->Draw("same");
+  
+  cPt_W_signal->cd(2);
+  
+  hexperiment_L1520_w->Draw("samee1");
+  setHistogramStyleData(hexperiment_L1520_w);
+  hexperiment_L1520_w->GetXaxis()->SetRangeUser(0,1.4);
+  ///hclean_w_experiment->Rebin(rebin_sig);
+  setHistogramStyleData(hclean_w_experiment);
+  hclean_w_experiment_sum->Draw("samee1");
+  //hclean_w_experiment_sum->Rebin(rebin_sig);
+  hclean_w_experiment_sum->SetLineColor(kGreen-2);
+  setHistogramStyleData(hclean_w_experiment_sum);
+  hclean_w_EM->Draw("samee1");
+  hclean_w_EM->SetLineColor(kRed);
+  //hclean_w_EM->Rebin(rebin_sig);
+  setHistogramStyleData(hclean_w_EM);
+  line_Wmean->Draw();
+  //hclean_w_L1520->Draw("same");
+  
   int rebin_res=2;
   TCanvas *cRes=new TCanvas("cRes","cRes");
   cRes->Divide(2,2);
@@ -1109,6 +1151,10 @@ int draw_norm(void)
   setHistogramStyleSimul(hL1116_EM);
   //setHistogramStyleSimul(hL1116_EM2);
 
+  TCanvas *cSB_thesis=new TCanvas("cSB_thesis","Spectrum for side-band");
+  hexperiment_SB_spectrum->Draw();
+  hexperiment_SB_spectrum->SetAxisRange(1065,1300);
+  setHistogramStyleData(hexperiment_SB_spectrum);
   
   fVoigt->Draw("same");
   fVoigt->SetLineColor(kGreen);
@@ -1468,6 +1514,33 @@ int draw_norm(void)
   hMPPimPip_L1520pippim->Scale(hMPPimPip_clean->Integral(hMPPimPip_clean->FindBin(1100),hMPPimPip_clean->FindBin(1600))
 				  /hMPPimPip_L1520pippim->Integral(hMPPimPip_L1520pippim->FindBin(1100),hMPPimPip_L1520pippim->FindBin(1600)));
   hMPPimPip_L1520pippim->Draw("same");
+
+  TCanvas *cSigma_thesis=new TCanvas("cSigma_thesis","cSigma_thesis");
+  cSigma_thesis->Divide(2);
+
+  cSigma_thesis->cd(1);
+  hMPPimPim->Draw("e1");
+  hMPPimPim->GetXaxis()->SetRangeUser(1220,1460);
+  hMPPimPim_EM->Draw("samee1");
+  hMPPimPim_clean->Draw("samee1");
+  hMPPimPim->SetLineColor(kBlue);
+  hMPPimPim_EM->SetLineColor(kRed);
+  hMPPimPim_clean->SetLineColor(kGreen);
+  setHistogramStyleData(hMPPimPim_EM);
+  setHistogramStyleData(hMPPimPim);
+  setHistogramStyleData(hMPPimPim_clean);
+
+  cSigma_thesis->cd(2);
+  hMPPimPip->Draw("e1");
+  hMPPimPip->GetXaxis()->SetRangeUser(1220,1460);
+  hMPPimPip_EM->Draw("samee1");
+  hMPPimPip_clean->Draw("samee1");
+  
+  hMPPimPip_EM->SetLineColor(kRed);
+  hMPPimPip_clean->SetLineColor(kGreen);
+  setHistogramStyleData(hMPPimPip);
+  setHistogramStyleData(hMPPimPip_EM);
+  setHistogramStyleData(hMPPimPip_clean);
   
   TCanvas* cBetaGamma=new TCanvas("cBetaGamma");
   hBetaGamma_data->Draw();
@@ -1624,6 +1697,7 @@ int draw_norm(void)
   cClean_PipPim->Write();
   cSum->Write();
   cSB->Write();
+  cSB_thesis->Write();
   cLK0->Write();
   cK0->Write();
   cL->Write();
@@ -1631,8 +1705,10 @@ int draw_norm(void)
   cW_simul->Write();
   cPt_signal->Write();
   cW_signal->Write();
+  cPt_W_signal->Write();
   cWithoutSB->Write();
   cSigma->Write();
+  cSigma_thesis->Write();
   cBetaGamma->Write();
   cSigma_simul->Write();
   c2DBetaGamma->Write();
