@@ -92,7 +92,7 @@ void EventMixing2::Loop(char*  output)
   Long64_t nentries = fChain->GetEntries();
   Long64_t nbytes = 0, nb = 0;
 
-  //SB for ppimpippim
+  //EM for ppimpippim
   for(Long64_t jentry=0; jentry<nentries;jentry++)
     {
       Long64_t ientry = LoadTree(jentry);

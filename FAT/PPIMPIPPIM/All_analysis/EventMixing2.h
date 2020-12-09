@@ -283,16 +283,16 @@ EventMixing2::EventMixing2(TTree *tree) : fChain(0)
   // used to generate this class and read the Tree.
   if (tree == 0)
     {
-      // TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA_output_experiement.root");
+       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA_output_experiement.root");
       //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA_output_sim_L1520thermal.root");
       //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA_output_sim_L1520K0thermal.root");
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA_output_sim_SsPimKzthermal.root");
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA_output_sim_SsPimKzthermal.root");
       if (!f || !f->IsOpen())
 	{
-	  //f = new TFile("TMVA_output_experiement.root");
+	  f = new TFile("TMVA_output_experiement.root");
 	  //f = new TFile("TMVA_output_sim_L1520thermal.root");
 	  //f = new TFile("TMVA_output_sim_L1520K0thermal.root");
-	  f = new TFile("TMVA_output_sim_SsPimKzthermal.root");
+	  //f = new TFile("TMVA_output_sim_SsPimKzthermal.root");
 	}
       
       f->GetObject("TMVAeval",tree);

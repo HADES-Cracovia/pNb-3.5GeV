@@ -160,7 +160,9 @@ void createHistos::Loop(char* output)
   TH2F* h2BetaGamma_MPPimPipPim_SB=new TH2F("h2BetaGamma_MPPimPipPim_SB","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
   hMPPim_TMVA_K0mass->Sumw2();
   hMPipPim_TMVA_Lmass->Sumw2();
-  
+
+  TH2F* h2PtvsY=new TH2F("h2PtvsY","P_{T} vs Y for events in #Lambda(1520) window;P_{t} [MeV]; Y",17,0,1700,20,0,2);
+  TH2F* h2PtvsY_SB=new TH2F("h2PtvsY_SB","P_{T} vs Y for events in #Lambda(1520) window;P_{t} [MeV]; Y",17,0,1700,20,0,2);
   
   TFile *cutFile=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/cut_miss_mass_vs_pip_pim.root","READ");
   //TFile *cutFile=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/cut_miss_pip_pim_tight.root","READ");
@@ -277,6 +279,7 @@ void createHistos::Loop(char* output)
 	      h2MPPimPip_MPPimPim->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 
 	      hBetaGamma->Fill(ppimpippim.P()/ppimpippim.M());
+	      h2PtvsY->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());
 	    } 
 	}
 
@@ -296,6 +299,7 @@ void createHistos::Loop(char* output)
 	      hMPPimPip_SB->Fill(m_inv_p_pim_pip);
 	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
+	      h2PtvsY_SB->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());
 	    }
 	}
       if(m_inv_p_pim>1116.+sidebandmin && m_inv_p_pim<1116.+sidebandmax)
@@ -316,6 +320,7 @@ void createHistos::Loop(char* output)
 	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 
 	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
+	      h2PtvsY_SB->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());
 	    }
 	}
     }
@@ -328,7 +333,9 @@ void createHistos::Loop(char* output)
   TF1* fVoigt= new TF1("fVoigt","[0]*TMath::Voigt(x-[1],[2],[3])",1090.00,1156.67);
   TF1* fbg= new TF1("fbg","pol5(0)",1090.00,1156.67);
 
-  fVoigt_bg->SetParameters(3369,1115,3.5,1,-158569,166,0.08,-4.73e-5,-7.41e-8,3.2e-11);
+  //fVoigt_bg->SetParameters(3369,1115,3.5,1,-158569,166,0.08,-4.73e-5,-7.41e-8,3.2e-11);
+  fVoigt_bg->SetParameters(585,1115,1.3,2,-126137,160,0.06,-6.5e-5,-\|0.00,1156.67);
+  7.8e-8,5.0e-11);
   fVoigt_bg->SetParLimits(3,0,2);
   fVoigt_bg->SetParLimits(1,1112,1117);
   fVoigt_bg->SetRange(1106,1122);
@@ -475,6 +482,9 @@ void createHistos::Loop(char* output)
   hL1520_pt->Write();
   hL1520_w_SB->Write();
   hL1520_pt_SB->Write();
+
+  h2PtvsY->Write();
+  h2PtvsY_SB->Write();
   
   line1->Write("line1");
   line2->Write("line2");
@@ -532,5 +542,9 @@ void createHistos::Loop(char* output)
   hBetaGamma->Delete();
   hBetaGamma_SB->Delete();  
 
+  h2PtvsY->Delete();
+  h2PtvsY_SB->Delete();
+  
+  
   MyFile->Close();
 }

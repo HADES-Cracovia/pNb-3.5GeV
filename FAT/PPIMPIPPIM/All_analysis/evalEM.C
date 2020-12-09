@@ -35,8 +35,18 @@ void StyleDataPints(TH1F* h1)
   h1->SetMarkerSize(1.2);
 }
 
+void StyleSB(TH1F* h1)
+{
+  h1->SetLineColor(kGreen);
+  h1->SetMarkerColor(h1->GetLineColor());
+  h1->SetMarkerStyle(8);
+  h1->SetMarkerSize(1.2);
+}
+
 int evalEM(void)
 {
+  TFile *fData_SB=new TFile("SB_experiment.root","read");
+  TFile *fData_EM=new TFile("EM_data_temp.root");
   TFile *fL1520K0_SB=new TFile("SB_sim_L1520K0thermal.root","read");
   TFile *fL1520_SB=new TFile("SB_sim_L1520thermal.root","read");
   TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal.root","read");
@@ -53,7 +63,9 @@ int evalEM(void)
     cout<<"files open succesfully!!!"<<endl;
   else
     cout<<"problem with files!!!"<<endl;
-  
+
+  TH1F* hL1116_data=(TH1F*)fData_SB->Get("orginal_spectrum");
+  hL1116_data->SetName("hL1116_data");
   TH1F* hL1116_L1520=(TH1F*)fL1520_SB->Get("orginal_spectrum");
   hL1116_L1520->SetName("hL1116_L1520");
   TH1F* hL1116_L1520K0=(TH1F*)fL1520K0_SB->Get("orginal_spectrum");
@@ -61,6 +73,8 @@ int evalEM(void)
   TH1F* hL1116_SsPimKz=(TH1F*)fSsPimKz_SB->Get("orginal_spectrum");
   hL1116_SsPimKz->SetName("hl1116_SsPimKz");
   
+  TH1F* hL1520_data=(TH1F*)fData_SB->Get("data");
+  hL1520_data->SetName("hL1520_data");
   TH1F* hL1520_L1520=(TH1F*)fL1520_SB->Get("data");
   hL1520_L1520->SetName("hL1520_L1520");
   TH1F* hL1520_L1520K0=(TH1F*)fL1520K0_SB->Get("data");
@@ -68,7 +82,10 @@ int evalEM(void)
   TH1F* hL1520_SsPimKz=(TH1F*)fSsPimKz_SB->Get("data");
   hL1520_SsPimKz->SetName("hl1520_SsPimKz");
   
-  
+
+  TH1F* hL1116_data_EM=(TH1F*)fData_EM->Get("h_EM_for_L1116");
+  hL1116_data_EM->SetName("hL1116_data_EM");
+  hL1116_data_EM->Rebin(2);
   TH1F* hL1116_L1520_EM=(TH1F*)fL1520_EM->Get("h_EM_for_L1116");
   hL1116_L1520_EM->SetName("hL1116_L1520_EM");
   hL1116_L1520_EM->Rebin(2);
@@ -79,7 +96,8 @@ int evalEM(void)
   hL1116_SsPimKz_EM->SetName("hL1116_SsPimKz_EM");
   hL1116_SsPimKz_EM->Rebin(2);
   
-  
+  TH1F* hL1520_data_EM=(TH1F*)fData_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
+  hL1520_data_EM->SetName("hL1520_data_EM");
   TH1F* hL1520_L1520_EM=(TH1F*)fL1520_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
   hL1520_L1520_EM->SetName("hL1520_L1520_EM");
   //hL1520_L1520_EM->Rebin(2);
@@ -90,7 +108,6 @@ int evalEM(void)
   hL1520_SsPimKz_EM->SetName("hL1520_SsPimKz_EM");
   //hL1520_SsPimKz_EM->Rebin(2);
  
-  
   TH1F* hL1116_L1520_perfect=(TH1F*)fL1520_perfect_L1116->Get("h2");
   hL1116_L1520_perfect->SetName("hL1116_L1520_perfect");
   //hL1116_L1520_perfect->Rebin(2);
@@ -109,7 +126,10 @@ int evalEM(void)
   hL1520_L1520K0_perfect->SetName("hL1520_L1520K0_perfect");
   hL1520_L1520K0_perfect->Rebin(2);
 
-  
+
+  TH1F* hL1520_data_SB=(TH1F*)fData_SB->Get("background");
+  hL1520_data_SB->SetName("hL1520_data_SB");
+  //hL1520_data_SB->Rebin(2);
   TH1F* hL1520_L1520_SB=(TH1F*)fL1520K0_SB->Get("background");
   hL1520_L1520_SB->SetName("hL1520_L1520_SB");
   //hL1520_L1520_EM->Rebin(2);
@@ -151,9 +171,11 @@ int evalEM(void)
   double xmin=1600;
   double xmax=2000;
 
+  double sig_data=hL1520_data->Integral(hL1520_data->FindBin(xmin),hL1520_data->FindBin(xmax));
   double sig_L1520=hL1520_L1520->Integral(hL1520_L1520->FindBin(xmin),hL1520_L1520->FindBin(xmax));
   double sig_L1520K0=hL1520_L1520K0->Integral(hL1520_L1520K0->FindBin(xmin),hL1520_L1520K0->FindBin(xmax));
   double sig_SsPimKz=hL1520_SsPimKz->Integral(hL1520_SsPimKz->FindBin(xmin),hL1520_SsPimKz->FindBin(xmax));
+  double EM1_data=hL1520_data_EM->Integral(hL1520_data_EM->FindBin(xmin),hL1520_data_EM->FindBin(xmax));
   double EM1_L1520=hL1520_L1520_EM->Integral(hL1520_L1520_EM->FindBin(xmin),hL1520_L1520_EM->FindBin(xmax));
   double EM1_L1520K0=hL1520_L1520K0_EM->Integral(hL1520_L1520K0_EM->FindBin(xmin),hL1520_L1520K0_EM->FindBin(xmax));
   double EM1_SsPimKz=hL1520_SsPimKz_EM->Integral(hL1520_SsPimKz_EM->FindBin(xmin),hL1520_SsPimKz_EM->FindBin(xmax));
@@ -161,10 +183,12 @@ int evalEM(void)
   TH1F* hL1116_L1520K0_EM_copy=(TH1F*)hL1116_L1520K0_EM->Clone("hL1116_L1520K0_EM_copy");
   TH1F* hL1116_L1520_EM_copy=(TH1F*)hL1116_L1520_EM->Clone("hL1116_L1520_EM_copy");
 
+  hL1520_data_EM->Scale(sig_data/EM1_data);
   hL1520_L1520_EM->Scale(sig_L1520K0/EM1_L1520K0);
   hL1520_L1520K0_EM->Scale(sig_L1520K0/EM1_L1520K0);
   hL1520_SsPimKz_EM->Scale(sig_SsPimKz/EM1_SsPimKz);
 
+  hL1116_data_EM->Scale(sig_data/EM1_data);
   hL1116_L1520_EM->Scale(sig_L1520/EM1_L1520);
   hL1116_L1520K0_EM->Scale(sig_L1520K0/EM1_L1520K0);
   hL1116_SsPimKz_EM->Scale(sig_SsPimKz/EM1_SsPimKz);
@@ -173,7 +197,28 @@ int evalEM(void)
   //hL1116_L1520K0_EM_copy->Scale(hL1520_L1520K0_EM->Integral());
   //hL1116_L1520_EM_copy->Scale();
   
+  int rebin_data=2;
+  TCanvas *cdata=new TCanvas("cdata","cdata");
+  cdata->Divide(2);
+  cdata->cd(1);
+  hL1116_data->Draw();
+  StyleDataPints(hL1116_data);
+  hL1116_data->GetXaxis()->SetRangeUser(1070,1300);
+  hL1116_data_EM->Draw("same");
+  StyleEM(hL1116_data_EM); 
 
+  cdata->cd(2);
+  hL1520_data->Draw();
+  hL1520_data->Rebin(rebin_data);
+  StyleDataPints(hL1520_data);
+  hL1520_data->GetXaxis()->SetRangeUser(1300,2000);
+  hL1520_data_EM->Draw("same");
+  hL1520_data_EM->Rebin(rebin_data);
+  StyleEM(hL1520_data_EM);
+  hL1520_data_SB->Draw("same");
+  hL1520_data_SB->Rebin(rebin_data);
+  StyleSB(hL1520_data_SB);
+  
   TCanvas *cL1520=new TCanvas("cL1520","cL1520");
   cL1520->Divide(2);
   cL1520->cd(1);
@@ -200,7 +245,7 @@ int evalEM(void)
   hL1520_L1520_perfectBG->Draw("samehist");
   StylePerfectBackground(hL1520_L1520_perfectBG);
   hL1520_L1520_SB->Draw("same");
-  StyleDataPints(hL1520_L1520_SB);
+  StyleSB(hL1520_L1520_SB);
 
   TCanvas *cL1520K0=new TCanvas("cL1520K0","cL1520K0");
   cL1520K0->Divide(2);
@@ -228,7 +273,7 @@ int evalEM(void)
   hL1520_L1520K0_perfectBG->Draw("samehist");
   StylePerfectBackground(hL1520_L1520K0_perfectBG);
   hL1520_L1520K0_SB->Draw("same");
-  StyleDataPints(hL1520_L1520K0_SB);
+  StyleSB(hL1520_L1520K0_SB);
 
   TCanvas *cSsPimKz=new TCanvas("cSsPimKz","cSsPimKz");
   cSsPimKz->Divide(2);
@@ -256,7 +301,7 @@ int evalEM(void)
   //hSsPimKz_SsPimKz_perfectBG->Draw("samehist");
   //StylePerfectBackground(hSsPimKz_SsPimKz_perfectBG);
   hL1520_SsPimKz_SB->Draw("same");
-  StyleDataPints(hL1520_SsPimKz_SB);
+  StyleSB(hL1520_SsPimKz_SB);
   
 
   return 0;

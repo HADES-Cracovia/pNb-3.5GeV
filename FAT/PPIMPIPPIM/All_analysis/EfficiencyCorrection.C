@@ -28,13 +28,28 @@ int EfficiencyCorrection(void)
   TH1F* hPtL1520Eff=hPtL1520Final->Clone("hPtL1520Eff");
   TH1F* hYL1520Eff=hYL1520Final->Clone("hYL1520Eff");
 
+  TH2F* h2PtvsYFinal=(TH2F*)fAfterCuts->Get("h2PtvsY");
+  h2PtvsYFinal->SetName("h2PtvsYFinal");
+  TH2F* h2PtvsYPluto=(TH2F*)fPluto->Get("h2PtvsY");
+  h2PtvsYPluto->SetName("h2PtvsYPluto");
+  TH2F* h2PtvsYEff=h2PtvsYFinal->Clone("h2PtvsYFinal");
+  h2PtvsYEff->SetName("h2PtvsYEff");
   
+  hPtL1520Pluto->Sumw2();
+  hPtL1520Final->Sumw2();
+  hPtL1520Eff->Sumw2();
+
+  hYL1520Pluto->Sumw2();
+  hYL1520Final->Sumw2();
+  hYL1520Eff->Sumw2();
+
   rescaleHist(hPtL1520Pluto,1000);
   hPtL1520Pluto->Rebin((int)(hPtL1520Pluto->GetNbinsX()/hPtL1520Final->GetNbinsX()));
   hYL1520Pluto->Rebin((int)(hYL1520Pluto->GetNbinsX()/hYL1520Final->GetNbinsX()));
 
   hPtL1520Eff->Divide(hPtL1520Pluto);
   hYL1520Eff->Divide(hYL1520Pluto);
+  h2PtvsYEff->Divide(h2PtvsYPluto);
   
   TCanvas* cPt=new TCanvas("cPt","cPt");
   hPtL1520Pluto->Draw();
@@ -51,9 +66,32 @@ int EfficiencyCorrection(void)
   cEff->cd(2);
   hYL1520Eff->Draw();
 
+  TCanvas *cPtvsY=new TCanvas("cPtvsY","cPtvsY");
+  cPtvsY->Divide(2,2);
+  cPtvsY->cd(1);
+  h2PtvsYFinal->Draw("colz");
+  cPtvsY->cd(2);
+  h2PtvsYPluto->Draw("colz");
+  cPtvsY->cd(3);
+  h2PtvsYEff->Draw("colz");
+  h2PtvsYEff->Rebin2D(2,2);
+  cPtvsY->cd(4);
+  
   cPt->Write();
   cY->Write();
   cEff->Write();
+
+  hPtL1520Pluto->Write();
+  hYL1520Pluto->Write();
+  hPtL1520Final->Write();
+  hYL1520Final->Write();
+  hPtL1520Eff->Write();
+  hYL1520Eff->Write();
+
+  h2PtvsYFinal->Write();
+  h2PtvsYPluto->Write();
+  h2PtvsYEff->Write();
+
   
   fout->Write();
   
