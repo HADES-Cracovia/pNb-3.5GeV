@@ -1,13 +1,26 @@
-void StyleEM(TH1* h1)
+void StyleEM(TH1* h1, int col=1)
 {
-  h1->SetLineColor(kRed+2);
+  switch(col)
+    {
+    case 1:
+      h1->SetLineColor(kRed+2);
+      h1->SetFillStyle(3345);
+      break;
+    case 2:
+      h1->SetLineColor(kRed-7);
+      h1->SetFillStyle(3354);
+      break;
+    default:
+      h1->SetLineColor(kBlue);
+      h1->SetFillStyle(3144);
+      break;
+    }
   //h1->SetMarkerColor(h1->GetLineColor());
   //h1->SetMarkerStyle(8);
   //h1->SetMarkerSize(2);
   h1->SetLineStyle(1);
   h1->SetLineWidth(3);
-  h1->SetFillStyle(3345);
-  h1->SetFillColor(kRed+2);
+  h1->SetFillColor(h1->GetLineColor());
 }
 
 
@@ -64,6 +77,7 @@ int evalEM(void)
   else
     cout<<"problem with files!!!"<<endl;
 
+  
   TH1F* hL1116_data=(TH1F*)fData_SB->Get("orginal_spectrum");
   hL1116_data->SetName("hL1116_data");
   TH1F* hL1116_L1520=(TH1F*)fL1520_SB->Get("orginal_spectrum");
@@ -81,7 +95,6 @@ int evalEM(void)
   hL1520_L1520K0->SetName("hL1520_L1520K0");
   TH1F* hL1520_SsPimKz=(TH1F*)fSsPimKz_SB->Get("data");
   hL1520_SsPimKz->SetName("hl1520_SsPimKz");
-  
 
   TH1F* hL1116_data_EM=(TH1F*)fData_EM->Get("h_EM_for_L1116");
   hL1116_data_EM->SetName("hL1116_data_EM");
@@ -95,7 +108,27 @@ int evalEM(void)
   TH1F* hL1116_SsPimKz_EM=(TH1F*)fSsPimKz_EM->Get("h_EM_for_L1116");
   hL1116_SsPimKz_EM->SetName("hL1116_SsPimKz_EM");
   hL1116_SsPimKz_EM->Rebin(2);
+
+  TH1F* hPipPim_data=(TH1F*)fData_SB->Get("hMPipPim_signal");
+  hPipPim_data->SetName("hPipPim_data");
+  TH1F* hPipPim_L1520=(TH1F*)fL1520_SB->Get("hMPipPim_signal");
+  hPipPim_L1520->SetName("hPipPim_L1520");
+  TH1F* hPipPim_L1520K0=(TH1F*)fL1520K0_SB->Get("hMPipPim_signal");
+  hPipPim_L1520K0->SetName("hPipPim_L1520K0");
+  TH1F* hPipPim_SsPimKz=(TH1F*)fSsPimKz_SB->Get("hMPipPim_signal");
+  hPipPim_SsPimKz->SetName("hl1520_SsPimKz");
+  /*
+  TH1F* hPipPim_data_SB=(TH1F*)fData_SB->Get("hMPipPim_signal");
+  hPipPim_data->SetName("hPipPim_data");
+  TH1F* hPipPim_L1520=(TH1F*)fL1520_SB->Get("hMPipPim_signal");
+  hPipPim_L1520->SetName("hPipPim_L1520");
+  TH1F* hPipPim_L1520K0=(TH1F*)fL1520K0_SB->Get("hMPipPim_signal");
+  hPipPim_L1520K0->SetName("hPipPim_L1520K0");
+  TH1F* hPipPim_SsPimKz=(TH1F*)fSsPimKz_SB->Get("hMPipPim_signal");
+  hPipPim_SsPimKz->SetName("hl1520_SsPimKz");
+  */
   
+  //EM for L1520, but only pim in L1116 mixed
   TH1F* hL1520_data_EM=(TH1F*)fData_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
   hL1520_data_EM->SetName("hL1520_data_EM");
   TH1F* hL1520_L1520_EM=(TH1F*)fL1520_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
@@ -107,6 +140,19 @@ int evalEM(void)
   TH1F* hL1520_SsPimKz_EM=(TH1F*)fSsPimKz_EM->Get("h_m_inv_p_pim_pip_pim_L1116EM");
   hL1520_SsPimKz_EM->SetName("hL1520_SsPimKz_EM");
   //hL1520_SsPimKz_EM->Rebin(2);
+
+  //EM for L1520, pim pip mixed
+  TH1F* hL1520_data_EM_normal=(TH1F*)fData_EM->Get("h_m_inv_p_pim_pip_pim_signal");
+  hL1520_data_EM_normal->SetName("hL1520_data_EM_normal");
+  TH1F* hL1520_L1520_EM_normal=(TH1F*)fL1520_EM->Get("h_m_inv_p_pim_pip_pim_signal");
+  hL1520_L1520_EM_normal->SetName("hL1520_L1520_EM_normal");
+  //hL1520_L1520_EM_normal->Rebin(2);
+  TH1F* hL1520_L1520K0_EM_normal=(TH1F*)fL1520K0_EM->Get("h_m_inv_p_pim_pip_pim_signal");
+  hL1520_L1520K0_EM_normal->SetName("hL1520_L1520K0_EM_normal");
+  //hL1520_L1520K0_EM_normal->Rebin(2);
+  TH1F* hL1520_SsPimKz_EM_normal=(TH1F*)fSsPimKz_EM->Get("h_m_inv_p_pim_pip_pim_signal");
+  hL1520_SsPimKz_EM_normal->SetName("hL1520_SsPimKz_EM_normal");
+  //hL1520_SsPimKz_EM_normal->Rebin(2);
  
   TH1F* hL1116_L1520_perfect=(TH1F*)fL1520_perfect_L1116->Get("h2");
   hL1116_L1520_perfect->SetName("hL1116_L1520_perfect");
@@ -146,6 +192,23 @@ int evalEM(void)
   fBg_L1520K0->SetName("fBg_L1520K0");
   TF1* fBg_SsPimKz=(TF1*)fSsPimKz_SB->Get("fbg");
   fBg_SsPimKz->SetName("fBg_SsPimKz");
+
+
+  
+  //Sigma+ Sigma-
+  TH1F* hSp_data=(TH1F*)fData_SB->Get("hMPPimPip");
+  hSp_data->SetName("hSp_data");
+  TH1F* hSp_data_SB=(TH1F*)fData_SB->Get("hMPPimPip_SB");
+  hSp_data_SB->SetName("hSp_data_SB");
+  TH1F* hSp_data_EM=(TH1F*)fData_EM->Get("hMPPimPip");
+  hSp_data_EM->SetName("hSp_data_EM");
+  
+  TH1F* hSm_data=(TH1F*)fData_SB->Get("hMPPimPim");
+  hSm_data->SetName("hSm_data");
+  TH1F* hSm_data_SB=(TH1F*)fData_SB->Get("hMPPimPim_SB");
+  hSm_data_SB->SetName("hSm_data_SB");
+  TH1F* hSm_data_EM=(TH1F*)fData_EM->Get("hMPPimPim");
+  hSm_data_EM->SetName("hSm_data_EM");
   
   cout<<"binning for different histograms"<<endl;
   cout<<"hL1116_L1520_perfect: "<<hL1116_L1520_perfect->GetBinWidth(1)<<endl;
@@ -170,16 +233,32 @@ int evalEM(void)
   //scale EM
   double xmin=1600;
   double xmax=2000;
+  double xmin1=1106;
+  double xmax1=1126;
 
+  
   double sig_data=hL1520_data->Integral(hL1520_data->FindBin(xmin),hL1520_data->FindBin(xmax));
   double sig_L1520=hL1520_L1520->Integral(hL1520_L1520->FindBin(xmin),hL1520_L1520->FindBin(xmax));
   double sig_L1520K0=hL1520_L1520K0->Integral(hL1520_L1520K0->FindBin(xmin),hL1520_L1520K0->FindBin(xmax));
   double sig_SsPimKz=hL1520_SsPimKz->Integral(hL1520_SsPimKz->FindBin(xmin),hL1520_SsPimKz->FindBin(xmax));
+
   double EM1_data=hL1520_data_EM->Integral(hL1520_data_EM->FindBin(xmin),hL1520_data_EM->FindBin(xmax));
   double EM1_L1520=hL1520_L1520_EM->Integral(hL1520_L1520_EM->FindBin(xmin),hL1520_L1520_EM->FindBin(xmax));
   double EM1_L1520K0=hL1520_L1520K0_EM->Integral(hL1520_L1520K0_EM->FindBin(xmin),hL1520_L1520K0_EM->FindBin(xmax));
   double EM1_SsPimKz=hL1520_SsPimKz_EM->Integral(hL1520_SsPimKz_EM->FindBin(xmin),hL1520_SsPimKz_EM->FindBin(xmax));
 
+  double EM1_data_n=hL1520_data_EM_normal->Integral(hL1520_data_EM_normal->FindBin(xmin),hL1520_data_EM_normal->FindBin(xmax));
+  double EM1_L1520_n=hL1520_L1520_EM_normal->Integral(hL1520_L1520_EM_normal->FindBin(xmin),hL1520_L1520_EM_normal->FindBin(xmax));
+  double EM1_L1520K0_n=hL1520_L1520K0_EM_normal->Integral(hL1520_L1520K0_EM_normal->FindBin(xmin),hL1520_L1520K0_EM_normal->FindBin(xmax));
+  double EM1_SsPimKz_n=hL1520_SsPimKz_EM_normal->Integral(hL1520_SsPimKz_EM_normal->FindBin(xmin),hL1520_SsPimKz_EM_normal->FindBin(xmax));
+  
+  double EM2_data=hL1116_data_EM->Integral(hL1116_data_EM->FindBin(xmin1),hL1116_data_EM->FindBin(xmax1));
+  double EM2_L1520=hL1116_L1520_EM->Integral(hL1116_L1520_EM->FindBin(xmin1),hL1116_L1520_EM->FindBin(xmax1));
+  double EM2_L1520K0=hL1116_L1520K0_EM->Integral(hL1116_L1520K0_EM->FindBin(xmin1),hL1116_L1520K0_EM->FindBin(xmax1));
+  double EM2_SsPimKz=hL1116_SsPimKz_EM->Integral(hL1116_SsPimKz_EM->FindBin(xmin1),hL1116_SsPimKz_EM->FindBin(xmax1));
+
+
+  
   TH1F* hL1116_L1520K0_EM_copy=(TH1F*)hL1116_L1520K0_EM->Clone("hL1116_L1520K0_EM_copy");
   TH1F* hL1116_L1520_EM_copy=(TH1F*)hL1116_L1520_EM->Clone("hL1116_L1520_EM_copy");
 
@@ -188,10 +267,18 @@ int evalEM(void)
   hL1520_L1520K0_EM->Scale(sig_L1520K0/EM1_L1520K0);
   hL1520_SsPimKz_EM->Scale(sig_SsPimKz/EM1_SsPimKz);
 
-  hL1116_data_EM->Scale(sig_data/EM1_data);
-  hL1116_L1520_EM->Scale(sig_L1520/EM1_L1520);
-  hL1116_L1520K0_EM->Scale(sig_L1520K0/EM1_L1520K0);
-  hL1116_SsPimKz_EM->Scale(sig_SsPimKz/EM1_SsPimKz);
+  hL1520_data_EM_normal->Scale(sig_data/EM1_data_n);
+  hL1520_L1520_EM_normal->Scale(sig_L1520K0/EM1_L1520K0_n);
+  hL1520_L1520K0_EM_normal->Scale(sig_L1520K0/EM1_L1520K0_n);
+  hL1520_SsPimKz_EM_normal->Scale(sig_SsPimKz/EM1_SsPimKz_n);
+
+  hSp_data_EM->Scale(sig_data/EM1_data_n);
+  hSm_data_EM->Scale(sig_data/EM1_data_n);
+  
+  hL1116_data_EM->Scale(1/EM2_data*hL1520_data_EM->Integral());
+  hL1116_L1520_EM->Scale(1/EM2_L1520*hL1520_L1520_EM->Integral());
+  hL1116_L1520K0_EM->Scale(1/EM2_L1520K0*hL1520_L1520K0_EM->Integral());
+  hL1116_SsPimKz_EM->Scale(1/EM2_SsPimKz*hL1520_SsPimKz_EM->Integral());
 
   
   //hL1116_L1520K0_EM_copy->Scale(hL1520_L1520K0_EM->Integral());
@@ -214,7 +301,10 @@ int evalEM(void)
   hL1520_data->GetXaxis()->SetRangeUser(1300,2000);
   hL1520_data_EM->Draw("same");
   hL1520_data_EM->Rebin(rebin_data);
+  hL1520_data_EM_normal->Draw("same");
+  hL1520_data_EM_normal->Rebin(rebin_data);
   StyleEM(hL1520_data_EM);
+  StyleEM(hL1520_data_EM_normal,2);
   hL1520_data_SB->Draw("same");
   hL1520_data_SB->Rebin(rebin_data);
   StyleSB(hL1520_data_SB);
@@ -240,6 +330,8 @@ int evalEM(void)
   hL1520_L1520->GetXaxis()->SetRangeUser(1300,1850);
   hL1520_L1520_EM->Draw("same");
   StyleEM(hL1520_L1520_EM);
+  hL1520_L1520_EM_normal->Draw("same");
+  StyleEM(hL1520_L1520_EM_normal,2);
   hL1520_L1520_perfect->Draw("same");
   StylePerfectSignal(hL1520_L1520_perfect);
   hL1520_L1520_perfectBG->Draw("samehist");
@@ -268,6 +360,8 @@ int evalEM(void)
   hL1520_L1520K0->GetXaxis()->SetRangeUser(1300,1850);
   hL1520_L1520K0_EM->Draw("same");
   StyleEM(hL1520_L1520K0_EM);
+  hL1520_L1520K0_EM_normal->Draw("same");
+  StyleEM(hL1520_L1520K0_EM_normal,2);
   hL1520_L1520K0_perfect->Draw("same");
   StylePerfectSignal(hL1520_L1520K0_perfect);
   hL1520_L1520K0_perfectBG->Draw("samehist");
@@ -296,13 +390,39 @@ int evalEM(void)
   hL1520_SsPimKz->GetXaxis()->SetRangeUser(1300,1850);
   hL1520_SsPimKz_EM->Draw("same");
   StyleEM(hL1520_SsPimKz_EM);
+  hL1520_SsPimKz_EM_normal->Draw("same");
+  StyleEM(hL1520_SsPimKz_EM_normal,2);
   //hSsPimKz_SsPimKz_perfect->Draw("same");
   //StylePerfectSignal(hSsPimKz_SsPimKz_perfect);
   //hSsPimKz_SsPimKz_perfectBG->Draw("samehist");
   //StylePerfectBackground(hSsPimKz_SsPimKz_perfectBG);
   hL1520_SsPimKz_SB->Draw("same");
   StyleSB(hL1520_SsPimKz_SB);
-  
+
+  int rebin_sigmas=4;
+  TCanvas* cSp=new TCanvas("cSp","cSp");
+  hSp_data->GetXaxis()->SetRangeUser(1200,1500);
+  hSp_data->Draw();   
+  hSp_data->Rebin(rebin_sigmas);
+  StyleDataPints(hSp_data);
+  hSp_data_EM->Draw("same");
+  hSp_data_EM->Rebin(rebin_sigmas);
+  StyleEM(hSp_data_EM,2);
+  hSp_data_SB->Draw("same");
+  hSp_data_SB->Rebin(rebin_sigmas);
+  StyleSB(hSp_data_SB);
+
+  TCanvas* cSm=new TCanvas("cSm","cSm");
+  hSm_data->GetXaxis()->SetRangeUser(1200,1500);
+  hSm_data->Draw();   
+  hSm_data->Rebin(rebin_sigmas);
+  StyleDataPints(hSm_data);
+  hSm_data_EM->Draw("same");
+  hSm_data_EM->Rebin(rebin_sigmas);
+  StyleEM(hSm_data_EM,2);
+  hSm_data_SB->Draw("same");
+  hSm_data_SB->Rebin(rebin_sigmas);
+  StyleSB(hSm_data_SB);
 
   return 0;
 }
