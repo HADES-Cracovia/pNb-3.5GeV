@@ -52,16 +52,23 @@ void EventMixing2::Loop(char*  output)
   int KdM=(Kmax-Kmin)/dM;
   TH1F* h_m_inv_p_pim=new TH1F("h_m_inv_p_pim","A #Lambda(1116) invariant mass; M_{p #pi^{-}[MeV]};N",bin*2,xmin,xmax);
   TH1F* h_m_inv_p_pim_pip_pim_signal=new TH1F("h_m_inv_p_pim_pip_pim_signal","A #Lambda(1520) invariant mass from event mixing for signal; M_{p #pi^{-} #pi^{+} #pi^{-} [MeV]};N",bin,xmin,xmax);
+  //TH1F* h_m_inv_p_pim_pip_pim_signal_4p=new TH1F("h_m_inv_p_pim_pip_pim_signal_4p","A #Lambda(1520) invariant mass from event mixing for signal; M_{p #pi^{-} #pi^{+} #pi^{-} [MeV]};N",bin,xmin,xmax);
   TH1F* h_m_inv_p_pim_pip_pim_SB=new TH1F("h_m_inv_p_pim_pip_pim_SB","A #Lambda(1520) invariant mass from event mixing for SB; M_{p #pi^{-} #pi^{+} #pi^{-} [MeV]};N",bin,xmin,xmax);
   TH1F* hL1520_w=new TH1F("hL1520_w","Rapidity for #Lambda (1520) events; w",20,0,1.5);
   TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",30,0,1600);
+  //TH1F* hL1116_w=new TH1F("hL1116_w","Rapidity for #Lambda (1116) events; w",20,0,1.5);
+  //TH1F* hL1116_pt=new TH1F("hL1116_pt","p_{T} for #Lambda(1116) events;p_{t}[MeV]",30,0,1600);
   TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",20,0,1.5);
   TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",30,0,1600);
+  TH1F* hL1116_w_SB=new TH1F("hL1116_w_SB","Rapidity for #Lambda (1116) events; w",20,0,1.5);
+  TH1F* hL1116_pt_SB=new TH1F("hL1116_pt_SB","p_{T} for #Lambda(1116) events;p_{t}[MeV]",30,0,1600);
   TH1F* hL1116_EM=new TH1F("hL1116_EM","#Lambda(1116) from event mixing; M_{p #pi^{-}}^{inv}[MeV]",LdM,Lmin,Lmax);
   TH1F* hK0_EM=new TH1F("hK0_EM","K^{0} from event mixing; M_{p #pi^{-}}^{inv}[MeV]",KdM,Kmin,Kmax);
 
   TH1F* hMPPimPip=new TH1F("hMPPimPip","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",400,1000,2000);
   TH1F* hMPPimPim=new TH1F("hMPPimPim","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",400,1000,2000);
+  //TH1F* hMPPimPip_4p=new TH1F("hMPPimPip_4p","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",400,1000,2000);
+  //TH1F* hMPPimPim_4p=new TH1F("hMPPimPim_4p","Invariant mass for #Lambda #pi^{-};M^{inv}_{p #pi^{-}}[MeV];counts",400,1000,2000);
   TH2F* h2MPPimPip_MPPimPim=new TH2F("h2MPPimPip_MPPimPim","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{p #pi^{-}}[MeV];M^{inv}_{p #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
 
   TH1F* hMPPimPip_SB=new TH1F("hMPPimPip_SB","Invariant mass for #Lambda #pi^{+};M^{inv}_{p #pi^{+}}[MeV];counts",400,1000,2000);
@@ -77,7 +84,8 @@ void EventMixing2::Loop(char*  output)
   TH2F* h2BetaGamma_MPPimPipPim_EM_SB=new TH2F("h2BetaGamma_MPPimPipPim_EM_SB","#beta #gamma vs M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}};#beta #gamma;M^{inv}_{p #pi^{-}#pi^{+}#pi^{-}}",100,0,2,125,1000,2000);
   
   
-  int delta=10000;
+  //int delta=10000;
+  int delta=1000;
   bool isL=false;
   bool isK0=false;
   bool isp=false;
@@ -235,7 +243,7 @@ void EventMixing2::Loop(char*  output)
       //SB for K0 L
       
     }
-  
+
   //normalize background to signal
   TCanvas* cFit1116=new TCanvas("cFit1116");
   cFit1116->cd();

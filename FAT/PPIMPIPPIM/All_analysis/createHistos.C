@@ -79,19 +79,19 @@ void createHistos::Loop(char* output)
   double oa_cut=10;
   double dist_cut=50;
   /*
-  std::fstream in_file {"../cuts.txt", std::ios::in};
-  if(in_file.is_open())
+    std::fstream in_file {"../cuts.txt", std::ios::in};
+    if(in_file.is_open())
     {
-      cout<<"Read cuts from external file"<<endl;
-      in_file>>sidebandmin>>sidebandmax>>mlp_cut>>oa_cut>>dist_cut;
+    cout<<"Read cuts from external file"<<endl;
+    in_file>>sidebandmin>>sidebandmax>>mlp_cut>>oa_cut>>dist_cut;
     }
 
-  cout<<"Cuts values:"<<endl;
-  cout<<"sidebandmin: "<<sidebandmin<<endl;
-  cout<<"sidebandmax: "<<sidebandmax<<<end;
-  cout<<"mlp_cut: "<<mlp_cut<<endl;
-  cout<<"oa_cut: "<<oa_cut<<endl;
-  cout<<"dist_cut: "<<dist_cut<<endl;
+    cout<<"Cuts values:"<<endl;
+    cout<<"sidebandmin: "<<sidebandmin<<endl;
+    cout<<"sidebandmax: "<<sidebandmax<<<end;
+    cout<<"mlp_cut: "<<mlp_cut<<endl;
+    cout<<"oa_cut: "<<oa_cut<<endl;
+    cout<<"dist_cut: "<<dist_cut<<endl;
   */
   TLine* line1=new TLine(1116-sidebandmax,0,1116-sidebandmax,120);
   TLine* line2=new TLine(1116-sidebandmin,0,1116-sidebandmin,120);
@@ -143,9 +143,14 @@ void createHistos::Loop(char* output)
 
   TH1F* hL1520_w=new TH1F("hL1520_w","Rapidity for #Lambda (1520) events; w",40,0,2);
   TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",32,0,1600);
+  TH1F* hL1116_w=new TH1F("hL1116_w","Rapidity for #Lambda (1116) events; w",40,0,2);
+  TH1F* hL1116_pt=new TH1F("hL1116_pt","p_{T} for #Lambda(1116) events;p_{t}[MeV]",32,0,1600);
   TH1F* hL1520_w_SB=new TH1F("hL1520_w_SB","Rapidity for SB events; w",40,0,2);
   TH1F* hL1520_pt_SB=new TH1F("hL1520_pt_SB","p_{T} for SB events;p_{t}[MeV]",32,0,1600);
-
+  TH1F* hL1116_w_SB=new TH1F("hL1116_w_SB","Rapidity for #Lambda (1116) events; w",40,0,2);
+  TH1F* hL1116_pt_SB=new TH1F("hL1116_pt_SB","p_{T} for #Lambda(1116) events;p_{t}[MeV]",32,0,1600);
+ 
+  
   TH1F* hMPPimPip=new TH1F("hMPPimPip","Invariant mass for #Lambda #pi^{+};M^{inv}_{#Lambda #pi^{+}}[MeV];counts",400,1000,2000);
   TH1F* hMPPimPim=new TH1F("hMPPimPim","Invariant mass for #Lambda #pi^{-};M^{inv}_{#Lambda #pi^{-}}[MeV];counts",400,1000,2000);
   TH2F* h2MPPimPip_MPPimPim=new TH2F("h2MPPimPip_MPPimPim","M^{inv}_{#Lambda #pi^{+}} vs. M^{inv}_{#Lambda #pi^{-}};M^{inv}_{#Lambda #pi^{-}}[MeV];M^{inv}_{#Lambda #pi^{+}}[MeV]",100,1000,2000,100,1000,2000); 
@@ -267,8 +272,10 @@ void createHistos::Loop(char* output)
 	  data->Fill(m_inv_p_pim_pip_pim);
 	  miss_m_vs_pip_pim->Fill(miss_mass_kp,m_inv_pip_pim);
 	  h2BetaGamma_MPPimPipPim->Fill(ppimpippim.P()/ppimpippim.M(),m_inv_p_pim_pip_pim);
-	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
+	  hL1116_pt->Fill(lambda_pt);
+	  hL1116_w->Fill(lambda_w);
 
+	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	    {
 	      hL1520_pt->Fill(ppimpippim.Pt());
 	      hL1520_w->Fill(ppimpippim.Rapidity());
@@ -287,7 +294,8 @@ void createHistos::Loop(char* output)
 	{
 	  background->Fill(m_inv_p_pim_pip_pim);
 	  h2BetaGamma_MPPimPipPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
-	  
+	  hL1116_pt_SB->Fill(lambda_pt);
+	  hL1116_w_SB->Fill(lambda_w); 
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	    {
@@ -307,7 +315,8 @@ void createHistos::Loop(char* output)
 	  background->Fill(m_inv_p_pim_pip_pim);
 	  //h2MPPimPip_MPPimPim->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 	  h2BetaGamma_MPPimPipPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
-	  
+	  hL1116_pt_SB->Fill(lambda_pt);
+	  hL1116_w_SB->Fill(lambda_w);
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	    {
@@ -335,7 +344,7 @@ void createHistos::Loop(char* output)
 
   fVoigt_bg->SetParameters(3369,1115,3.5,1,-158569,166,0.08,-4.73e-5,-7.41e-8,3.2e-11);
   //fVoigt_bg->SetParameters(585,1115,1.3,2,-126137,160,0.06,-6.5e-5,-0.00,1156.67);
-  7.8e-8,5.0e-11);
+  
   fVoigt_bg->SetParLimits(3,0,2);
   fVoigt_bg->SetParLimits(1,1112,1117);
   fVoigt_bg->SetRange(1106,1122);
@@ -377,6 +386,9 @@ void createHistos::Loop(char* output)
   scale(h2MPPimPip_MPPimPim_SB,intB/intsideband);
   scale(hBetaGamma_SB,intB/intsideband);
   scale(h2BetaGamma_MPPimPipPim_SB,intB/intsideband);
+  scale(hL1116_w_SB,intB/intsideband);
+  scale(hL1116_pt_SB,intB/intsideband);
+
   //Fill random signal
   //TF1* L1520Spectral=new TF1("L1520Spectral","100*exp(-0.5*((x-1520)/16)**2)",xmin,xmax);
   TF1* L1520Spectral=new TF1("L1520Spectral","TMath::BreitWigner(x,1519.5,15.6)",xmin,xmax);
@@ -397,9 +409,9 @@ void createHistos::Loop(char* output)
   L1116_fit->SetRange(1088,1140);
   hMPPim_TMVA_K0mass->Fit(L1116_fit,"R");
   /*L1116_fit->SetRange(1100,1130);
-  hMPPim_TMVA_K0mass->Fit(L1116_fit,"R0");
-  L1116_fit->SetRange(1090,1140);
-  hMPPim_TMVA_K0mass->Fit(L1116_fit,"R0");
+    hMPPim_TMVA_K0mass->Fit(L1116_fit,"R0");
+    L1116_fit->SetRange(1090,1140);
+    hMPPim_TMVA_K0mass->Fit(L1116_fit,"R0");
   */  
   L1116_signal->SetParameters(L1116_fit->GetParameter(0),L1116_fit->GetParameter(1),L1116_fit->GetParameter(2),L1116_fit->GetParameter(3));
   L1116_signal->SetLineColor(kGreen-2);
@@ -410,11 +422,11 @@ void createHistos::Loop(char* output)
   K0_fit->SetRange(414,582);
   hMPipPim_TMVA_Lmass->Fit(K0_fit,"R");
   /*K0_fit->SetRange(476,510);
-  hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
-  K0_fit->SetRange(436,583);
-  hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
-  K0_fit->SetRange(398,566);
-  hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
+    hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
+    K0_fit->SetRange(436,583);
+    hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
+    K0_fit->SetRange(398,566);
+    hMPipPim_TMVA_Lmass->Fit(K0_fit,"R0");
   */  
   K0_signal->SetParameters(K0_fit->GetParameter(0),K0_fit->GetParameter(1),K0_fit->GetParameter(2),K0_fit->GetParameter(3));
   K0_signal->SetLineColor(kGreen-2);
@@ -483,6 +495,11 @@ void createHistos::Loop(char* output)
   hL1520_w_SB->Write();
   hL1520_pt_SB->Write();
 
+  hL1116_w->Write();
+  hL1116_pt->Write();
+  hL1116_w_SB->Write();
+  hL1116_pt_SB->Write();
+
   h2PtvsY->Write();
   h2PtvsY_SB->Write();
   
@@ -544,7 +561,11 @@ void createHistos::Loop(char* output)
 
   h2PtvsY->Delete();
   h2PtvsY_SB->Delete();
-  
-  
+
+  hL1116_w->Delete();
+  hL1116_pt->Delete();
+  hL1116_w_SB->Delete();
+  hL1116_pt_SB->Delete();
+
   MyFile->Close();
 }

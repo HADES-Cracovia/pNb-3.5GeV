@@ -59,7 +59,8 @@ void StyleSB(TH1F* h1)
 int evalEM(void)
 {
   TFile *fData_SB=new TFile("SB_experiment.root","read");
-  TFile *fData_EM=new TFile("EM_data_temp.root");
+  TFile *fData_EM=new TFile("EM_data_temp.root","read");
+  TFile *fData_EM_4p=new TFile("output_4p_new_hist.root","read");
   TFile *fL1520K0_SB=new TFile("SB_sim_L1520K0thermal.root","read");
   TFile *fL1520_SB=new TFile("SB_sim_L1520thermal.root","read");
   TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal.root","read");
@@ -117,15 +118,25 @@ int evalEM(void)
   hPipPim_L1520K0->SetName("hPipPim_L1520K0");
   TH1F* hPipPim_SsPimKz=(TH1F*)fSsPimKz_SB->Get("hMPipPim_signal");
   hPipPim_SsPimKz->SetName("hl1520_SsPimKz");
+  
+  TH1F* hPipPim_data_SB=(TH1F*)fData_SB->Get("hMPipPim_background");
+  hPipPim_data_SB->SetName("hPipPim_data_SB");
+  TH1F* hPipPim_L1520_SB=(TH1F*)fL1520_SB->Get("hMPipPim_background");
+  hPipPim_L1520_SB->SetName("hPipPim_L1520_SB");
+  TH1F* hPipPim_L1520K0_SB=(TH1F*)fL1520K0_SB->Get("hMPipPim_background");
+  hPipPim_L1520K0_SB->SetName("hPipPim_L1520K0_SB");
+  TH1F* hPipPim_SsPimKz_SB=(TH1F*)fSsPimKz_SB->Get("hMPipPim_background");
+  hPipPim_SsPimKz_SB->SetName("hl1520_SsPimKz_SB");
+
   /*
-  TH1F* hPipPim_data_SB=(TH1F*)fData_SB->Get("hMPipPim_signal");
-  hPipPim_data->SetName("hPipPim_data");
-  TH1F* hPipPim_L1520=(TH1F*)fL1520_SB->Get("hMPipPim_signal");
-  hPipPim_L1520->SetName("hPipPim_L1520");
-  TH1F* hPipPim_L1520K0=(TH1F*)fL1520K0_SB->Get("hMPipPim_signal");
-  hPipPim_L1520K0->SetName("hPipPim_L1520K0");
-  TH1F* hPipPim_SsPimKz=(TH1F*)fSsPimKz_SB->Get("hMPipPim_signal");
-  hPipPim_SsPimKz->SetName("hl1520_SsPimKz");
+    TH1F* hPipPim_data_EM=(TH1F*)fData_EM->Get("hMPipPim_background");
+    hPipPim_data_EM->SetName("hPipPim_data_EM");
+    TH1F* hPipPim_L1520_EM=(TH1F*)fL1520_EM->Get("hMPipPim_background");
+    hPipPim_L1520_EM->SetName("hPipPim_L1520_EM");
+    TH1F* hPipPim_L1520K0_EM=(TH1F*)fL1520K0_EM->Get("hMPipPim_background");
+    hPipPim_L1520K0_EM->SetName("hPipPim_L1520K0_EM");
+    TH1F* hPipPim_SsPimKz_EM=(TH1F*)fSsPimKz_EM->Get("hMPipPim_background");
+    hPipPim_SsPimKz_EM->SetName("hl1520_SsPimKz_EM");
   */
   
   //EM for L1520, but only pim in L1116 mixed
@@ -144,6 +155,9 @@ int evalEM(void)
   //EM for L1520, pim pip mixed
   TH1F* hL1520_data_EM_normal=(TH1F*)fData_EM->Get("h_m_inv_p_pim_pip_pim_signal");
   hL1520_data_EM_normal->SetName("hL1520_data_EM_normal");
+  TH1F* hL1520_data_EM_4p=(TH1F*)fData_EM_4p->Get("h_m_inv_p_pim_pip_pim_signal_4p");
+  hL1520_data_EM_4p->SetName("hL1520_data_EM_4p");
+  //hL1520_data_EM_4p->Rebin(2);
   TH1F* hL1520_L1520_EM_normal=(TH1F*)fL1520_EM->Get("h_m_inv_p_pim_pip_pim_signal");
   hL1520_L1520_EM_normal->SetName("hL1520_L1520_EM_normal");
   //hL1520_L1520_EM_normal->Rebin(2);
@@ -200,6 +214,8 @@ int evalEM(void)
   hSp_data->SetName("hSp_data");
   TH1F* hSp_data_SB=(TH1F*)fData_SB->Get("hMPPimPip_SB");
   hSp_data_SB->SetName("hSp_data_SB");
+  TH1F* hSp_data_EM_4p=(TH1F*)fData_EM_4p->Get("hMPPimPip_4p");
+  hSp_data_EM_4p->SetName("hSp_data_EM_4p");
   TH1F* hSp_data_EM=(TH1F*)fData_EM->Get("hMPPimPip");
   hSp_data_EM->SetName("hSp_data_EM");
   
@@ -209,6 +225,9 @@ int evalEM(void)
   hSm_data_SB->SetName("hSm_data_SB");
   TH1F* hSm_data_EM=(TH1F*)fData_EM->Get("hMPPimPim");
   hSm_data_EM->SetName("hSm_data_EM");
+  TH1F* hSm_data_EM_4p=(TH1F*)fData_EM_4p->Get("hMPPimPim_4p");
+  hSm_data_EM_4p->SetName("hSm_data_EM_4p");
+
   
   cout<<"binning for different histograms"<<endl;
   cout<<"hL1116_L1520_perfect: "<<hL1116_L1520_perfect->GetBinWidth(1)<<endl;
@@ -243,6 +262,7 @@ int evalEM(void)
   double sig_SsPimKz=hL1520_SsPimKz->Integral(hL1520_SsPimKz->FindBin(xmin),hL1520_SsPimKz->FindBin(xmax));
 
   double EM1_data=hL1520_data_EM->Integral(hL1520_data_EM->FindBin(xmin),hL1520_data_EM->FindBin(xmax));
+  double EM1_data_4p=hL1520_data_EM_4p->Integral(hL1520_data_EM_4p->FindBin(xmin),hL1520_data_EM_4p->FindBin(xmax));
   double EM1_L1520=hL1520_L1520_EM->Integral(hL1520_L1520_EM->FindBin(xmin),hL1520_L1520_EM->FindBin(xmax));
   double EM1_L1520K0=hL1520_L1520K0_EM->Integral(hL1520_L1520K0_EM->FindBin(xmin),hL1520_L1520K0_EM->FindBin(xmax));
   double EM1_SsPimKz=hL1520_SsPimKz_EM->Integral(hL1520_SsPimKz_EM->FindBin(xmin),hL1520_SsPimKz_EM->FindBin(xmax));
@@ -267,6 +287,10 @@ int evalEM(void)
   hL1520_L1520K0_EM->Scale(sig_L1520K0/EM1_L1520K0);
   hL1520_SsPimKz_EM->Scale(sig_SsPimKz/EM1_SsPimKz);
 
+  hL1520_data_EM_4p->Scale(sig_data/EM1_data_4p);
+  hSp_data_EM_4p->Scale(sig_data/EM1_data_4p);
+  hSm_data_EM_4p->Scale(sig_data/EM1_data_4p);
+  
   hL1520_data_EM_normal->Scale(sig_data/EM1_data_n);
   hL1520_L1520_EM_normal->Scale(sig_L1520K0/EM1_L1520K0_n);
   hL1520_L1520K0_EM_normal->Scale(sig_L1520K0/EM1_L1520K0_n);
@@ -308,6 +332,8 @@ int evalEM(void)
   hL1520_data_SB->Draw("same");
   hL1520_data_SB->Rebin(rebin_data);
   StyleSB(hL1520_data_SB);
+  hL1520_data_EM_4p->Draw("same");
+  hL1520_data_EM_4p->Rebin(rebin_data);
   
   TCanvas *cL1520=new TCanvas("cL1520","cL1520");
   cL1520->Divide(2);
@@ -411,7 +437,9 @@ int evalEM(void)
   hSp_data_SB->Draw("same");
   hSp_data_SB->Rebin(rebin_sigmas);
   StyleSB(hSp_data_SB);
-
+  hSp_data_EM_4p->Draw("same");
+  hSp_data_EM_4p->Rebin(rebin_sigmas);
+  
   TCanvas* cSm=new TCanvas("cSm","cSm");
   hSm_data->GetXaxis()->SetRangeUser(1200,1500);
   hSm_data->Draw();   
@@ -423,6 +451,8 @@ int evalEM(void)
   hSm_data_SB->Draw("same");
   hSm_data_SB->Rebin(rebin_sigmas);
   StyleSB(hSm_data_SB);
-
+  hSm_data_EM_4p->Draw("same");
+  hSm_data_EM_4p->Rebin(rebin_sigmas);
+  
   return 0;
 }
