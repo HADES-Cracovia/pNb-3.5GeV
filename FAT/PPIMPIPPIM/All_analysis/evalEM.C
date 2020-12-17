@@ -5,21 +5,28 @@ void StyleEM(TH1* h1, int col=1)
     case 1:
       h1->SetLineColor(kRed+2);
       h1->SetFillStyle(3345);
+      h1->SetLineStyle(1);
       break;
     case 2:
       h1->SetLineColor(kRed-7);
       h1->SetFillStyle(3354);
+      h1->SetLineStyle(1);
+      break;
+    case 3:
+      h1->SetLineColor(kRed+3);
+      h1->SetFillStyle(0);
+      h1->SetLineStyle(2);
       break;
     default:
       h1->SetLineColor(kBlue);
       h1->SetFillStyle(3144);
+      h1->SetLineStyle(1);
       break;
     }
   //h1->SetMarkerColor(h1->GetLineColor());
   //h1->SetMarkerStyle(8);
   //h1->SetMarkerSize(2);
-  h1->SetLineStyle(1);
-  h1->SetLineWidth(3);
+   h1->SetLineWidth(3);
   h1->SetFillColor(h1->GetLineColor());
 }
 
@@ -60,7 +67,7 @@ int evalEM(void)
 {
   TFile *fData_SB=new TFile("SB_experiment.root","read");
   TFile *fData_EM=new TFile("EM_data_temp.root","read");
-  TFile *fData_EM_4p=new TFile("output_4p_new_hist.root","read");
+  TFile *fData_EM_4p=new TFile("output_EM_4p.root","read");
   TFile *fL1520K0_SB=new TFile("SB_sim_L1520K0thermal.root","read");
   TFile *fL1520_SB=new TFile("SB_sim_L1520thermal.root","read");
   TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal.root","read");
@@ -72,6 +79,8 @@ int evalEM(void)
   TFile *fL1520K0_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520K0_true_L1520.root","read");
   TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_true_L1520.root","read");
   TFile *fSsPimKz_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/SsPimKz_real_L1116.root","read");
+
+  TFile *fout=new TFile("evalEM_output.root","recreate");
   
   if(fL1520K0_SB && fL1520_SB && fL1520K0_EM && fL1520_EM && fL1520K0_perfect_L1116 && fL1520_perfect_L1116 && fL1520K0_perfect_L1520 && fL1520_perfect_L1520 && fSsPimKz_perfect_L1116 && fSsPimKz_EM)
     cout<<"files open succesfully!!!"<<endl;
@@ -100,6 +109,9 @@ int evalEM(void)
   TH1F* hL1116_data_EM=(TH1F*)fData_EM->Get("h_EM_for_L1116");
   hL1116_data_EM->SetName("hL1116_data_EM");
   hL1116_data_EM->Rebin(2);
+  TH1F* hL1116_data_EM_4p=(TH1F*)fData_EM_4p->Get("h_m_inv_p_pim_4p");
+  hL1116_data_EM_4p->SetName("hL1116_data_EM_4p");
+  hL1116_data_EM_4p->Rebin(1);
   TH1F* hL1116_L1520_EM=(TH1F*)fL1520_EM->Get("h_EM_for_L1116");
   hL1116_L1520_EM->SetName("hL1116_L1520_EM");
   hL1116_L1520_EM->Rebin(2);
@@ -273,6 +285,7 @@ int evalEM(void)
   double EM1_SsPimKz_n=hL1520_SsPimKz_EM_normal->Integral(hL1520_SsPimKz_EM_normal->FindBin(xmin),hL1520_SsPimKz_EM_normal->FindBin(xmax));
   
   double EM2_data=hL1116_data_EM->Integral(hL1116_data_EM->FindBin(xmin1),hL1116_data_EM->FindBin(xmax1));
+  double EM2_data_4p=hL1116_data_EM_4p->Integral(hL1116_data_EM_4p->FindBin(xmin1),hL1116_data_EM_4p->FindBin(xmax1));
   double EM2_L1520=hL1116_L1520_EM->Integral(hL1116_L1520_EM->FindBin(xmin1),hL1116_L1520_EM->FindBin(xmax1));
   double EM2_L1520K0=hL1116_L1520K0_EM->Integral(hL1116_L1520K0_EM->FindBin(xmin1),hL1116_L1520K0_EM->FindBin(xmax1));
   double EM2_SsPimKz=hL1116_SsPimKz_EM->Integral(hL1116_SsPimKz_EM->FindBin(xmin1),hL1116_SsPimKz_EM->FindBin(xmax1));
@@ -300,6 +313,7 @@ int evalEM(void)
   hSm_data_EM->Scale(sig_data/EM1_data_n);
   
   hL1116_data_EM->Scale(1/EM2_data*hL1520_data_EM->Integral());
+  hL1116_data_EM_4p->Scale(1/EM2_data_4p*hL1520_data_EM_4p->Integral());
   hL1116_L1520_EM->Scale(1/EM2_L1520*hL1520_L1520_EM->Integral());
   hL1116_L1520K0_EM->Scale(1/EM2_L1520K0*hL1520_L1520K0_EM->Integral());
   hL1116_SsPimKz_EM->Scale(1/EM2_SsPimKz*hL1520_SsPimKz_EM->Integral());
@@ -317,7 +331,9 @@ int evalEM(void)
   hL1116_data->GetXaxis()->SetRangeUser(1070,1300);
   hL1116_data_EM->Draw("same");
   StyleEM(hL1116_data_EM); 
-
+  hL1116_data_EM_4p->Draw("same");
+  StyleEM(hL1116_data_EM_4p, 3);
+  
   cdata->cd(2);
   hL1520_data->Draw();
   hL1520_data->Rebin(rebin_data);
@@ -334,6 +350,7 @@ int evalEM(void)
   StyleSB(hL1520_data_SB);
   hL1520_data_EM_4p->Draw("same");
   hL1520_data_EM_4p->Rebin(rebin_data);
+  StyleEM(hL1520_data_EM_4p, 3);
   
   TCanvas *cL1520=new TCanvas("cL1520","cL1520");
   cL1520->Divide(2);
@@ -353,7 +370,7 @@ int evalEM(void)
   cL1520->cd(2);
   hL1520_L1520->Draw();
   StyleDataPints(hL1520_L1520);
-  hL1520_L1520->GetXaxis()->SetRangeUser(1300,1850);
+  hL1520_L1520->GetXaxis()->SetRangeUser(1300,1950);
   hL1520_L1520_EM->Draw("same");
   StyleEM(hL1520_L1520_EM);
   hL1520_L1520_EM_normal->Draw("same");
@@ -439,6 +456,7 @@ int evalEM(void)
   StyleSB(hSp_data_SB);
   hSp_data_EM_4p->Draw("same");
   hSp_data_EM_4p->Rebin(rebin_sigmas);
+  StyleEM(hSp_data_EM_4p, 3);
   
   TCanvas* cSm=new TCanvas("cSm","cSm");
   hSm_data->GetXaxis()->SetRangeUser(1200,1500);
@@ -453,6 +471,14 @@ int evalEM(void)
   StyleSB(hSm_data_SB);
   hSm_data_EM_4p->Draw("same");
   hSm_data_EM_4p->Rebin(rebin_sigmas);
-  
+  StyleEM(hSm_data_EM_4p, 3);
+
+  cdata->Write();
+  cL1520->Write();
+  cL1520K0->Write();
+  cSsPimKz->Write();
+  cSp->Write();
+  cSm->Write();
+ 
   return 0;
 }
