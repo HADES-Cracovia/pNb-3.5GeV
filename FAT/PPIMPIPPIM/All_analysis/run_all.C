@@ -10,9 +10,9 @@ using namespace std;
 
 int run_all(void)
 {
-  bool experiment=1;//czy brac pod uwage pliki z eksperymentu
-  bool b_TMVAeval=0;//czy uruchamiac przeliczenie sieci na nowo
-  bool b_simul=1;
+  bool experiment=0;//czy brac pod uwage pliki z eksperymentu
+  bool b_TMVAeval=1;//czy uruchamiac przeliczenie sieci na nowo
+  bool b_simul=0;
   bool b_thermal=1;
   
   if(b_TMVAeval)
@@ -27,6 +27,8 @@ int run_all(void)
       TFile* fsim_L1520thermal=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/L1520_thermal.root","READ");
       TFile* fsim_L1520K0thermal=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/L1520K0_thermal.root","READ");
       TFile* fsim_SsPimKzthermal=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/SsPimKz_thermal.root","READ");
+      TFile* fsim_L1520thermal_125_600=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/L1520_thermal_125_600/all.root","READ");
+      TFile* fsim_SsPimKzthermal_125_600=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/SsPimKz_thermal_125_600/all.root","READ");
       
       cout<<"load trees"<<endl;
       TTree* texperiment;
@@ -38,6 +40,8 @@ int run_all(void)
       TTree* tsim_L1520thermal;
       TTree* tsim_L1520K0thermal;
       TTree* tsim_SsPimKzthermal;
+      TTree* tsim_L1520thermal_125_600;
+      TTree* tsim_SsPimKzthermal_125_600;
 
 
  
@@ -59,6 +63,10 @@ int run_all(void)
       fsim_L1520K0thermal->SetName("fsim_L1520K0thermal");
       fsim_SsPimKzthermal->GetObject("ppimpippim",tsim_SsPimKzthermal);
       fsim_SsPimKzthermal->SetName("fsim_SsPimKzthermal");
+      fsim_SsPimKzthermal_125_600->GetObject("ppimpippim",tsim_SsPimKzthermal_125_600);
+      fsim_SsPimKzthermal_125_600->SetName("fsim_SsPimKzthermal_125_600");
+      fsim_L1520thermal_125_600->GetObject("ppimpippim",tsim_L1520thermal_125_600);
+      fsim_L1520thermal_125_600->SetName("fsim_L1520thermal_125_600");
       
       cout<<"Run TMVA processes"<<endl;
       //Run TMVAeval
@@ -89,11 +97,18 @@ int run_all(void)
 	  TMVAeval* TM_sim_L1520thermal=new TMVAeval(tsim_L1520thermal);
 	  TM_sim_L1520thermal->Loop("TMVA_output_sim_L1520thermal.root");
 
+	  TMVAeval* TM_sim_L1520thermal_125_600=new TMVAeval(tsim_L1520thermal_125_600);
+	  TM_sim_L1520thermal_125_600->Loop("TMVA_output_sim_L1520thermal_125_600.root");
+	  
 	  TMVAeval* TM_sim_L1520K0thermal=new TMVAeval(tsim_L1520K0thermal);
 	  TM_sim_L1520K0thermal->Loop("TMVA_output_sim_L1520K0thermal.root");
 
 	  TMVAeval* TM_sim_SsPimKzthermal=new TMVAeval(tsim_SsPimKzthermal);
 	  TM_sim_SsPimKzthermal->Loop("TMVA_output_sim_SsPimKzthermal.root");
+
+	  TMVAeval* TM_sim_SsPimKzthermal_125_600=new TMVAeval(tsim_SsPimKzthermal_125_600);
+	  TM_sim_SsPimKzthermal_125_600->Loop("TMVA_output_sim_SsPimKzthermal_125_600.root");
+
 	}
       /*
 	texperiment->delete();
@@ -116,6 +131,8 @@ int run_all(void)
   TFile* f_sb_sim_L1520thermal=new TFile("TMVA_output_sim_L1520thermal.root","READ");
   TFile* f_sb_sim_L1520K0thermal=new TFile("TMVA_output_sim_L1520K0thermal.root","READ");
   TFile* f_sb_sim_SsPimKzthermal=new TFile("TMVA_output_sim_SsPimKzthermal.root","READ");
+  TFile* f_sb_sim_L1520thermal_125_600=new TFile("TMVA_output_sim_L1520thermal_125_600.root","READ");
+  TFile* f_sb_sim_SsPimKzthermal_125_600=new TFile("TMVA_output_sim_SsPimKzthermal_125_600.root","READ");
   
   
   cout<<"load trees for s-b"<<endl;
@@ -128,6 +145,8 @@ int run_all(void)
   TTree* t_sb_sim_L1520thermal;
   TTree* t_sb_sim_L1520K0thermal;
   TTree* t_sb_sim_SsPimKzthermal;
+  TTree* t_sb_sim_L1520thermal_125_600;
+  TTree* t_sb_sim_SsPimKzthermal_125_600;
 
   
   //Run createHistos
@@ -186,6 +205,14 @@ int run_all(void)
       SB_sim_L1520thermal->Loop("SB_sim_L1520thermal.root");
       t_sb_sim_L1520thermal->Delete();
 
+      cout<<"Run making Side-Band for L1520thermal_125_600"<<endl;
+      f_sb_sim_L1520thermal_125_600->GetObject("TMVAeval",t_sb_sim_L1520thermal_125_600);
+      f_sb_sim_L1520thermal_125_600->SetName("f_sb_sim_L1520thermal_125_600");
+      createHistos* SB_sim_L1520thermal_125_600=new createHistos(t_sb_sim_L1520thermal_125_600);
+      SB_sim_L1520thermal_125_600->Loop("SB_sim_L1520thermal_125_600.root");
+      t_sb_sim_L1520thermal_125_600->Delete();
+
+      
       cout<<"Run making Side-Band for L1520K0thermal"<<endl;
       f_sb_sim_L1520K0thermal->GetObject("TMVAeval",t_sb_sim_L1520K0thermal);
       f_sb_sim_L1520K0thermal->SetName("f_sb_sim_L1520K0thermal");
@@ -199,6 +226,13 @@ int run_all(void)
       createHistos* SB_sim_SsPimKzthermal=new createHistos(t_sb_sim_SsPimKzthermal);
       SB_sim_SsPimKzthermal->Loop("SB_sim_SsPimKzthermal.root");
       t_sb_sim_SsPimKzthermal->Delete();
+
+      cout<<"Run making Side-Band for SsPimKzthermal_125_600"<<endl;
+      f_sb_sim_SsPimKzthermal_125_600->GetObject("TMVAeval",t_sb_sim_SsPimKzthermal_125_600);
+      f_sb_sim_SsPimKzthermal_125_600->SetName("f_sb_sim_SsPimKzthermal_125_600");
+      createHistos* SB_sim_SsPimKzthermal_125_600=new createHistos(t_sb_sim_SsPimKzthermal_125_600);
+      SB_sim_SsPimKzthermal_125_600->Loop("SB_sim_SsPimKzthermal_125_600.root");
+      t_sb_sim_SsPimKzthermal_125_600->Delete();
     }
    
   gROOT->ProcessLine(".x draw_norm.C");
