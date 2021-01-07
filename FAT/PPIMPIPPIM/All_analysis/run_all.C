@@ -27,8 +27,8 @@ int run_all(void)
       TFile* fsim_L1520thermal=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/L1520_thermal.root","READ");
       TFile* fsim_L1520K0thermal=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/L1520K0_thermal.root","READ");
       TFile* fsim_SsPimKzthermal=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/SsPimKz_thermal.root","READ");
-      TFile* fsim_L1520thermal_125_600=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/L1520_thermal_125_600/all.root","READ");
-      TFile* fsim_SsPimKzthermal_125_600=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/SsPimKz_thermal_125_600/all.root","READ");
+      TFile* fsim_L1520thermal_125_600=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/L1520_thermal_125_600.root","READ");
+      TFile* fsim_SsPimKzthermal_125_600=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/SsPimKz_thermal_125_600.root","READ");
       
       cout<<"load trees"<<endl;
       TTree* texperiment;

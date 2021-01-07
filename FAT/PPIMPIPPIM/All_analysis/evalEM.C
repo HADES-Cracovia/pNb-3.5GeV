@@ -69,15 +69,24 @@ int evalEM(void)
   TFile *fData_EM=new TFile("EM_data_temp.root","read");
   TFile *fData_EM_4p=new TFile("output_EM_4p.root","read");
   TFile *fL1520K0_SB=new TFile("SB_sim_L1520K0thermal.root","read");
-  TFile *fL1520_SB=new TFile("SB_sim_L1520thermal.root","read");
-  TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal.root","read");
+  //TFile *fL1520_SB=new TFile("SB_sim_L1520thermal.root","read");
+  TFile *fL1520_SB=new TFile("SB_sim_L1520thermal_125_600.root","read");
+  //TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal.root","read");
+  TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal_125_600.root","read");
   TFile *fL1520K0_EM=new TFile("EM_L1520K0.root","read");
-  TFile *fL1520_EM=new TFile("EM_L1520thermal.root","read");
-  TFile *fSsPimKz_EM=new TFile("EM_SsPimKzthermal.root","read");
+  //TFile *fL1520_EM=new TFile("EM_L1520thermal.root","read");
+  TFile *fL1520_EM=new TFile("EM_L1520thermal_125_600.root","read");
+  //TFile *fSsPimKz_EM=new TFile("EM_SsPimKzthermal.root","read");
+  TFile *fSsPimKz_EM=new TFile("EM_SsPimKzthermal_125_600.root","read");
+  
   TFile *fL1520K0_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520K0_true_L1116.root","read");
-  TFile *fL1520_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_true_L1116.root","read");
+  //TFile *fL1520_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_true_L1116.root","read");
   TFile *fL1520K0_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520K0_true_L1520.root","read");
-  TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_true_L1520.root","read");
+  //TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_true_L1520.root","read");
+  //TFile *fSsPimKz_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/SsPimKz_real_L1116.root","read");
+  
+  TFile *fL1520_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1116.root","read");
+  TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1520.root","read");
   TFile *fSsPimKz_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/SsPimKz_real_L1116.root","read");
 
   TFile *fout=new TFile("evalEM_output.root","recreate");
@@ -93,9 +102,10 @@ int evalEM(void)
   TH1F* hL1116_L1520=(TH1F*)fL1520_SB->Get("orginal_spectrum");
   hL1116_L1520->SetName("hL1116_L1520");
   TH1F* hL1116_L1520K0=(TH1F*)fL1520K0_SB->Get("orginal_spectrum");
-  hL1116_L1520K0->SetName("hl1116_l1520K0");
+  hL1116_L1520K0->SetName("hL1116_l1520K0");
   TH1F* hL1116_SsPimKz=(TH1F*)fSsPimKz_SB->Get("orginal_spectrum");
-  hL1116_SsPimKz->SetName("hl1116_SsPimKz");
+  hL1116_SsPimKz->SetName("hL1116_SsPimKz");
+ 
   
   TH1F* hL1520_data=(TH1F*)fData_SB->Get("data");
   hL1520_data->SetName("hL1520_data");
@@ -105,7 +115,9 @@ int evalEM(void)
   hL1520_L1520K0->SetName("hL1520_L1520K0");
   TH1F* hL1520_SsPimKz=(TH1F*)fSsPimKz_SB->Get("data");
   hL1520_SsPimKz->SetName("hl1520_SsPimKz");
+ 
 
+  
   TH1F* hL1116_data_EM=(TH1F*)fData_EM->Get("h_EM_for_L1116");
   hL1116_data_EM->SetName("hL1116_data_EM");
   hL1116_data_EM->Rebin(2);
@@ -122,6 +134,7 @@ int evalEM(void)
   hL1116_SsPimKz_EM->SetName("hL1116_SsPimKz_EM");
   hL1116_SsPimKz_EM->Rebin(2);
 
+  
   TH1F* hPipPim_data=(TH1F*)fData_SB->Get("hMPipPim_signal");
   hPipPim_data->SetName("hPipPim_data");
   TH1F* hPipPim_L1520=(TH1F*)fL1520_SB->Get("hMPipPim_signal");
@@ -130,6 +143,8 @@ int evalEM(void)
   hPipPim_L1520K0->SetName("hPipPim_L1520K0");
   TH1F* hPipPim_SsPimKz=(TH1F*)fSsPimKz_SB->Get("hMPipPim_signal");
   hPipPim_SsPimKz->SetName("hl1520_SsPimKz");
+
+  
   
   TH1F* hPipPim_data_SB=(TH1F*)fData_SB->Get("hMPipPim_background");
   hPipPim_data_SB->SetName("hPipPim_data_SB");
