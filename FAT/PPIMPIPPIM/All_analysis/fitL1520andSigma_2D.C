@@ -33,14 +33,13 @@ void setStyleSum(TH1* h1)
   h1->SetLineStyle(1);  
 }
 
-int fitL1520andSigma(void)
+int fitL1520andSigma_2D(void)
 {
   TFile *fData_SB=new TFile("SB_experiment.root","read");
   //TFile *fL1520_SB=new TFile("SB_sim_L1520thermal.root","read");
   TFile *fL1520_SB=new TFile("SB_sim_L1520thermal_125_600.root","read");
   //TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal.root","read");
   TFile *fSsPimKz_SB=new TFile("SB_sim_SsPimKzthermal_125_600.root","read");
-  TFile *fSsPipKz_SB=new TFile("SB_sim_SsPipKzthermal_125_600.root","read");
   
   TFile *fL1520K0_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520K0_true_L1116.root","read");
   TFile *fL1520K0_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520K0_true_L1520.root","read");
@@ -69,9 +68,6 @@ int fitL1520andSigma(void)
   TH1F* hPPimPipPim_Ss=(TH1F*)fSsPimKz_SB->Get("data");
   hPPimPipPim_Ss->SetName("hPPimPipPim_Ss");
   hPPimPipPim_Ss->Rebin(rebin);
-  TH1F* hPPimPipPim_Ssp=(TH1F*)fSsPipKz_SB->Get("data");
-  hPPimPipPim_Ssp->SetName("hPPimPipPim_Ssp");
-  hPPimPipPim_Ssp->Rebin(rebin);
 
   //P Pim Pip   histogram
   TH1F* hPPimPip_data=(TH1F*)fData_SB->Get("hMPPimPip");
@@ -86,10 +82,6 @@ int fitL1520andSigma(void)
   TH1F* hPPimPip_Ss=(TH1F*)fSsPimKz_SB->Get("hMPPimPip");
   hPPimPip_Ss->SetName("hPPimPip_Ss");
   hPPimPip_Ss->Rebin(rebin);
-  TH1F* hPPimPip_Ssp=(TH1F*)fSsPipKz_SB->Get("hMPPimPip");
-  hPPimPip_Ssp->SetName("hPPimPip_Ssp");
-  hPPimPip_Ssp->Rebin(rebin);
-  
   //P Pim Pim   histogram
   TH1F* hPPimPim_data=(TH1F*)fData_SB->Get("hMPPimPim");
   hPPimPim_data->SetName("hPPimPim_data");
@@ -103,10 +95,7 @@ int fitL1520andSigma(void)
   TH1F* hPPimPim_Ss=(TH1F*)fSsPimKz_SB->Get("hMPPimPim");
   hPPimPim_Ss->SetName("hPPimPim_Ss");
   hPPimPim_Ss->Rebin(rebin);
-  TH1F* hPPimPim_Ssp=(TH1F*)fSsPipKz_SB->Get("hMPPimPim");
-  hPPimPim_Ssp->SetName("hPPimPim_Ssp");
-  hPPimPim_Ssp->Rebin(rebin);
-  
+
   //normalizacja symulacji do 1/2 widma PPimPipPim
   double int_data=hPPimPipPim_data->Integral();
   double int_SB=hPPimPipPim_bcg->Integral();
@@ -114,13 +103,10 @@ int fitL1520andSigma(void)
 
   hPPimPipPim_L1520->Scale(scale/hPPimPipPim_L1520->Integral());
   hPPimPipPim_Ss->Scale(scale/hPPimPipPim_Ss->Integral());
-  hPPimPipPim_Ssp->Scale(scale/hPPimPipPim_Ssp->Integral());
   hPPimPip_L1520->Scale(scale/hPPimPip_L1520->Integral());
   hPPimPip_Ss->Scale(scale/hPPimPip_Ss->Integral());
-  hPPimPip_Ssp->Scale(scale/hPPimPip_Ssp->Integral());
   hPPimPim_L1520->Scale(scale/hPPimPim_L1520->Integral());
   hPPimPim_Ss->Scale(scale/hPPimPim_Ss->Integral());
-  hPPimPim_Ssp->Scale(scale/hPPimPim_Ssp->Integral());
 
   //skalowanie wkladow z symulacji
   double scaleL1520=1;
