@@ -100,7 +100,10 @@ int fitL1520andSigma_2D(void)
   double int_data=hPPimPipPim_data->Integral();
   double int_SB=hPPimPipPim_bcg->Integral();
   double scale=0.5*(int_data-int_SB);
-
+ 
+  double L1520_eff=hPPimPipPim_L1520->Integral()/(1000*10000)*0.6;
+  double S1385plus_eff=hPPimPipPim_Ss->Integral()/(1000*10000)*0.6;
+    
   hPPimPipPim_L1520->Scale(scale/hPPimPipPim_L1520->Integral());
   hPPimPipPim_Ss->Scale(scale/hPPimPipPim_Ss->Integral());
   hPPimPip_L1520->Scale(scale/hPPimPip_L1520->Integral());
@@ -122,8 +125,8 @@ int fitL1520andSigma_2D(void)
   for(int n=1;n<=steps;n++)
     for(int m=1;m<=steps;m++)
       {
-	scaleL1520=3.0*n/steps;
-	scaleSs=5.0*m/steps;
+	scaleL1520=2.0*n/steps;
+	scaleSs=3.0*m/steps;
 
 	TH1F* LPPimPipPim_sum=hPPimPipPim_bcg->Clone("LPPimPipPim_sum");
 	LPPimPipPim_sum->Add(hPPimPipPim_L1520,scaleL1520);
@@ -162,9 +165,6 @@ int fitL1520andSigma_2D(void)
   cout<<"optymalny punkt o Ch2 = "<<ch2_opt<<endl;
   cout<<"L1520: "<<scaleL1520_opt<<" Ss: "<<scaleSs_opt<<endl;
 
-  double L1520_eff=hPPimPipPim_L1520->Integral()/(1000*10000)*0.6;
-  double S1385plus_eff=hPPimPipPim_Ss->Integral()/(1000*10000)*0.6;
-  
   hPPimPipPim_L1520->Scale(scaleL1520_opt);
   hPPimPipPim_Ss->Scale(scaleSs_opt);
   hPPimPip_L1520->Scale(scaleL1520_opt);
