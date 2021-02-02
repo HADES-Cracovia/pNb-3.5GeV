@@ -116,7 +116,7 @@ int fitL1520andSigma_2D(void)
   double scaleSs=1;
   double scaleL1520_opt;
   double scaleSs_opt;
-  double ch2_opt=10;
+  double ch2_opt=100000;
   const int steps=50;
   int N=0;
   TGraph2D *optymal=new TGraph2D();
@@ -125,8 +125,8 @@ int fitL1520andSigma_2D(void)
   for(int n=1;n<=steps;n++)
     for(int m=1;m<=steps;m++)
       {
-	scaleL1520=2.0*n/steps;
-	scaleSs=3.0*m/steps;
+	scaleL1520=1.0*n/steps;
+	scaleSs=1.0*m/steps;
 
 	TH1F* LPPimPipPim_sum=hPPimPipPim_bcg->Clone("LPPimPipPim_sum");
 	LPPimPipPim_sum->Add(hPPimPipPim_L1520,scaleL1520);
@@ -141,11 +141,12 @@ int fitL1520andSigma_2D(void)
 	LPPimPim_sum->Add(hPPimPim_Ss,scaleSs);
 
 	//chi2 for spectra
-	double chi2_PPimPipPim=hPPimPipPim_data->Chi2Test(LPPimPipPim_sum,"CHI2/NDF");
-	double chi2_PPimPip=hPPimPip_data->Chi2Test(LPPimPip_sum,"CHI2/NDF");
-	double chi2_PPimPim=hPPimPim_data->Chi2Test(LPPimPim_sum,"CHI2/NDF");
-	double ch2_total=1.0/3*(chi2_PPimPipPim+chi2_PPimPip+chi2_PPimPim);
-
+	double chi2_PPimPipPim=hPPimPipPim_data->Chi2Test(LPPimPipPim_sum,"CHI2");
+	double chi2_PPimPip=hPPimPip_data->Chi2Test(LPPimPip_sum,"CHI2");
+	double chi2_PPimPim=hPPimPim_data->Chi2Test(LPPimPim_sum,"CHI2");
+	//double ch2_total=1.0/3*(chi2_PPimPipPim+chi2_PPimPip+chi2_PPimPim);
+	double ch2_total=chi2_PPimPip;
+	
 	if(ch2_total<ch2_opt)
 	  {
 	    scaleSs_opt=scaleSs;

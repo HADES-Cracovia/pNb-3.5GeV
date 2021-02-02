@@ -1006,7 +1006,7 @@ int draw_norm(void)
   hsum_background_PipPim->Draw("samee1");
 
 
-  int rebin=4;
+  int rebin=2;
   TCanvas *cClean=new TCanvas("cClean","cClean");
 
   hclean_experiment->Draw("e1");

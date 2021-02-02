@@ -1,3 +1,33 @@
+double test_ch2(TH1F* h1, TH1F* h2, bool include_err=true)
+{
+  double n1=h1->GetNbinsX();
+  double n2=h2->GetNbinsX();
+  double ch2=0;
+  double err=0;
+  if(n1!=n2)
+    {
+      cout<<"wrong number of bins!"<<endl;
+      return -1;
+    }
+  
+  for(int i=0;i<=n1;i++)
+    {
+      if(include_err)
+	{
+	  double err1=h1->GetBinError(i);
+	  double err2=h2->GetBinError(i);
+	  err=err1*err1+err2*err2;
+	}
+      else
+	err=1;
+
+      if(err!=0)
+	ch2=ch2+(h1->GetBinContent(i)-h2->GetBinContent(i))*(h1->GetBinContent(i)-h2->GetBinContent(i))/err;
+      
+    }
+  return ch2/((double)n1-1);
+}
+
 void setStyleData(TH1* h1)
 {
   h1->SetMarkerColor(h1->GetLineColor());
@@ -41,6 +71,14 @@ void setStyleSum(TH1* h1)
   h1->SetLineStyle(1);  
 }
 
+void setStyleDpp(TH1* h1)
+{
+  h1->SetLineColor(kBlack);
+  h1->SetLineWidth(2);
+  h1->SetLineStyle(7);
+}
+
+
 int fitL1520andSigma(void)
 {
   TFile *fData_SB=new TFile("SB_experiment.root","read");
@@ -64,7 +102,7 @@ int fitL1520andSigma(void)
   TFile *fout=new TFile("fitL1520andSigma_output.root","recreate");
 
   int rebin=2;
-  int rebin2=2;
+  int rebin2=4;
   
   //P Pim Pip Pim  histogram
   TH1F* hPPimPipPim_data=(TH1F*)fData_SB->Get("data");
@@ -107,10 +145,10 @@ int fitL1520andSigma(void)
   hPPimPip_Ssp->Rebin(rebin2);
   TH1F* hPPimPip_LDppKz=(TH1F*)fLDppK0_SB->Get("hMPPimPip");
   hPPimPip_LDppKz->SetName("hPPimPip_LDppKz");
-  hPPimPip_LDppKz->Rebin(rebin);
+  hPPimPip_LDppKz->Rebin(rebin2);
   TH1F* hPPimPip_SDppKz=(TH1F*)fSDppK0_SB->Get("hMPPimPip");
   hPPimPip_SDppKz->SetName("hPPimPip_SDppKz");
-  hPPimPip_SDppKz->Rebin(rebin);
+  hPPimPip_SDppKz->Rebin(rebin2);
 
 
   //P Pim Pim   histogram
@@ -131,12 +169,41 @@ int fitL1520andSigma(void)
   hPPimPim_Ssp->Rebin(rebin2);
   TH1F* hPPimPim_LDppKz=(TH1F*)fLDppK0_SB->Get("hMPPimPim");
   hPPimPim_LDppKz->SetName("hPPimPim_LDppKz");
-  hPPimPim_LDppKz->Rebin(rebin);
+  hPPimPim_LDppKz->Rebin(rebin2);
   TH1F* hPPimPim_SDppKz=(TH1F*)fSDppK0_SB->Get("hMPPimPim");
   hPPimPim_SDppKz->SetName("hPPimPim_SDppKz");
-  hPPimPim_SDppKz->Rebin(rebin);
+  hPPimPim_SDppKz->Rebin(rebin2);
 
-  
+  int rebin2=10;
+  //PPim   histogram
+  TH1F* hPPip_data=(TH1F*)fData_SB->Get("hMPPip_final");
+  hPPip_data->SetName("hPPip_data");
+  hPPip_data->Rebin(rebin2);
+  TH1F* hPPip_bcg=(TH1F*)fData_SB->Get("hMPPip_final_SB");
+  hPPip_bcg->SetName("hPPip_bcg");
+  hPPip_bcg->Rebin(rebin2);
+  TH1F* hPPip_L1520=(TH1F*)fL1520_SB->Get("hMPPip_final");
+  hPPip_L1520->SetName("hPPip_L1520");
+  hPPip_L1520->Rebin(rebin2);
+  TH1F* hPPip_Ss=(TH1F*)fSsPimKz_SB->Get("hMPPip_final");
+  hPPip_Ss->SetName("hPPip_Ss");
+  hPPip_Ss->Rebin(rebin2);
+  TH1F* hPPip_Ssp=(TH1F*)fSsPipKz_SB->Get("hMPPip_final");
+  hPPip_Ssp->SetName("hPPip_Ssp");
+  hPPip_Ssp->Rebin(rebin2);
+  TH1F* hPPip_LDppKz=(TH1F*)fLDppK0_SB->Get("hMPPip_final");
+  hPPip_LDppKz->SetName("hPPip_LDppKz");
+  hPPip_LDppKz->Rebin(rebin2);
+  TH1F* hPPip_SDppKz=(TH1F*)fSDppK0_SB->Get("hMPPip_final");
+  hPPip_SDppKz->SetName("hPPip_SDppKz");
+  hPPip_SDppKz->Rebin(rebin2);
+
+  //sum
+  TH1F* LPPimPipPim_sum=hPPimPipPim_bcg->Clone("LPPimPipPim_sum");
+  TH1F* LPPimPip_sum=hPPimPip_bcg->Clone("LPPimPip_sum");
+  TH1F* LPPimPim_sum=hPPimPim_bcg->Clone("LPPimPim_sum");
+  TH1F* LPPip_sum=hPPip_bcg->Clone("LPPip_sum");
+	     
   //normalizacja symulacji do 1/2 widma PPimPipPim
   double int_data=hPPimPipPim_data->Integral();
   double int_SB=hPPimPipPim_bcg->Integral();
@@ -145,39 +212,45 @@ int fitL1520andSigma(void)
   double L1520_eff=hPPimPipPim_L1520->Integral()/(1000*10000);
   double S1385plus_eff=hPPimPipPim_Ss->Integral()/(1000*10000);
   double S1385minus_eff=hPPimPipPim_Ssp->Integral()/(1000*10000);
-  double LDppKz_eff=hPPimPipPim_LDppKz->Integral()/(40*TMath::Power(10,6));
-  double SDppKz_eff=hPPimPipPim_SDppKz->Integral()/(40*TMath::Power(10,6));
+  double LDppKz_eff=hPPimPipPim_LDppKz->Integral()/(120.*TMath::Power(10,6));
+  double SDppKz_eff=hPPimPipPim_SDppKz->Integral()/(120.*TMath::Power(10,6));
   
   double lum=1.04*TMath::Power(10,7);//mb
-  double arbitrary_scale=1;
+  double arbitrary_scale=100;
   
   hPPimPipPim_L1520->Scale(scale/hPPimPipPim_L1520->Integral());
   hPPimPipPim_Ss->Scale(scale/hPPimPipPim_Ss->Integral());
   hPPimPipPim_Ssp->Scale(scale/hPPimPipPim_Ssp->Integral());
-  hPPimPipPim_LDppKz->Scale(1/hPPimPipPim_LDppKz->Integral()*lum*LDppKz_eff/3*29.45/1000*TMath::Power(93,2/3)*arbitrary_scale);
-  hPPimPipPim_SDppKz->Scale(1/hPPimPipPim_SDppKz->Integral()*lum*SDppKz_eff/3*9.26/1000*TMath::Power(93,2/3)*arbitrary_scale);
+  hPPimPipPim_LDppKz->Scale(1./hPPimPipPim_LDppKz->Integral()*lum*LDppKz_eff/3*29.45/1000*TMath::Power(93,2/3)*arbitrary_scale);
+  hPPimPipPim_SDppKz->Scale(1./hPPimPipPim_SDppKz->Integral()*lum*SDppKz_eff/3*9.26/1000*TMath::Power(93,2/3)*arbitrary_scale);
  
   hPPimPip_L1520->Scale(scale/hPPimPip_L1520->Integral());
   hPPimPip_Ss->Scale(scale/hPPimPip_Ss->Integral());
   hPPimPip_Ssp->Scale(scale/hPPimPip_Ssp->Integral());
-  hPPimPip_LDppKz->Scale(1/hPPimPip_LDppKz->Integral()*lum*LDppKz_eff/3*29.45/1000*TMath::Power(93,2/3));
-  hPPimPip_SDppKz->Scale(1/hPPimPip_SDppKz->Integral()*lum*SDppKz_eff/3*9.26/1000*TMath::Power(93,2/3));
- 
+  hPPimPip_LDppKz->Scale(1./hPPimPip_LDppKz->Integral()*lum*LDppKz_eff/3*29.45/1000*TMath::Power(93,2/3)*arbitrary_scale);
+  hPPimPip_SDppKz->Scale(1./hPPimPip_SDppKz->Integral()*lum*SDppKz_eff/3*9.26/1000*TMath::Power(93,2/3)*arbitrary_scale);
+
+  hPPip_L1520->Scale(scale/hPPimPim_L1520->Integral());
+  hPPip_Ss->Scale(scale/hPPimPim_Ss->Integral());
+  hPPip_Ssp->Scale(scale/hPPimPim_Ssp->Integral());
+  hPPip_LDppKz->Scale(1./hPPimPim_LDppKz->Integral()*lum*LDppKz_eff/3*29.45/1000*TMath::Power(93,2/3)*arbitrary_scale);
+  hPPip_SDppKz->Scale(1./hPPimPim_SDppKz->Integral()*lum*SDppKz_eff/3*9.26/1000*TMath::Power(93,2/3)*arbitrary_scale);
+  
   
   hPPimPim_L1520->Scale(scale/hPPimPim_L1520->Integral());
   hPPimPim_Ss->Scale(scale/hPPimPim_Ss->Integral());
   hPPimPim_Ssp->Scale(scale/hPPimPim_Ssp->Integral());
-  hPPimPim_LDppKz->Scale(1/hPPimPim_LDppKz->Integral()*lum*LDppKz_eff/3*29.45/1000*TMath::Power(93,2/3));
-  hPPimPim_SDppKz->Scale(1/hPPimPim_SDppKz->Integral()*lum*SDppKz_eff/3*9.26/1000*TMath::Power(93,2/3));
+  hPPimPim_LDppKz->Scale(1./hPPimPim_LDppKz->Integral()*lum*LDppKz_eff/3*29.45/1000*TMath::Power(93,2/3)*arbitrary_scale);
+  hPPimPim_SDppKz->Scale(1./hPPimPim_SDppKz->Integral()*lum*SDppKz_eff/3*9.26/1000*TMath::Power(93,2/3)*arbitrary_scale);
    
   //skalowanie wkladow z symulacji
-  double scaleL1520=1;
-  double scaleSs=1;
-  double scaleSsp=1;
-  double scaleL1520_opt=0.00.1;
+  double scaleL1520=0.54321;
+  double scaleSs=0.54321;
+  double scaleSsp=0.54321;
+  double scaleL1520_opt=0.001;
   double scaleSs_opt=0.0001;
   double scaleSsp_opt=0.0001;
-  double ch2_opt=10;
+  double ch2_opt=100000;
   const int steps=30;
   int N=0;
   
@@ -190,38 +263,50 @@ int fitL1520andSigma(void)
     {
       for(int m=1;m<=steps;m++)
 	{
-	  if(m%5==0)
-	    cout<<"n="<<n<<" m="<<m<<endl;
+	  //if(m%5==0)
+	    //cout<<"n="<<n<<" m="<<m<<endl;
 	  for(int l=1;l<=steps;l++)
 	    {
 	      //if(l!=m)
 	      //continue;
 	      scaleL1520=1.0*n*1./steps;
-	      scaleSs=1.0*m*1./steps;
-	      scaleSsp=1.0*l*1./steps;
-
-	      TH1F* LPPimPipPim_sum=hPPimPipPim_bcg->Clone("LPPimPipPim_sum");
+	      scaleSs=1.2*m*1./steps;
+	      //scaleSs=0.001;
+	      scaleSsp=1.2*l*1./steps;
+	      //scaleSsp=0.001;
+	      //scaleSsp=scaleSs;
+	      
+	      LPPimPipPim_sum->Reset();
+	      LPPimPipPim_sum->Add(hPPimPipPim_bcg);
 	      LPPimPipPim_sum->Add(hPPimPipPim_L1520,scaleL1520);
 	      LPPimPipPim_sum->Add(hPPimPipPim_Ss,scaleSs);
 	      LPPimPipPim_sum->Add(hPPimPipPim_Ssp,scaleSsp);
 	
-	      TH1F* LPPimPip_sum=hPPimPip_bcg->Clone("LPPimPip_sum");
+	      LPPimPip_sum->Reset();
+	      LPPimPip_sum->Add(hPPimPip_bcg);
 	      LPPimPip_sum->Add(hPPimPip_L1520,scaleL1520);
 	      LPPimPip_sum->Add(hPPimPip_Ss,scaleSs);
 	      LPPimPip_sum->Add(hPPimPip_Ssp,scaleSsp);
 
-	      TH1F* LPPimPim_sum=hPPimPim_bcg->Clone("LPPimPim_sum");
+	      LPPimPim_sum->Reset();
+	      LPPimPim_sum->Add(hPPimPim_bcg);
 	      LPPimPim_sum->Add(hPPimPim_L1520,scaleL1520);
 	      LPPimPim_sum->Add(hPPimPim_Ss,scaleSs);
 	      LPPimPim_sum->Add(hPPimPim_Ssp,scaleSsp);
 
-	      //chi2 for spectra
-	
-	      double chi2_PPimPipPim=hPPimPipPim_data->Chi2Test(LPPimPipPim_sum,"CHI2/NDF");
-	      double chi2_PPimPip=hPPimPip_data->Chi2Test(LPPimPip_sum,"CHI2/NDF");
-	      double chi2_PPimPim=hPPimPim_data->Chi2Test(LPPimPim_sum,"CHI2/NDF");
+	      
+	      /*
+	      double chi2_PPimPipPim=hPPimPipPim_data->Chi2Test(LPPimPipPim_sum,"chi2/NDF");
+	      double chi2_PPimPip=hPPimPip_data->Chi2Test(LPPimPip_sum,"chi2/NDF");
+	      double chi2_PPimPim=hPPimPim_data->Chi2Test(LPPimPim_sum,"chi2/NDF");
+	      */
+	      double chi2_PPimPipPim=test_ch2(hPPimPipPim_data,LPPimPipPim_sum);
+	      double chi2_PPimPip=test_ch2(hPPimPip_data,LPPimPip_sum);
+	      double chi2_PPimPim=test_ch2(hPPimPim_data,LPPimPim_sum);
+	      
 	      double ch2_total=1.0/3.0*(chi2_PPimPipPim+chi2_PPimPip+chi2_PPimPim);
-
+	      //double ch2_total=chi2_PPimPip+chi2_PPimPipPim;
+	      
 	      if(ch2_total<ch2_opt)
 		{
 		  scaleSs_opt=scaleSs;
@@ -236,12 +321,9 @@ int fitL1520andSigma(void)
 		cout<<"Chi2 dla PPimPim: "<<chi2_PPimPim<<endl;
 		cout<<"Chi2 lacznie: "<<ch2_total<<endl;
 	      */
-	      if(ch2_total<4)
+	      if(ch2_total<2)
 		optymal_3D->SetBinContent(n*3,m*3,l*3,ch2_total);
-
-	      LPPimPipPim_sum->Delete();
-	      LPPimPip_sum->Delete();
-	      LPPimPim_sum->Delete();
+	      
 	    }
 	  optymal->SetPoint(N,scaleL1520,scaleSs,ch2_total);
 	  N++;
@@ -259,6 +341,9 @@ int fitL1520andSigma(void)
   hPPimPim_L1520->Scale(scaleL1520_opt);
   hPPimPim_Ss->Scale(scaleSs_opt);
   hPPimPim_Ssp->Scale(scaleSsp_opt);
+  hPPip_L1520->Scale(scaleL1520_opt);
+  hPPip_Ss->Scale(scaleSs_opt);
+  hPPip_Ssp->Scale(scaleSsp_opt);
 
   //CS estimation
   double L1520_cs=hPPimPipPim_L1520->Integral()/(lum*L1520_eff/3)*1000 * 100./6.666 ;// \mu barn
@@ -293,6 +378,11 @@ int fitL1520andSigma(void)
   hPPimPim_sum->Add(hPPimPim_L1520);
   hPPimPim_sum->Add(hPPimPim_Ss);
   hPPimPim_sum->Add(hPPimPim_Ssp);
+
+  TH1F* hPPip_sum=hPPip_bcg->Clone("hPPip_sum");
+  hPPip_sum->Add(hPPip_L1520);
+  hPPip_sum->Add(hPPip_Ss);
+  hPPip_sum->Add(hPPip_Ssp);
   
   
   TCanvas* cOpt=new TCanvas("cOpt");  
@@ -320,8 +410,8 @@ int fitL1520andSigma(void)
   setStyleSsp(hPPimPipPim_Ssp);
   hPPimPipPim_sum->Draw("samehist");
   setStyleSum(hPPimPipPim_sum);
-  hPPimPipPim_LDppKz->Draw("same");
-
+  hPPimPipPim_LDppKz->Draw("samehist");
+  setStyleDpp(hPPimPipPim_LDppKz);
   
   cSpectra->cd(2);
   hPPimPip_data->Draw("e1");
@@ -337,7 +427,10 @@ int fitL1520andSigma(void)
   setStyleSsp(hPPimPip_Ssp);
   hPPimPip_sum->Draw("samehist");
   setStyleSum(hPPimPip_sum);
-    
+  hPPimPip_LDppKz->Draw("samehist");
+  setStyleDpp(hPPimPip_LDppKz);
+ 
+  
   cSpectra->cd(3);
   hPPimPim_data->Draw("e1");
   setStyleData(hPPimPim_data);
@@ -352,13 +445,34 @@ int fitL1520andSigma(void)
   setStyleSsp(hPPimPim_Ssp);
   hPPimPim_sum->Draw("samehist");
   setStyleSum(hPPimPim_sum);
-  
+  hPPimPim_LDppKz->Draw("samehist");
+  setStyleDpp(hPPimPim_LDppKz);
+ 
   
   cSpectra->cd(4);
-
+  
+  TCanvas* cPPip=new TCanvas("cPPip");
+  hPPip_data->Draw("e1");
+  setStyleData(hPPip_data);
+  //hPPip_data->GetXaxis()->SetRangeUser(1220,1500);
+  hPPip_bcg->Draw("samee1");
+  setStyleSB(hPPip_bcg);
+  hPPip_L1520->Draw("samehist");
+  setStyleLs(hPPip_L1520);
+  hPPip_Ss->Draw("samehist");
+  setStyleSs(hPPip_Ss);
+  hPPip_Ssp->Draw("samehist");
+  setStyleSsp(hPPip_Ssp);
+  hPPip_sum->Draw("samehist");
+  setStyleSum(hPPip_sum);
+  hPPip_LDppKz->Draw("samehist");
+  setStyleDpp(hPPip_LDppKz);
+ 
+  
 
   cOpt->Write();
   cSpectra->Write();
+  cPPip->Write();
   return 0;
 }
 
