@@ -260,7 +260,7 @@ void createHistos::Loop(char* output)
 	 ||m_inv_pip_pim>410 //replaced by graphical cut
 	 ||dist_ver_to_ver<dist_cut
 	 ||(oa_lambda>oa_cut)
-	 ||m_inv_p_pip>1200
+	 //||m_inv_p_pip>1200
 	 //||!(graph_cut->IsInside(miss_mass_kp,m_inv_pip_pim))
 	 //||p_theta>20 //to clean up proton sample
 	 //||dist_pip_pim>5
@@ -347,18 +347,15 @@ void createHistos::Loop(char* output)
   TCanvas* cFit1116=new TCanvas("cFit1116");
   cFit1116->cd();
      
-  TF1* fVoigt_bg= new TF1("fVoigt_bg","[0]*TMath::Voigt(x-[1],[2],[3])+pol5(4)",1088.00,1146.00);
+  TF1* fVoigt_bg= new TF1("fVoigt_bg","[0]*TMath::Voigt(x-[1],[2],[3])+pol5(4)",1098.00,1138.67);
   TF1* fVoigt= new TF1("fVoigt","[0]*TMath::Voigt(x-[1],[2],[3])",1090.00,1156.67);
   TF1* fbg= new TF1("fbg","pol5(0)",1090.00,1156.67);
 
   //fVoigt_bg->SetParameters(3369,1115,3.5,1,-158569,166,0.08,-4.73e-5,-7.41e-8,3.2e-11);
   //fVoigt_bg->SetParameters(585,1115,1.3,2,-126137,160,0.06,-6.5e-5,-0.00,1156.67);
-  fVoigt_bg->SetParameters(1752,1115.58,4.24455,0,-69085,78.017,0.01978,-1.5287e-5,-6.76577e-8,7.921e-12);
-  //orginal_spectrum->Fit(fVoigt_bg,"R");
-  //fVoigt_bg->SetRange(1090,1140);
-  //orginal_spectrum->Fit(fVoigt_bg,"R");
-  
-  fVoigt_bg->SetParLimits(3,0,0.1);
+  fVoigt_bg->SetParameters(2811.73,1115.4,2.49945,2,-194280,172.174,0.102664,-2.69544e-5,-6.95638e-8,1.14859e-11);
+  /*
+  fVoigt_bg->SetParLimits(3,0,2);
   fVoigt_bg->SetParLimits(1,1112,1117);
   fVoigt_bg->SetRange(1106,1122);
   orginal_spectrum->Fit(fVoigt_bg,"R");
@@ -372,9 +369,10 @@ void createHistos::Loop(char* output)
   orginal_spectrum->Fit(fVoigt_bg,"R");
   fVoigt_bg->SetRange(1092,1145); 
   orginal_spectrum->Fit(fVoigt_bg,"R");
-  
+  */
 
-  
+  orginal_spectrum->Fit(fVoigt_bg,"R");
+
   orginal_spectrum->Draw();
   fbg->SetParameters(fVoigt_bg->GetParameter(4),fVoigt_bg->GetParameter(5),fVoigt_bg->GetParameter(6),fVoigt_bg->GetParameter(7),fVoigt_bg->GetParameter(8),fVoigt_bg->GetParameter(9));
   fVoigt->SetParameters(fVoigt_bg->GetParameter(0),fVoigt_bg->GetParameter(1),fVoigt_bg->GetParameter(2),fVoigt_bg->GetParameter(3));
