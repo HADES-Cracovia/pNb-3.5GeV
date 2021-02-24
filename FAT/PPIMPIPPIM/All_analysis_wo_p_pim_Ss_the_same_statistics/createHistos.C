@@ -279,17 +279,17 @@ void createHistos::Loop(char* output)
 	  hL1116_pt->Fill(lambda_pt);
 	  hL1116_w->Fill(lambda_w);
 	  hMPPip_final->Fill(m_inv_p_pip);
+	  hMPPimPim->Fill(m_inv_p_pim_pim);
+	  hMPPimPip->Fill(m_inv_p_pim_pip);
+	  h2MPPimPip_MPPimPim->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+
 	  
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	    {
 	      hL1520_pt->Fill(ppimpippim.Pt());
 	      hL1520_w->Fill(ppimpippim.Rapidity());
 	      hMPipPim_signal->Fill(m_inv_pip_pim);
-	      
-	      hMPPimPim->Fill(m_inv_p_pim_pim);
-	      hMPPimPip->Fill(m_inv_p_pim_pip);
-	      h2MPPimPip_MPPimPim->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
-
+	   
 	      hBetaGamma->Fill(ppimpippim.P()/ppimpippim.M());
 	      h2PtvsY->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());
 	    } 
@@ -302,6 +302,9 @@ void createHistos::Loop(char* output)
 	  hL1116_pt_SB->Fill(lambda_pt);
 	  hL1116_w_SB->Fill(lambda_w); 
 	  hMPPip_final_SB->Fill(m_inv_p_pip);
+	  hMPPimPim_SB->Fill(m_inv_p_pim_pim);
+	  hMPPimPip_SB->Fill(m_inv_p_pim_pip);
+	  h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 	  
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
@@ -310,9 +313,6 @@ void createHistos::Loop(char* output)
 	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
 	      hMPipPim_background->Fill(m_inv_pip_pim);
 
-	      hMPPimPim_SB->Fill(m_inv_p_pim_pim);
-	      hMPPimPip_SB->Fill(m_inv_p_pim_pip);
-	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
 	      h2PtvsY_SB->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());
 	    }
@@ -325,17 +325,17 @@ void createHistos::Loop(char* output)
 	  hL1116_pt_SB->Fill(lambda_pt);
 	  hL1116_w_SB->Fill(lambda_w);
 	  hMPPip_final_SB->Fill(m_inv_p_pip);
-	  
+	  hMPPimPim_SB->Fill(m_inv_p_pim_pim);
+	  hMPPimPip_SB->Fill(m_inv_p_pim_pip);
+	  h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
+
+	   
 	  //if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	  if(m_inv_p_pim_pip_pim>1440 && m_inv_p_pim_pip_pim<1600)
 	    {
 	      hL1520_pt_SB->Fill(ppimpippim.Pt());
 	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
 	      hMPipPim_background->Fill(m_inv_pip_pim);
-
-	      hMPPimPim_SB->Fill(m_inv_p_pim_pim);
-	      hMPPimPip_SB->Fill(m_inv_p_pim_pip);
-	      h2MPPimPip_MPPimPim_SB->Fill(m_inv_p_pim_pip,m_inv_p_pim_pim);
 
 	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
 	      h2PtvsY_SB->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());

@@ -79,7 +79,7 @@ void setStyleDpp(TH1* h1)
 }
 
 
-int fitL1520andSigma(void)
+int fitL1520andSigmaandDpp(void)
 {
   TFile *fData_SB=new TFile("SB_experiment.root","read");
   //TFile *fL1520_SB=new TFile("SB_sim_L1520thermal.root","read");
@@ -99,9 +99,9 @@ int fitL1520andSigma(void)
   //TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1520.root","read");
   //TFile *fSsPimKz_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/SsPimKz_real_L1116.root","read");
 
-  TFile *fout=new TFile("fitL1520andSigma_output.root","recreate");
+  TFile *fout=new TFile("fitL1520andSigmaandDpp_output.root","recreate");
 
-  int rebin=2;
+  int rebin=4;
   int rebin2=4;
   
   //P Pim Pip Pim  histogram
@@ -281,11 +281,11 @@ int fitL1520andSigma(void)
 	    {
 	      //if(l!=m)
 	      //continue;
-	      scaleL1520=1.4*n*1./steps;
-	      scaleSs=1.4*m*1./steps;
-	      //scaleDpp=1.2*m*1./steps;
+	      scaleL1520=1.0*n*1./steps;
+	      scaleSs=1.0*m*1./steps;
+	      scaleDpp=1.0*l*1./steps;
 	      //scaleSs=0.001;
-	      scaleSsp=1.4*l*1./steps;
+	      //scaleSsp=1.4*l*1./steps;
 	      //scaleSsp=0.001;
 	      //scaleSsp=scaleSs;
 	      
@@ -293,22 +293,22 @@ int fitL1520andSigma(void)
 	      LPPimPipPim_sum->Add(hPPimPipPim_bcg);
 	      LPPimPipPim_sum->Add(hPPimPipPim_L1520,scaleL1520);
 	      LPPimPipPim_sum->Add(hPPimPipPim_Ss,scaleSs);
-	      //LPPimPipPim_sum->Add(hPPimPipPim_LDppKz,scaleDpp);
-	      LPPimPipPim_sum->Add(hPPimPipPim_Ssp,scaleSsp);
+	      LPPimPipPim_sum->Add(hPPimPipPim_LDppKz,scaleDpp);
+	      //LPPimPipPim_sum->Add(hPPimPipPim_Ssp,scaleSsp);
 	
 	      LPPimPip_sum->Reset();
 	      LPPimPip_sum->Add(hPPimPip_bcg);
 	      LPPimPip_sum->Add(hPPimPip_L1520,scaleL1520);
 	      LPPimPip_sum->Add(hPPimPip_Ss,scaleSs);
-	      //LPPimPip_sum->Add(hPPimPip_LDppKz,scaleDpp);
-	      LPPimPip_sum->Add(hPPimPip_Ssp,scaleSsp);
+	      LPPimPip_sum->Add(hPPimPip_LDppKz,scaleDpp);
+	      //LPPimPip_sum->Add(hPPimPip_Ssp,scaleSsp);
 
 	      LPPimPim_sum->Reset();
 	      LPPimPim_sum->Add(hPPimPim_bcg);
 	      LPPimPim_sum->Add(hPPimPim_L1520,scaleL1520);
 	      LPPimPim_sum->Add(hPPimPim_Ss,scaleSs);
-	      //LPPimPim_sum->Add(hPPimPim_LDppKz,scaleDpp);
-	      LPPimPim_sum->Add(hPPimPim_Ssp,scaleSsp);
+	      LPPimPim_sum->Add(hPPimPim_LDppKz,scaleDpp);
+	      //LPPimPim_sum->Add(hPPimPim_Ssp,scaleSsp);
 
 	      
 	      /*
@@ -392,49 +392,53 @@ int fitL1520andSigma(void)
   TH1F* hPPimPipPim_sum=hPPimPipPim_bcg->Clone("hPPimPipPim_sum");
   hPPimPipPim_sum->Add(hPPimPipPim_L1520);
   hPPimPipPim_sum->Add(hPPimPipPim_Ss);
-  hPPimPipPim_sum->Add(hPPimPipPim_Ssp);
-  //hPPimPipPim_sum->Add(hPPimPipPim_LDppKz);
+  //hPPimPipPim_sum->Add(hPPimPipPim_Ssp);
+  hPPimPipPim_sum->Add(hPPimPipPim_LDppKz);
   
 
   TH1F* hPPimPip_sum=hPPimPip_bcg->Clone("hPPimPip_sum");
   hPPimPip_sum->Add(hPPimPip_L1520);
   hPPimPip_sum->Add(hPPimPip_Ss);
-  hPPimPip_sum->Add(hPPimPip_Ssp);
-  //hPPimPip_sum->Add(hPPimPip_LDppKz);
+  //hPPimPip_sum->Add(hPPimPip_Ssp);
+  hPPimPip_sum->Add(hPPimPip_LDppKz);
   
   TH1F* hPPimPim_sum=hPPimPim_bcg->Clone("hPPimPim_sum");
   hPPimPim_sum->Add(hPPimPim_L1520);
   hPPimPim_sum->Add(hPPimPim_Ss);
-  hPPimPim_sum->Add(hPPimPim_Ssp);
-  //hPPimPim_sum->Add(hPPimPim_LDppKz);
+  //hPPimPim_sum->Add(hPPimPim_Ssp);
+  hPPimPim_sum->Add(hPPimPim_LDppKz);
   
 
   TH1F* hPPip_sum=hPPip_bcg->Clone("hPPip_sum");
   hPPip_sum->Add(hPPip_L1520);
   hPPip_sum->Add(hPPip_Ss);
-  hPPip_sum->Add(hPPip_Ssp);
-  //hPPip_sum->Add(hPPip_LDppKz);
+  //hPPip_sum->Add(hPPip_Ssp);
+  hPPip_sum->Add(hPPip_LDppKz);
 
   //with substructed SB
   TH1F* hPPimPipPim_sum_clean=hPPimPipPim_Ssp->Clone("hPPimPipPim_sum_clean");
+  hPPimPipPim_sum_clean->Reset();
   hPPimPipPim_sum_clean->Add(hPPimPipPim_L1520);
   hPPimPipPim_sum_clean->Add(hPPimPipPim_Ss);
-  //hPPimPipPim_sum_clean->Add(hPPimPipPim_LDppKz);
+  hPPimPipPim_sum_clean->Add(hPPimPipPim_LDppKz);
   
   TH1F* hPPimPip_sum_clean=hPPimPip_Ssp->Clone("hPPimPip_sum_clean");
+  hPPimPip_sum_clean->Reset();
   hPPimPip_sum_clean->Add(hPPimPip_L1520);
   hPPimPip_sum_clean->Add(hPPimPip_Ss);
-  //hPPimPip_sum_clean->Add(hPPimPip_LDppKz);
+  hPPimPip_sum_clean->Add(hPPimPip_LDppKz);
   
   TH1F* hPPimPim_sum_clean=hPPimPim_Ssp->Clone("hPPimPim_sum_clean");
+  hPPimPim_sum_clean->Reset();
   hPPimPim_sum_clean->Add(hPPimPim_L1520);
   hPPimPim_sum_clean->Add(hPPimPim_Ss);
-  //hPPimPim_sum_clean->Add(hPPimPim_LDppKz);
+  hPPimPim_sum_clean->Add(hPPimPim_LDppKz);
     
   TH1F* hPPip_sum_clean=hPPip_Ssp->Clone("hPPip_sum_clean");
+  hPPip_sum_clean->Reset();
   hPPip_sum_clean->Add(hPPip_L1520);
   hPPip_sum_clean->Add(hPPip_Ss);
-  //hPPip_sum_clean->Add(hPPip_LDppKz);
+  hPPip_sum_clean->Add(hPPip_LDppKz);
     
   TH1F* hPPimPipPim_data_clean=hPPimPipPim_data->Clone("hPPimPipPim_data_clean");
   hPPimPipPim_data_clean->Add(hPPimPipPim_bcg,-1);
@@ -466,8 +470,8 @@ int fitL1520andSigma(void)
   setStyleLs(hPPimPipPim_L1520);
   hPPimPipPim_Ss->Draw("samehist");
   setStyleSs(hPPimPipPim_Ss);
-  hPPimPipPim_Ssp->Draw("samehist");
-  setStyleSsp(hPPimPipPim_Ssp);
+  //hPPimPipPim_Ssp->Draw("samehist");
+  //setStyleSsp(hPPimPipPim_Ssp);
   hPPimPipPim_sum->Draw("samehist");
   setStyleSum(hPPimPipPim_sum);
   hPPimPipPim_LDppKz->Draw("samehist");
@@ -483,8 +487,8 @@ int fitL1520andSigma(void)
   setStyleLs(hPPimPip_L1520);
   hPPimPip_Ss->Draw("samehist");
   setStyleSs(hPPimPip_Ss);
-  hPPimPip_Ssp->Draw("samehist");
-  setStyleSsp(hPPimPip_Ssp);
+  //hPPimPip_Ssp->Draw("samehist");
+  //setStyleSsp(hPPimPip_Ssp);
   hPPimPip_sum->Draw("samehist");
   setStyleSum(hPPimPip_sum);
   hPPimPip_LDppKz->Draw("samehist");
@@ -501,8 +505,8 @@ int fitL1520andSigma(void)
   setStyleLs(hPPimPim_L1520);
   hPPimPim_Ss->Draw("samehist");
   setStyleSs(hPPimPim_Ss);
-  hPPimPim_Ssp->Draw("samehist");
-  setStyleSsp(hPPimPim_Ssp);
+  //hPPimPim_Ssp->Draw("samehist");
+  //setStyleSsp(hPPimPim_Ssp);
   hPPimPim_sum->Draw("samehist");
   setStyleSum(hPPimPim_sum);
   hPPimPim_LDppKz->Draw("samehist");
@@ -523,12 +527,12 @@ int fitL1520andSigma(void)
   setStyleLs(hPPimPipPim_L1520);
   hPPimPipPim_Ss->Draw("samehist");
   setStyleSs(hPPimPipPim_Ss);
-  hPPimPipPim_Ssp->Draw("samehist");
-  setStyleSsp(hPPimPipPim_Ssp);
+  //hPPimPipPim_Ssp->Draw("samehist");
+  //setStyleSsp(hPPimPipPim_Ssp);
   hPPimPipPim_sum_clean->Draw("samehist");
   setStyleSum(hPPimPipPim_sum_clean);
-  //hPPimPipPim_LDppKz->Draw("samehist");
-  //setStyleDpp(hPPimPipPim_LDppKz);
+  hPPimPipPim_LDppKz->Draw("samehist");
+  setStyleDpp(hPPimPipPim_LDppKz);
   
   cSpectra_clean->cd(2);
   hPPimPip_data_clean->Draw("e1");
@@ -540,12 +544,12 @@ int fitL1520andSigma(void)
   setStyleLs(hPPimPip_L1520);
   hPPimPip_Ss->Draw("samehist");
   setStyleSs(hPPimPip_Ss);
-  hPPimPip_Ssp->Draw("samehist");
-  setStyleSsp(hPPimPip_Ssp);
+  //hPPimPip_Ssp->Draw("samehist");
+  //setStyleSsp(hPPimPip_Ssp);
   hPPimPip_sum_clean->Draw("samehist");
   setStyleSum(hPPimPip_sum_clean);
-  //hPPimPip_LDppKz->Draw("samehist");
-  //setStyleDpp(hPPimPip_LDppKz);
+  hPPimPip_LDppKz->Draw("samehist");
+  setStyleDpp(hPPimPip_LDppKz);
  
   
   cSpectra_clean->cd(3);
@@ -558,12 +562,12 @@ int fitL1520andSigma(void)
   setStyleLs(hPPimPim_L1520);
   hPPimPim_Ss->Draw("samehist");
   setStyleSs(hPPimPim_Ss);
-  hPPimPim_Ssp->Draw("samehist");
-  setStyleSsp(hPPimPim_Ssp);
+  //hPPimPim_Ssp->Draw("samehist");
+  //setStyleSsp(hPPimPim_Ssp);
   hPPimPim_sum_clean->Draw("samehist");
   setStyleSum(hPPimPim_sum_clean);
-  //hPPimPim_LDppKz->Draw("samehist");
-  //setStyleDpp(hPPimPim_LDppKz);
+  hPPimPim_LDppKz->Draw("samehist");
+  setStyleDpp(hPPimPim_LDppKz);
  
   
   cSpectra_clean->cd(4);
@@ -579,8 +583,8 @@ int fitL1520andSigma(void)
   setStyleLs(hPPip_L1520);
   hPPip_Ss->Draw("samehist");
   setStyleSs(hPPip_Ss);
-  hPPip_Ssp->Draw("samehist");
-  setStyleSsp(hPPip_Ssp);
+  //hPPip_Ssp->Draw("samehist");
+  //setStyleSsp(hPPip_Ssp);
   hPPip_sum->Draw("samehist");
   setStyleSum(hPPip_sum);
   hPPip_LDppKz->Draw("samehist");
