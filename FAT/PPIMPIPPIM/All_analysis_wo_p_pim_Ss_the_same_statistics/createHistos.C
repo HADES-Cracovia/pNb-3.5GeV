@@ -73,14 +73,14 @@ void createHistos::Loop(char* output)
   const int xmin=1000;
   const int xmax=2000;
   const int nsignal=20;
-  double sidebandmin=10;
-  double sidebandmax=22;
+  double sidebandmin=7;
+  double sidebandmax=20;
   double mlp_cut=0.62;
   double oa_cut=10;
   double dist_cut=50;
   /*
     std::fstream in_file {"../cuts.txt", std::ios::in};
-    if(in_file.is_open())
+8    if(in_file.is_open())
     {
     cout<<"Read cuts from external file"<<endl;
     in_file>>sidebandmin>>sidebandmax>>mlp_cut>>oa_cut>>dist_cut;
@@ -353,7 +353,8 @@ void createHistos::Loop(char* output)
 
   //fVoigt_bg->SetParameters(3369,1115,3.5,1,-158569,166,0.08,-4.73e-5,-7.41e-8,3.2e-11);
   //fVoigt_bg->SetParameters(585,1115,1.3,2,-126137,160,0.06,-6.5e-5,-0.00,1156.67);
-  fVoigt_bg->SetParameters(2811.73,1115.4,2.49945,2,-194280,172.174,0.102664,-2.69544e-5,-6.95638e-8,1.14859e-11);
+  fVoigt_bg->SetParameters(2689.92, 1115.5, 3.28, 0,-179068, 169.5, 0.092948,-3.56831e-5, -7.15427e-8, 2.01848e-11);
+  fVoigt_bg->FixParameter(3,0);
   /*
   fVoigt_bg->SetParLimits(3,0,2);
   fVoigt_bg->SetParLimits(1,1112,1117);

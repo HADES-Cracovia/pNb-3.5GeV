@@ -159,8 +159,9 @@ int draw_norm(void)
   TFile *fileExp= new TFile("SB_experiment.root","READ");
   //TFile *fileEM=new TFile("nowa_kolejnosc.root","READ");
   TFile *fileEM=new TFile("EM4.root","READ");
+  TFile *fileidealL=new TFile("../../../../PP/FAT/PPIMPIPPIM_sim/idealL1116.root");
 
-
+  TH1F *hL1116_ideal=(TH1F*)fileidealL->Get("h1");
   TH1F *hexperiment_L=(TH1F*)fileExp->Get("hMPPim_TMVA_K0mass");
   TH1F *hexperiemnt_K0=(TH1F*)fileExp->Get("hMPipPim_TMVA_Lmass");
   TH1F *hsim_L=(TH1F*)fileLK0->Get("hMPPim_TMVA_K0mass");
@@ -970,7 +971,7 @@ int draw_norm(void)
 
 
 
-  int rebin2=2; //wrong error propagation for simul events
+  int rebin2=3; //wrong error propagation for simul events
   TCanvas *cSum=new TCanvas("cSum","cSum");
   hexperiment_data->Rebin(rebin2);
   hexperiment_data->SetAxisRange(1300,1800);
@@ -1012,7 +1013,7 @@ int draw_norm(void)
   hsum_background_PipPim->Draw("samee1");
 
 
-  int rebin=2;
+  int rebin=rebin2;
   TCanvas *cClean=new TCanvas("cClean","cClean");
 
   hclean_experiment->Draw("e1");
@@ -1174,6 +1175,12 @@ int draw_norm(void)
   line2->Draw("same");
   line3->Draw("same");
   line4->Draw("same");
+ 
+  //hL1116_ideal->Rebin(1);
+  cout<<"Checking maximum values"<<endl<<"fVoigt "<<fVoigt->GetMaximum()<<" histogram "<<hL1116_ideal->GetBinContent(hL1116_ideal->GetMaximumBin())<<endl;
+  hL1116_ideal->Scale(1./hL1116_ideal->Integral()*fVoigt->Integral(1000,1500));//magic factor to fit height to fit value, because fit is a voight function, not gaus
+  hL1116_ideal->Scale(fVoigt->GetMaximum()/hL1116_ideal->GetBinContent(hL1116_ideal->GetMaximumBin()));
+  hL1116_ideal->Draw("same");
 
   TLatex *printFormula = new TLatex();
   double high=0.8;
@@ -1686,6 +1693,8 @@ int draw_norm(void)
   hBetaGamma_data->Write();
   hBetaGamma_data_EM->Write();
   hBetaGamma_data_clean->Write();
+
+  hL1116_ideal->Write();
   
   line1->Write();
   line2->Write();
