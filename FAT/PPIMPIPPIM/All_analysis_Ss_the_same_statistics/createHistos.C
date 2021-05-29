@@ -73,7 +73,7 @@ void createHistos::Loop(char* output)
   const int xmin=1000;
   const int xmax=2000;
   const int nsignal=20;
-  double sidebandmin=8;
+  double sidebandmin=9;
   double sidebandmax=20;
   double mlp_cut=0.62;
   double oa_cut=10;
@@ -260,7 +260,7 @@ void createHistos::Loop(char* output)
 	 ||m_inv_pip_pim>410 //replaced by graphical cut
 	 ||dist_ver_to_ver<dist_cut
 	 ||(oa_lambda>oa_cut)
-	 //||m_inv_p_pip>1200
+	 ||m_inv_p_pip>1200
 	 //||!(graph_cut->IsInside(miss_mass_kp,m_inv_pip_pim))
 	 //||p_theta>20 //to clean up proton sample
 	 //||dist_pip_pim>5

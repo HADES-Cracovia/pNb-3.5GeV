@@ -73,11 +73,11 @@ void createHistos::Loop(char* output)
   const int xmin=1000;
   const int xmax=2000;
   const int nsignal=20;
-  double sidebandmin=8;
+  double sidebandmin=7;
   double sidebandmax=20;
-  double mlp_cut=0.62;
+  double mlp_cut=0.63;
   double oa_cut=10;
-  double dist_cut=50;
+  double dist_cut=30;
   /*
     std::fstream in_file {"../cuts.txt", std::ios::in};
 8    if(in_file.is_open())
