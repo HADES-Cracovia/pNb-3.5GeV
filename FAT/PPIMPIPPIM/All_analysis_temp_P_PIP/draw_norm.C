@@ -202,7 +202,12 @@ int draw_norm(void)
   hPP_pt->SetName("hPP_pt");
   TH1F* hPP_w=(TH1F*)fPPdata->Get("hclean_w_experiment");
   hPP_w->SetName("hPP_w");
- 
+
+  TH1F* hPP_p=(TH1F*)fPPdata->Get("hclean_p_experiment");
+  hPP_p->SetName("hPP_p");
+  TH1F* hPP_theta=(TH1F*)fPPdata->Get("hclean_theta_experiment");
+  hPP_theta->SetName("hPP_theta");
+  
   
   //TFile *output= new TFile("pictures.root","RECREATE");
   TH1F *hS1385_data = (TH1F*)fileS1385->Get("data");
@@ -1039,7 +1044,7 @@ int draw_norm(void)
   TCanvas *cPt_W_signal=new TCanvas("cPt_W_signal","cPt_W_signal");
   TLine* line_Ptmean_pp=new TLine(hPP_pt->GetMean(),0,hPP_pt->GetMean(),line_h);
   TLine* line_Wmean_pp=new TLine(hPP_w->GetMean(),0,hPP_w->GetMean(),line_h);
-
+  
   line_Ptmean_pp->SetLineWidth(4);
   line_Ptmean_pp->SetLineColor(kRed+1);
   line_Ptmean_pp->SetLineStyle(10); 
@@ -1070,7 +1075,7 @@ int draw_norm(void)
   line_Ptmean->Draw("same");
   line_Ptmean_pp->Draw("same");
   //hclean_pt_L1520->Draw("same");
-  hPP_pt->Draw("same");
+  hPP_pt->Draw("samehiste");
   
   
   cPt_W_signal->cd(2);
@@ -1094,49 +1099,95 @@ int draw_norm(void)
   line_Wmean->Draw();
   line_Wmean_pp->Draw("same");
   //hclean_w_L1520->Draw("same");
-  hPP_w->Draw("same");
+  hPP_w->Draw("samehiste");
 
-  TLine* line_Pmean=new TLine(hclean_p_experiment->GetMean(),0,hclean_p_experiment->GetMean(),50);
-  TLine* line_THETAmean=new TLine(hclean_theta_experiment->GetMean(),0,hclean_theta_experiment->GetMean(),50);
-  
+  TLine* line_Pmean=new TLine(hclean_p_experiment->GetMean(),0,hclean_p_experiment->GetMean(),170);
+  TLine* line_THETAmean=new TLine(hclean_theta_experiment->GetMean(),0,hclean_theta_experiment->GetMean(),140*2);
+  TLine* line_Pmean_pp=new TLine(hPP_p->GetMean(),0,hPP_p->GetMean(),170);
+  TLine* line_Thetamean_pp=new TLine(hPP_theta->GetMean(),0,hPP_theta->GetMean(),140*2);
+
+  line_Pmean_pp->SetLineWidth(4);
+  line_Pmean_pp->SetLineColor(kRed+1);
+  line_Pmean_pp->SetLineStyle(10); 
+
+  line_Thetamean_pp->SetLineWidth(4);
+  line_Thetamean_pp->SetLineColor(kRed+1);
+  line_Thetamean_pp->SetLineStyle(10); 
+
+  line_Pmean->SetLineWidth(4);
+  line_Pmean->SetLineColor(kBlue+1);
+  line_Pmean->SetLineStyle(10); 
+
+  line_THETAmean->SetLineWidth(4);
+  line_THETAmean->SetLineColor(kBlue+1);
+  line_THETAmean->SetLineStyle(10); 
+ 
+  hPP_p->Scale(hclean_p_experiment->GetBinContent(hclean_p_experiment->GetMaximumBin())/hPP_p->GetBinContent(hPP_p->GetMaximumBin()));
+  hPP_theta->Scale(hclean_theta_experiment->GetBinContent(hclean_theta_experiment->GetMaximumBin())/hPP_theta->GetBinContent(hPP_theta->GetMaximumBin()));
   
   TCanvas *cPTHETA_thesis=new TCanvas("cPTHETA_thesis","cPTHETA_thesis");
   cPTHETA_thesis->Divide(2);
   cPTHETA_thesis->cd(1);
   hclean_p_experiment->Draw("e1");
+  hPP_p->SetLineColor(kRed);
+  hPP_p->Draw("samehiste");
   //hclean_p_experiment->SetAxisRange(0,700);
   setHistogramStyleData(hclean_p_experiment);
-  hclean_p_L1520->Draw("samehist");
-  hclean_p_L1520->SetLineColor(kGreen);
-  hclean_p_L1520->SetFillStyle(0);
-  setHistogramStyleSimul(hclean_p_L1520);
-  hclean_p_background->Draw("samehist");
-  hclean_p_background->SetLineColor(kRed);
-  hclean_p_background->SetFillStyle(0);
-  setHistogramStyleSimul(hclean_p_background);
-  hclean_p_experiment_sum->Draw("samehist");
-  hclean_p_experiment_sum->SetLineColor(kMagenta);
-  hclean_p_experiment_sum->SetFillStyle(0);
-  setHistogramStyleSimul(hclean_p_experiment_sum);
+  setHistogramStyleData(hPP_p);
+ 
+  //hclean_p_L1520->Draw("samehist");
+  //hclean_p_L1520->SetLineColor(kGreen);
+  //hclean_p_L1520->SetFillStyle(0);
+  //setHistogramStyleSimul(hclean_p_L1520);
+  //hclean_p_background->Draw("samehist");
+  //hclean_p_background->SetLineColor(kRed);
+  //hclean_p_background->SetFillStyle(0);
+  //setHistogramStyleSimul(hclean_p_background);
+  //hclean_p_experiment_sum->Draw("samehist");
+  //hclean_p_experiment_sum->SetLineColor(kMagenta);
+  //hclean_p_experiment_sum->SetFillStyle(0);
+  //setHistogramStyleSimul(hclean_p_experiment_sum);
   line_Pmean->Draw("same");
+  line_Pmean_pp->Draw("same");
 
   cPTHETA_thesis->cd(2);
   hclean_theta_experiment->Draw("e1");
+  hPP_theta->SetLineColor(kRed);
+  hPP_theta->Draw("samehiste");
   //hclean_theta_experiment->GetXaxis()->SetRangeUser(0.6,1.4);
   setHistogramStyleData(hclean_theta_experiment);
-  hclean_theta_L1520->Draw("samehist");
-  hclean_theta_L1520->SetLineColor(kGreen);
-  hclean_theta_L1520->SetFillStyle(0);
-  setHistogramStyleSimul(hclean_theta_L1520);
-  hclean_theta_background->Draw("samehist");
-  hclean_theta_background->SetLineColor(kRed);
-  hclean_theta_background->SetFillStyle(0);
-  setHistogramStyleSimul(hclean_theta_background);
-  hclean_theta_experiment_sum->Draw("samehist");
-  hclean_theta_experiment_sum->SetFillStyle(0);
-  hclean_theta_experiment_sum->SetLineColor(kMagenta);
-  setHistogramStyleSimul(hclean_theta_experiment_sum);
-  line_THETAmean->Draw();
+  setHistogramStyleData(hPP_theta);
+  //hclean_theta_L1520->Draw("samehist");
+  //hclean_theta_L1520->SetLineColor(kGreen);
+  //hclean_theta_L1520->SetFillStyle(0);
+  //setHistogramStyleSimul(hclean_theta_L1520);
+  //hclean_theta_background->Draw("samehist");
+  //hclean_theta_background->SetLineColor(kRed);
+  //hclean_theta_background->SetFillStyle(0);
+  //setHistogramStyleSimul(hclean_theta_background);
+  //hclean_theta_experiment_sum->Draw("samehist");
+  //hclean_theta_experiment_sum->SetFillStyle(0);
+  //hclean_theta_experiment_sum->SetLineColor(kMagenta);
+  //setHistogramStyleSimul(hclean_theta_experiment_sum);
+  line_THETAmean->Draw("same");
+  line_Thetamean_pp->Draw("same");
+
+  //calculate transparency ratio
+  double cs_pp=5.6; //mub
+  double cs_pNb=2000;//mub
+  double a_part_pp=2;
+  double a_part_pNb=2.8;
+  TH1F* hPP_p_scale=(TH1F*)hPP_p->Clone("hPP_p_scale");
+  TH1F* hclean_p_experiment=(TH1F*)hclean_p_experiment_scale->Clone("hclean_p_experiment");
+
+  //end of a calculation of a transparency ratio 
+
+  TCanva *nuclear_factor=new TCanvas("nuclear_factor");
+  nuclear_factor->Divide(2);
+  nuclear_factor->cd(1);
+  
+  nuclear_factor->cd(2);
+
   
   int rebin_res=2;
   TCanvas *cRes=new TCanvas("cRes","cRes");

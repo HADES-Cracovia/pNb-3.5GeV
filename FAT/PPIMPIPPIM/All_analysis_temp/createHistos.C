@@ -144,6 +144,11 @@ void createHistos::Loop(char* output)
   TH1F* hMPPim_TMVAMass=new TH1F("hMPPim_TMVAMass","M^{inv}_{p #pi^{-}} after MLP and a #Delta^{++} mass cut; M^{inv}_{p #pi^{-}} [MeV];N",LdM,Lmin,Lmax);
   TH1F* hMPipPim_TMVAMass=new TH1F("hMPipPim_TMVAMass","M^{inv}_{#pi^{+} #pi^{-}} after MLP and a #Delta^{++} mass cut; M^{inv}_{#pi^{+} #pi^{-}} [MeV];N",KdM,Kmin,Kmax);
 
+  TH1F* hL1520_p=new TH1F("hL1520_p","|#vec{p}| for #Lambda (1520);|#vec{p}|[MeV]",10,500,3000);
+  TH1F* hL1520_p_SB=new TH1F("hL1520_p_SB","|#vec{p}| for #Lambda (1520) from SB;|#vec{p}|[MeV]",10,500,3000);
+  TH1F* hL1520_theta=new TH1F("hL1520_theta","#theta for #Lambda (1520);#theta [rad]",20,0,4);
+  TH1F* hL1520_theta_SB=new TH1F("hL1520_theta_SB","#theta for #Lambda (1520) from SB;#theta[rad]",20,0,4);
+  
   TH1F* hL1520_w=new TH1F("hL1520_w","Rapidity for #Lambda (1520) events; w",40,0,2);
   TH1F* hL1520_pt=new TH1F("hL1520_pt","p_{T} for #Lambda(1520) events;p_{t}[MeV]",32,0,1600);
   TH1F* hL1116_w=new TH1F("hL1116_w","Rapidity for #Lambda (1116) events; w",40,0,2);
@@ -184,7 +189,11 @@ void createHistos::Loop(char* output)
   Long64_t nbytes = 0, nb = 0;
   step =(int)nentries/15;
 
-  TLorentzVector p,pim1,pip,pim2,ppimpippim;
+  TLorentzVector p,pim1,pim2,pip,ppimpippim,ppimpippim_CM, wrongL1116, beam, target, cm;
+  target.SetPxPyPzE(0,0,0,938.27);//in MeV
+  beam.SetPxPyPzE(0,0,TMath::Sqrt(3500*3500+2*3500*938.27),938.27+3500);//in MeV
+  cm=target+beam;
+
   
   for (Long64_t jentry=0; jentry<nentries;jentry++)
     {
@@ -218,6 +227,9 @@ void createHistos::Loop(char* output)
 	  pip.SetVectM( v3, 139.57018 );
 	  pim2.SetVectM( v4, 139.57018 );
 	  ppimpippim=p+pim1+pim2+pip;
+	  ppimpippim_CM=p+pim1+pim2+pip;
+	  ppimpippim_CM.Boost(0,0,-cm.Beta());
+
 	  //end of 4-vectors
 	  
 	  if(mlp_output>mlp_cut)
@@ -288,8 +300,9 @@ void createHistos::Loop(char* output)
 	    {
 	      hL1520_pt->Fill(ppimpippim.Pt());
 	      hL1520_w->Fill(ppimpippim.Rapidity());
+	      hL1520_p->Fill(ppimpippim.P());
+	      hL1520_theta->Fill(ppimpippim_CM.Theta());
 	      hMPipPim_signal->Fill(m_inv_pip_pim);
-	   
 	      hBetaGamma->Fill(ppimpippim.P()/ppimpippim.M());
 	      h2PtvsY->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());
 	    } 
@@ -312,7 +325,9 @@ void createHistos::Loop(char* output)
 	      hL1520_pt_SB->Fill(ppimpippim.Pt());
 	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
 	      hMPipPim_background->Fill(m_inv_pip_pim);
-
+	      hL1520_p_SB->Fill(ppimpippim.P());
+	      hL1520_theta_SB->Fill(ppimpippim_CM.Theta());
+	   
 	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
 	      h2PtvsY_SB->Fill(ppimpippim.Pt(),ppimpippim.Rapidity());
 	    }
@@ -335,6 +350,9 @@ void createHistos::Loop(char* output)
 	    {
 	      hL1520_pt_SB->Fill(ppimpippim.Pt());
 	      hL1520_w_SB->Fill(ppimpippim.Rapidity());
+	      hL1520_p_SB->Fill(ppimpippim.P());
+	      hL1520_theta_SB->Fill(ppimpippim_CM.Theta());
+	   
 	      hMPipPim_background->Fill(m_inv_pip_pim);
 
 	      hBetaGamma_SB->Fill(ppimpippim.P()/ppimpippim.M());
@@ -401,7 +419,9 @@ void createHistos::Loop(char* output)
   scale(h2BetaGamma_MPPimPipPim_SB,intB/intsideband);
   scale(hL1116_w_SB,intB/intsideband);
   scale(hL1116_pt_SB,intB/intsideband);
-
+  scale(hL1520_theta_SB,intB/intsideband);
+  scale(hL1520_p_SB,intB/intsideband);
+ 
   //Fill random signal
   //TF1* L1520Spectral=new TF1("L1520Spectral","100*exp(-0.5*((x-1520)/16)**2)",xmin,xmax);
   TF1* L1520Spectral=new TF1("L1520Spectral","TMath::BreitWigner(x,1519.5,15.6)",xmin,xmax);
@@ -519,6 +539,11 @@ void createHistos::Loop(char* output)
   h2PtvsY->Write();
   h2PtvsY_SB->Write();
 
+  hL1520_p->Write();
+  hL1520_p_SB->Write();
+  hL1520_theta->Write();
+  hL1520_theta_SB->Write();
+
   
   line1->Write("line1");
   line2->Write("line2");
@@ -584,5 +609,10 @@ void createHistos::Loop(char* output)
   hL1116_w_SB->Delete();
   hL1116_pt_SB->Delete();
 
+  hL1520_p->Delete();
+  hL1520_p_SB->Delete();
+  hL1520_theta->Delete();
+  hL1520_theta_SB->Delete();
+  
   MyFile->Close();
 }
