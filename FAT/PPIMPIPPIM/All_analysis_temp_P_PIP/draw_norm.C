@@ -1121,16 +1121,19 @@ int draw_norm(void)
   line_THETAmean->SetLineWidth(4);
   line_THETAmean->SetLineColor(kBlue+1);
   line_THETAmean->SetLineStyle(10); 
- 
-  hPP_p->Scale(hclean_p_experiment->GetBinContent(hclean_p_experiment->GetMaximumBin())/hPP_p->GetBinContent(hPP_p->GetMaximumBin()));
-  hPP_theta->Scale(hclean_theta_experiment->GetBinContent(hclean_theta_experiment->GetMaximumBin())/hPP_theta->GetBinContent(hPP_theta->GetMaximumBin()));
+
+  TH1F * hPP_p_scale=(TH1F*)hPP_p->Clone("hPP_p_scale");
+  TH1F * hPP_theta_scale=(TH1F*)hPP_theta->Clone("hPP_theta_scale");
+    
+  hPP_p_scale->Scale(hclean_p_experiment->GetBinContent(hclean_p_experiment->GetMaximumBin())/hPP_p->GetBinContent(hPP_p->GetMaximumBin()));
+  hPP_theta_scale->Scale(hclean_theta_experiment->GetBinContent(hclean_theta_experiment->GetMaximumBin())/hPP_theta->GetBinContent(hPP_theta->GetMaximumBin()));
   
   TCanvas *cPTHETA_thesis=new TCanvas("cPTHETA_thesis","cPTHETA_thesis");
   cPTHETA_thesis->Divide(2);
   cPTHETA_thesis->cd(1);
   hclean_p_experiment->Draw("e1");
-  hPP_p->SetLineColor(kRed);
-  hPP_p->Draw("samehiste");
+  hPP_p_scale->SetLineColor(kRed);
+  hPP_p_scale->Draw("samehiste");
   //hclean_p_experiment->SetAxisRange(0,700);
   setHistogramStyleData(hclean_p_experiment);
   setHistogramStyleData(hPP_p);
@@ -1152,8 +1155,8 @@ int draw_norm(void)
 
   cPTHETA_thesis->cd(2);
   hclean_theta_experiment->Draw("e1");
-  hPP_theta->SetLineColor(kRed);
-  hPP_theta->Draw("samehiste");
+  hPP_theta_scale->SetLineColor(kRed);
+  hPP_theta_scale->Draw("samehiste");
   //hclean_theta_experiment->GetXaxis()->SetRangeUser(0.6,1.4);
   setHistogramStyleData(hclean_theta_experiment);
   setHistogramStyleData(hPP_theta);
@@ -1174,19 +1177,21 @@ int draw_norm(void)
 
   //calculate transparency ratio
   double cs_pp=5.6; //mub
-  double cs_pNb=2000;//mub
+  double cs_pNb=3000;//mub
   double a_part_pp=2;
   double a_part_pNb=2.8;
-  TH1F* hPP_p_scale=(TH1F*)hPP_p->Clone("hPP_p_scale");
-  TH1F* hclean_p_experiment=(TH1F*)hclean_p_experiment_scale->Clone("hclean_p_experiment");
+  TH1F* h_p_ratio=(TH1F*)hclean_p_experiment->Clone("h_p_ratio");
+
+  h_p_ratio->Divide(hclean_p_experiment,hPP_p,a_part_pp,a_part_pNb);
 
   //end of a calculation of a transparency ratio 
 
-  TCanva *nuclear_factor=new TCanvas("nuclear_factor");
-  nuclear_factor->Divide(2);
+  TCanvas *nuclear_factor=new TCanvas("nuclear_factor");
+  nuclear_factor->Divide(1);
   nuclear_factor->cd(1);
-  
-  nuclear_factor->cd(2);
+
+  h_p_ratio->Draw();
+  //nuclear_factor->cd(2);
 
   
   int rebin_res=2;
@@ -2064,5 +2069,5 @@ int draw_norm(void)
   h2BetaGamma_MPPimPipPim_clean->Write();
 
   cPTHETA_thesis->Write();
-
+  nuclear_factor->Write();
 }
