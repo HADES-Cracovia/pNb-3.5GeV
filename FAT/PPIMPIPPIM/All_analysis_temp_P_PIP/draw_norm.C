@@ -205,9 +205,11 @@ int draw_norm(void)
 
   TH1F* hPP_p=(TH1F*)fPPdata->Get("hclean_p_experiment");
   hPP_p->SetName("hPP_p");
-  TH1F* hPP_theta=(TH1F*)fPPdata->Get("hclean_theta_experiment");
+  //TH1F* hPP_theta=(TH1F*)fPPdata->Get("hclean_theta_experiment");
+  //hPP_theta->SetName("hPP_theta");
+  TH1F* hPP_theta=(TH1F*)fPPdata->Get("hclean_cos_theta_experiment");
   hPP_theta->SetName("hPP_theta");
-  
+    
   
   //TFile *output= new TFile("pictures.root","RECREATE");
   TH1F *hS1385_data = (TH1F*)fileS1385->Get("data");
@@ -411,35 +413,45 @@ int draw_norm(void)
   hS1385_L1520_p_SB->SetName("hS1385_L1520_p_SB");
   hS1385_L1520_p_SB->Sumw2(kFALSE);
 
-  TH1F *hexperiment_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  //TH1F *hexperiment_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  TH1F *hexperiment_L1520_theta=(TH1F*)fileExp->Get("hL1520_cos_theta");
   hexperiment_L1520_theta->SetName("hexperiment_L1520_theta");
   hexperiment_L1520_theta->Sumw2();
-  TH1F *hL1520_L1520_theta=(TH1F*)fileL1520->Get("hL1520_theta");
+  //TH1F *hL1520_L1520_theta=(TH1F*)fileL1520->Get("hL1520_theta");
+  TH1F *hL1520_L1520_theta=(TH1F*)fileL1520->Get("hL1520_cos_theta");
   hL1520_L1520_theta->SetName("hL1520_L1520_theta");
   hL1520_L1520_theta->Sumw2(kFALSE);
-  TH1F *hLDpp_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  //TH1F *hLDpp_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  TH1F *hLDpp_L1520_theta=(TH1F*)fileExp->Get("hL1520_cos_theta");
   hLDpp_L1520_theta->SetName("hLDpp_L1520_theta");
   hLDpp_L1520_theta->Sumw2(kFALSE);
-  TH1F *hSDpp_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  //TH1F *hSDpp_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  TH1F *hSDpp_L1520_theta=(TH1F*)fileExp->Get("hL1520_cos_theta");
   hSDpp_L1520_theta->SetName("hSDpp_L1520_theta");
   hSDpp_L1520_theta->Sumw2(kFALSE);
-  TH1F *hS1385_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  //TH1F *hS1385_L1520_theta=(TH1F*)fileExp->Get("hL1520_theta");
+  TH1F *hS1385_L1520_theta=(TH1F*)fileExp->Get("hL1520_cos_theta");
   hS1385_L1520_theta->SetName("hS1385_L1520_theta");
   hS1385_L1520_theta->Sumw2(kFALSE);
 
-  TH1F *hexperiment_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  //TH1F *hexperiment_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  TH1F *hexperiment_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_cos_theta_SB");
   hexperiment_L1520_theta_SB->SetName("hexperiment_L1520_theta_SB");
   hexperiment_L1520_theta_SB->Sumw2();
-  TH1F *hL1520_L1520_theta_SB=(TH1F*)fileL1520->Get("hL1520_theta_SB");
+  //TH1F *hL1520_L1520_theta_SB=(TH1F*)fileL1520->Get("hL1520_theta_SB");
+ TH1F *hL1520_L1520_theta_SB=(TH1F*)fileL1520->Get("hL1520_cos_theta_SB");
   hL1520_L1520_theta_SB->SetName("hL1520_L1520_theta_SB");
   hL1520_L1520_theta_SB->Sumw2(kFALSE);
-  TH1F *hLDpp_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  //TH1F *hLDpp_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  TH1F *hLDpp_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_cos_theta_SB");
   hLDpp_L1520_theta_SB->SetName("hLDpp_L1520_theta_SB");
   hLDpp_L1520_theta_SB->Sumw2(kFALSE);
-  TH1F *hSDpp_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  //TH1F *hSDpp_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  TH1F *hSDpp_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_cos_theta_SB");
   hSDpp_L1520_theta_SB->SetName("hSDpp_L1520_theta_SB");
   hSDpp_L1520_theta_SB->Sumw2(kFALSE);
-  TH1F *hS1385_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  //TH1F *hS1385_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_theta_SB");
+  TH1F *hS1385_L1520_theta_SB=(TH1F*)fileExp->Get("hL1520_cos_theta_SB");
   hS1385_L1520_theta_SB->SetName("hS1385_L1520_theta_SB");
   hS1385_L1520_theta_SB->Sumw2(kFALSE);
   //end of p and theta in CM
@@ -1044,6 +1056,15 @@ int draw_norm(void)
   TCanvas *cPt_W_signal=new TCanvas("cPt_W_signal","cPt_W_signal");
   TLine* line_Ptmean_pp=new TLine(hPP_pt->GetMean(),0,hPP_pt->GetMean(),line_h);
   TLine* line_Wmean_pp=new TLine(hPP_w->GetMean(),0,hPP_w->GetMean(),line_h);
+  TH1F* hclean_pt_experiment_sum_scale=(TH1F*)hclean_pt_experiment_sum->Clone("hclean_pt_experiment_sum_scale");
+  TH1F* hclean_w_experiment_sum_scale=(TH1F*)hclean_w_experiment_sum->Clone("hclean_w_experiment_sum_scale");
+  TH1F* hPP_pt_scale=(TH1F*)hPP_pt->Clone("hPP_pt_scale");
+  TH1F* hPP_w_scale=(TH1F*)hPP_w->Clone("hPP_w_scale");
+
+  hclean_pt_experiment_sum_scale->Scale(1./2.8);
+  hclean_w_experiment_sum_scale->Scale(1./2.8);
+  hPP_pt_scale->Scale(1./2.);
+  hPP_w_scale->Scale(1./2.);
   
   line_Ptmean_pp->SetLineWidth(4);
   line_Ptmean_pp->SetLineColor(kRed+1);
@@ -1060,22 +1081,22 @@ int draw_norm(void)
   //hexperiment_L1520_pt->GetXaxis()->SetRangeUser(0,1500);
   //setHistogramStyleData(hexperiment_L1520_pt);
   //setHistogramStyleData(hclean_pt_experiment);
-  hclean_pt_experiment_sum->Draw("samee1");
+  hclean_pt_experiment_sum_scale->Draw("samee1");
   
   //hclean_pt_experiment_sum->Rebin(rebin_sig);
   //hexperiment_L1520_pt_SB->Draw("samee1");
   //setHistogramStyleData(hexperiment_L1520_pt_SB);
   
-  hclean_pt_experiment_sum->SetLineColor(kBlue);
-  setHistogramStyleData(hclean_pt_experiment_sum);
+  hclean_pt_experiment_sum_scale->SetLineColor(kBlue);
+  setHistogramStyleData(hclean_pt_experiment_sum_scale);
   //hclean_pt_EM->Draw("samee1");
   //hclean_pt_EM->SetLineColor(kRed);
   //hclean_pt_EM->Rebin(rebin_sig);
   //setHistogramStyleData(hclean_pt_EM);
-  line_Ptmean->Draw("same");
-  line_Ptmean_pp->Draw("same");
+  //line_Ptmean->Draw("same");
+  //line_Ptmean_pp->Draw("same");
   //hclean_pt_L1520->Draw("same");
-  hPP_pt->Draw("samehiste");
+  hPP_pt_scale->Draw("samehiste");
   
   
   cPt_W_signal->cd(2);
@@ -1088,18 +1109,18 @@ int draw_norm(void)
   //setHistogramStyleData(hexperiment_L1520_w_SB);
   
   //setHistogramStyleData(hclean_w_experiment);
-  hclean_w_experiment_sum->Draw("samee1");
+  hclean_w_experiment_sum_scale->Draw("samee1");
   //hclean_w_experiment_sum->Rebin(rebin_sig);
-  hclean_w_experiment_sum->SetLineColor(kBlue);
-  setHistogramStyleData(hclean_w_experiment_sum);
+  hclean_w_experiment_sum_scale->SetLineColor(kBlue);
+  setHistogramStyleData(hclean_w_experiment_sum_scale);
   //hclean_w_EM->Draw("samee1");
   //hclean_w_EM->SetLineColor(kRed);
   //hclean_w_EM->Rebin(rebin_sig);
   //setHistogramStyleData(hclean_w_EM);
-  line_Wmean->Draw();
-  line_Wmean_pp->Draw("same");
+  //line_Wmean->Draw();
+  //line_Wmean_pp->Draw("same");
   //hclean_w_L1520->Draw("same");
-  hPP_w->Draw("samehiste");
+  hPP_w_scale->Draw("samehiste");
 
   TLine* line_Pmean=new TLine(hclean_p_experiment->GetMean(),0,hclean_p_experiment->GetMean(),170);
   TLine* line_THETAmean=new TLine(hclean_theta_experiment->GetMean(),0,hclean_theta_experiment->GetMean(),140*2);
@@ -1122,21 +1143,28 @@ int draw_norm(void)
   line_THETAmean->SetLineColor(kBlue+1);
   line_THETAmean->SetLineStyle(10); 
 
-  TH1F * hPP_p_scale=(TH1F*)hPP_p->Clone("hPP_p_scale");
-  TH1F * hPP_theta_scale=(TH1F*)hPP_theta->Clone("hPP_theta_scale");
-    
-  hPP_p_scale->Scale(hclean_p_experiment->GetBinContent(hclean_p_experiment->GetMaximumBin())/hPP_p->GetBinContent(hPP_p->GetMaximumBin()));
-  hPP_theta_scale->Scale(hclean_theta_experiment->GetBinContent(hclean_theta_experiment->GetMaximumBin())/hPP_theta->GetBinContent(hPP_theta->GetMaximumBin()));
+  TH1F* hPP_p_scale=(TH1F*)hPP_p->Clone("hPP_p_scale");
+  TH1F* hPP_theta_scale=(TH1F*)hPP_theta->Clone("hPP_theta_scale");
+  TH1F* hclean_p_experiment_scale=(TH1F*)hclean_p_experiment->Clone("hclean_p_experiment_scale");
+  TH1F* hclean_theta_experiment_scale=(TH1F*)hclean_theta_experiment->Clone("hclean_theta_experiment_scale");
+  
+  //hPP_p_scale->Scale(hclean_p_experiment->GetBinContent(hclean_p_experiment->GetMaximumBin())/hPP_p->GetBinContent(hPP_p->GetMaximumBin()));
+  //hPP_theta_scale->Scale(hclean_theta_experiment->GetBinContent(hclean_theta_experiment->GetMaximumBin())/hPP_theta->GetBinContent(hPP_theta->GetMaximumBin()));
+  hPP_p_scale->Scale(1./2.0);
+  hPP_theta_scale->Scale(1./2.0);
+  hclean_p_experiment_scale->Scale(1./2.8);
+  hclean_theta_experiment_scale->Scale(1./2.8);
+
   
   TCanvas *cPTHETA_thesis=new TCanvas("cPTHETA_thesis","cPTHETA_thesis");
   cPTHETA_thesis->Divide(2);
   cPTHETA_thesis->cd(1);
-  hclean_p_experiment->Draw("e1");
+  hclean_p_experiment_scale->Draw("e1");
   hPP_p_scale->SetLineColor(kRed);
   hPP_p_scale->Draw("samehiste");
   //hclean_p_experiment->SetAxisRange(0,700);
-  setHistogramStyleData(hclean_p_experiment);
-  setHistogramStyleData(hPP_p);
+  setHistogramStyleData(hclean_p_experiment_scale);
+  setHistogramStyleData(hPP_p_scale);
  
   //hclean_p_L1520->Draw("samehist");
   //hclean_p_L1520->SetLineColor(kGreen);
@@ -1154,12 +1182,12 @@ int draw_norm(void)
   line_Pmean_pp->Draw("same");
 
   cPTHETA_thesis->cd(2);
-  hclean_theta_experiment->Draw("e1");
+  hclean_theta_experiment_scale->Draw("e1");
   hPP_theta_scale->SetLineColor(kRed);
   hPP_theta_scale->Draw("samehiste");
   //hclean_theta_experiment->GetXaxis()->SetRangeUser(0.6,1.4);
-  setHistogramStyleData(hclean_theta_experiment);
-  setHistogramStyleData(hPP_theta);
+  setHistogramStyleData(hclean_theta_experiment_scale);
+  setHistogramStyleData(hPP_theta_scale);
   //hclean_theta_L1520->Draw("samehist");
   //hclean_theta_L1520->SetLineColor(kGreen);
   //hclean_theta_L1520->SetFillStyle(0);
@@ -1564,22 +1592,28 @@ int draw_norm(void)
   fL1116_experiment_fit_bg->Draw("same");
 
   TLatex *printFormula2 = new TLatex();
-  double high2=0.90;
+   double high2=0.90;
   char text9[10000];
   char text10[10000];
   char text11[10000];
+  char text111[10000];
+  char text112[10000];
   sprintf(text9, "I_{exp}=#int_{1095}^{1135} S_{exp} = %.1f",fL1116_experiment_sig->Integral(1095,1135)/hsim_L->GetBinWidth(3));
   sprintf(text10, "I_{simul}=#int_{1095}^{1135} S_{simul} = %.1f",(L_sim_sig_bg->Integral(1095,1135)-L_sim_bg->Integral(1095,1135))/hsim_L->GetBinWidth(3));
   sprintf(text11, "I_{exp}/I_{simul} = %.2f",fL1116_experiment_sig->Integral(1095,1135)/(L_sim_sig_bg->Integral(1095,1135)-L_sim_bg->Integral(1095,1135)));
-      
+  sprintf(text111, "#bar{M_{#Lambda(1116)}^{exp}} = %.1f #sigma^{exp}= %.2f #Gamma^{exp}= %.2f",fL1116_experiment_sig->GetParameter(1),fL1116_experiment_sig->GetParameter(2),fL1116_experiment_sig->GetParameter(3));
+  sprintf(text112, "#bar{M_{#Lambda(1116)}^{sim}} = %.1f #sigma^{exp}= %.2f #Gamma^{exp}= %.2f",L_sim_sig_bg->GetParameter(1),L_sim_sig_bg->GetParameter(2),L_sim_sig_bg->GetParameter(3));
+  
   printFormula2->SetNDC();
   printFormula2->SetTextFont(32);
   printFormula2->SetTextColor(1);
-  printFormula2->SetTextSize(0.05);
+  printFormula2->SetTextSize(0.03);
   printFormula2->SetTextAlign(13);
   printFormula2->DrawLatex(0.6,high2, text9);
   printFormula2->DrawLatex(0.6,high2-printFormula->GetTextSize()*4, text10);
   printFormula2->DrawLatex(0.6,high2-printFormula->GetTextSize()*8 , text11);
+  printFormula2->DrawLatex(0.6,high2-printFormula->GetTextSize()*10, text111);
+  printFormula2->DrawLatex(0.6,high2-printFormula->GetTextSize()*12, text112);
 
   TCanvas* cK0=new TCanvas("cK0", "Signal for final state p #pi^{+} #L^{0} K^{0}");
   TF1* K0_sim_bg=new TF1("K0_sim_bg","pol1(0)",450,550);
@@ -1621,17 +1655,24 @@ int draw_norm(void)
   char text12[10000];
   char text13[10000];
   char text14[10000];
+  char text141[10000];
+  char text142[10000];
   sprintf(text12, "I_{exp}=#int_{450}^{550} S_{exp} = %.1f",fK0_experiment_sig->Integral(450,550)/hsim_K0->GetBinWidth(3));
   sprintf(text13, "I_{simul}=#int_{450}^{550} S_{simul} = %.1f",(K0_sim_sig_bg->Integral(450,550)-K0_sim_bg->Integral(450,550))/hsim_L->GetBinWidth(3));
   sprintf(text14, "I_{exp}/I_{simul} = %.2f",fK0_experiment_sig->Integral(450,550)/(K0_sim_sig_bg->Integral(450,550)-K0_sim_bg->Integral(450,550)));
+  sprintf(text141, "#bar{M_{K0}^{exp}} = %.2f #sigma^{exp}= %.2f #Gamma^{exp}= %.2f",fK0_experiment_sig->GetParameter(1),fK0_experiment_sig->GetParameter(2),fK0_experiment_sig->GetParameter(3));
+  sprintf(text142, "#bar{M_{K0}^{sim}} = %.2f #sigma^{sim}= %.2f #Gamma^{sim}= %.2f",K0_sim_sig_bg->GetParameter(1),K0_sim_sig_bg->GetParameter(2),K0_sim_sig_bg->GetParameter(3));
+
   printFormula3->SetNDC();
   printFormula3->SetTextFont(32);
   printFormula3->SetTextColor(1);
-  printFormula3->SetTextSize(0.05);
+  printFormula3->SetTextSize(0.03);
   printFormula3->SetTextAlign(13);
   printFormula3->DrawLatex(0.6,high2, text12);
   printFormula3->DrawLatex(0.6,high2-printFormula->GetTextSize()*4, text13);
   printFormula3->DrawLatex(0.6,high2-printFormula->GetTextSize()*8 , text14);
+  printFormula3->DrawLatex(0.6,high2-printFormula->GetTextSize()*10, text141);
+  printFormula3->DrawLatex(0.6,high2-printFormula->GetTextSize()*12 , text142);
 
   TCanvas* cLK0=new TCanvas("cLK0", "Signal for final state p #pi^{+} #L^{0} K^{0}");
   TH1F* hsigL_pure=(TH1F*)hexperiment_L->Clone("hsigL_pure");

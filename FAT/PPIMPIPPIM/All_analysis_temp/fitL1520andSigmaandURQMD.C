@@ -138,7 +138,8 @@ int fitL1520andSigmaandURQMD(void)
   //TFile *fL1520_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1116.root","read");
   //TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1520.root","read");
   //TFile *fSsPimKz_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/SsPimKz_real_L1116.root","read");
-
+  TFile *fPPdata=new TFile("../../../../PP/FAT/PPIMPIPPIM/All_analysis_wo_miss_mass/final_output_10_27_0.58_20.0_5.0.root");
+  
   TFile *fout=new TFile("fitL1520andSigmaandURQMD_output.root","recreate");
 
   int rebin=4;
@@ -250,14 +251,46 @@ int fitL1520andSigmaandURQMD(void)
   hPPip_SDppKz->SetName("hPPip_SDppKz");
   hPPip_SDppKz->Rebin(rebin3);
 
-
+  //pt   histogram
+  /*
+  TH1F* h_pt_data=(TH1F*)fData_SB->Get("hM_pt_final");
+  h_pt__data->SetName("h_pt_data");
+  h_pt__data->Rebin(rebin3);
+  TH1F* h_pt_bcg=(TH1F*)fData_SB->Get("hM_pt_final_SB");
+  h_pt__bcg->SetName("h_pt_bcg");
+  h_pt__bcg->Rebin(rebin3);
+  TH1F* h_pt_L1520=(TH1F*)fL1520_SB->Get("hM_pt_final");
+  h_pt__L1520->SetName("h_pt_L1520");
+  h_pt__L1520->Rebin(rebin3);
+  TH1F* h_pt_Ss=(TH1F*)fSsPimKz_SB->Get("hM_pt_final");
+  h_pt__Ss->SetName("h_pt_Ss");
+  h_pt__Ss->Rebin(rebin3);
+  TH1F* h_pt_Ssp=(TH1F*)fSsPipKz_SB->Get("hM_pt_final");
+  h_pt__Ssp->SetName("h_pt_Ssp");
+  h_pt__Ssp->Rebin(rebin3);
+  TH1F* h_pt_urqmd=(TH1F*)furqmd_SB->Get("hM_pt_final");
+  h_pt__urqmd->SetName("h_pt_urqmd");
+  h_pt__urqmd->Rebin(rebin3);
+  TH1F* h_pt_urqmd_bcg=(TH1F*)furqmd_SB->Get("hM_pt_final_SB");
+  h_pt__urqmd_bcg->SetName("h_pt_urqmd_bcg");
+  h_pt__urqmd_bcg->Rebin(rebin3);
+  TH1F* h_pt_SDppKz=(TH1F*)fSDppK0_SB->Get("hM_pt_final");
+  h_pt__SDppKz->SetName("h_pt_SDppKz");
+  h_pt__SDppKz->Rebin(rebin3);
+  */
+  
   //substruct SB for URQMD
   //commented out because L1116 fit failed
-  /*hPPimPipPim_urqmd->Add(hPPimPipPim_urqmd_bcg,-1);
+  hPPimPipPim_urqmd->Add(hPPimPipPim_urqmd_bcg,-1);
   hPPimPim_urqmd->Add(hPPimPim_urqmd_bcg,-1);
   hPPimPip_urqmd->Add(hPPimPip_urqmd_bcg,-1);
   hPPip_urqmd->Add(hPPip_urqmd_bcg,-1);
-  */
+  
+
+  //Data from PP
+  TH1F* hPP_L1520=(TH1F*)fPPdata->Get("hclean_experiment");
+  
+
   //sum
   TH1F* LPPimPipPim_sum=hPPimPipPim_bcg->Clone("LPPimPipPim_sum");
   TH1F* LPPimPip_sum=hPPimPip_bcg->Clone("LPPimPip_sum");
@@ -277,9 +310,10 @@ int fitL1520andSigmaandURQMD(void)
   
   double lum=1.04*TMath::Power(10,7);//mb
   double arbitrary_scale=1;
-  bool bscaleURQMD=true;
+  bool bscaleURQMD=false;
   bool bfixSs=false;
-  
+  bool bincludeSigmaM=false;
+
   hPPimPipPim_L1520->Scale(scale/hPPimPipPim_L1520->Integral());
   hPPimPipPim_Ss->Scale(scale/hPPimPipPim_Ss->Integral());
   hPPimPipPim_Ssp->Scale(scale/hPPimPipPim_Ssp->Integral());
@@ -360,14 +394,16 @@ int fitL1520andSigmaandURQMD(void)
 	    {
 	      //if(l!=m)
 	      //continue;
-	      scaleL1520=1.2*n*1./steps;
-	      scaleSs=1.2*m*1./steps;
+	      scaleL1520=1.2*(double)n*1./steps;
+	      scaleSs=1.2*(double)m*1./steps;
 	      if(bfixSs)
 		scaleSs=scaleL1520;
 	      if(bscaleURQMD)
-		scaleURQMD=1.8*l*1./steps;
+		scaleURQMD=1.8*(double)l*1./steps;
 	      if(!bscaleURQMD && l>1)
 		continue;
+	      if(bincludeSigmaM)
+		scaleSsp=scaleSs;
 	      //scaleSs=0.001;
 	      //scaleSsp=1.4*l*1./steps;
 	      //scaleSsp=0.001;
@@ -378,28 +414,32 @@ int fitL1520andSigmaandURQMD(void)
 	      LPPimPipPim_sum->Add(hPPimPipPim_L1520,scaleL1520);
 	      LPPimPipPim_sum->Add(hPPimPipPim_Ss,scaleSs);
 	      LPPimPipPim_sum->Add(hPPimPipPim_urqmd,scaleURQMD);
-	      //LPPimPipPim_sum->Add(hPPimPipPim_Ssp,scaleSsp);
+	      if(bincludeSigmaM)
+		LPPimPipPim_sum->Add(hPPimPipPim_Ssp,scaleSsp);
 	
 	      LPPimPip_sum->Reset();
 	      LPPimPip_sum->Add(hPPimPip_bcg);
 	      LPPimPip_sum->Add(hPPimPip_L1520,scaleL1520);
 	      LPPimPip_sum->Add(hPPimPip_Ss,scaleSs);
 	      LPPimPip_sum->Add(hPPimPip_urqmd,scaleURQMD);
-	      //LPPimPip_sum->Add(hPPimPip_Ssp,scaleSsp);
+	      if(bincludeSigmaM)
+		LPPimPip_sum->Add(hPPimPip_Ssp,scaleSsp);
 
 	      LPPimPim_sum->Reset();
 	      LPPimPim_sum->Add(hPPimPim_bcg);
 	      LPPimPim_sum->Add(hPPimPim_L1520,scaleL1520);
 	      LPPimPim_sum->Add(hPPimPim_Ss,scaleSs);
 	      LPPimPim_sum->Add(hPPimPim_urqmd,scaleURQMD);
-	      //LPPimPim_sum->Add(hPPimPim_Ssp,scaleSsp);
+	      if(bincludeSigmaM)
+		LPPimPim_sum->Add(hPPimPim_Ssp,scaleSsp);
 
 	      LPPip_sum->Reset();
 	      LPPip_sum->Add(hPPip_bcg);
 	      LPPip_sum->Add(hPPip_L1520,scaleL1520);
 	      LPPip_sum->Add(hPPip_Ss,scaleSs);
 	      LPPip_sum->Add(hPPip_urqmd,scaleURQMD);
-	      //LPPip_sum->Add(hPPip_Ssp,scaleSsp);
+	      if(bincludeSigmaM)
+		LPPip_sum->Add(hPPip_Ssp,scaleSsp);
 
 	      
 	      /*
@@ -470,27 +510,31 @@ int fitL1520andSigmaandURQMD(void)
   TH1F* hPPimPipPim_sum=hPPimPipPim_bcg->Clone("hPPimPipPim_sum");
   hPPimPipPim_sum->Add(hPPimPipPim_L1520);
   hPPimPipPim_sum->Add(hPPimPipPim_Ss);
-  //hPPimPipPim_sum->Add(hPPimPipPim_Ssp);
+  if(bincludeSigmaM)
+    hPPimPipPim_sum->Add(hPPimPipPim_Ssp);
   hPPimPipPim_sum->Add(hPPimPipPim_urqmd);
   
 
   TH1F* hPPimPip_sum=hPPimPip_bcg->Clone("hPPimPip_sum");
   hPPimPip_sum->Add(hPPimPip_L1520);
   hPPimPip_sum->Add(hPPimPip_Ss);
-  //hPPimPip_sum->Add(hPPimPip_Ssp);
+  if(bincludeSigmaM)
+    hPPimPip_sum->Add(hPPimPip_Ssp);
   hPPimPip_sum->Add(hPPimPip_urqmd);
   
   TH1F* hPPimPim_sum=hPPimPim_bcg->Clone("hPPimPim_sum");
   hPPimPim_sum->Add(hPPimPim_L1520);
   hPPimPim_sum->Add(hPPimPim_Ss);
-  //hPPimPim_sum->Add(hPPimPim_Ssp);
+  if(bincludeSigmaM)
+    hPPimPim_sum->Add(hPPimPim_Ssp);
   hPPimPim_sum->Add(hPPimPim_urqmd);
   
 
   TH1F* hPPip_sum=hPPip_bcg->Clone("hPPip_sum");
   hPPip_sum->Add(hPPip_L1520);
   hPPip_sum->Add(hPPip_Ss);
-  //hPPip_sum->Add(hPPip_Ssp);
+  if(bincludeSigmaM)
+    hPPip_sum->Add(hPPip_Ssp);
   hPPip_sum->Add(hPPip_urqmd);
   //cout<<"bbb"<<endl;
   //with substructed SB
@@ -692,13 +736,20 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(hPPip_sum);
   hPPip_urqmd->Draw("samehist");
   setStyleDpp(hPPip_urqmd);
- 
-  
+
+  TCanvas* cComparison=new TCanvas("cComparison");
+  cComparison->cd();
+  hPPimPipPim_data_clean->Draw();
+  hPP_L1520->Scale(hPPimPipPim_data_clean->GetBinContent(hPPimPipPim_data_clean->GetMaximumBin())/hPP_L1520->GetBinContent(hPP_L1520->GetMaximumBin()));
+  hPP_L1520->Draw("same");
+  hPP_L1520->SetLineColor(kGray+2);
+  hPP_L1520->SetMarkerColor(kGray+2);
 
   cOpt->Write();
   cSpectra->Write();
   cSpectra_clean->Write();
   cPPip->Write();
+  cComparison->Write();
   return 0;
 }
 
