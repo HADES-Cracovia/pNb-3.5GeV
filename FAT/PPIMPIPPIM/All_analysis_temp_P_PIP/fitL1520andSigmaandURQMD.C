@@ -138,6 +138,7 @@ int fitL1520andSigmaandURQMD(void)
   //TFile *fL1520_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1116.root","read");
   //TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1520.root","read");
   //TFile *fSsPimKz_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/SsPimKz_real_L1116.root","read");
+  //TFile *fPPdata=new TFile("../../../../PP/FAT/PPIMPIPPIM/All_analysis_wo_miss_mass/final_output_10_27_0.58_20.0_5.0.root");
   TFile *fPPdata=new TFile("../../../../PP/FAT/PPIMPIPPIM/All_analysis_wo_miss_mass/final_output_10_27_0.58_20.0_5.0.root");
   
   TFile *fout=new TFile("fitL1520andSigmaandURQMD_output.root","recreate");
@@ -369,18 +370,27 @@ int fitL1520andSigmaandURQMD(void)
   hPPimPim_urqmd->Add(hPPimPim_urqmd_bcg,-1);
   hPPimPip_urqmd->Add(hPPimPip_urqmd_bcg,-1);
   hPPip_urqmd->Add(hPPip_urqmd_bcg,-1);
+  h_p_urqmd->Add(h_p_urqmd_bcg,-1);
+  h_w_urqmd->Add(h_w_urqmd_bcg,-1);
+  h_pt_urqmd->Add(h_pt_urqmd_bcg,-1);
+  h_theta_urqmd->Add(h_theta_urqmd_bcg,-1);
   
 
   //Data from PP
   TH1F* hPP_L1520=(TH1F*)fPPdata->Get("hclean_experiment");
-  
+  TH1F* hPP_pt=(TH1F*)fPPdata->Get("hclean_pt_experiment");
+  TH1F* hPP_p=(TH1F*)fPPdata->Get("hclean_p_experiment");
+  TH1F* hPP_w=(TH1F*)fPPdata->Get("hclean_w_experiment");
+  TH1F* hPP_theta=(TH1F*)fPPdata->Get("hclean_theta_experiment");
+ 
 
   //sum
   TH1F* LPPimPipPim_sum=hPPimPipPim_bcg->Clone("LPPimPipPim_sum");
   TH1F* LPPimPip_sum=hPPimPip_bcg->Clone("LPPimPip_sum");
   TH1F* LPPimPim_sum=hPPimPim_bcg->Clone("LPPimPim_sum");
   TH1F* LPPip_sum=hPPip_bcg->Clone("LPPip_sum");
-	     
+
+  
   //normalizacja symulacji do 1/2 widma PPimPipPim
   double int_data=hPPimPipPim_data->Integral();
   double int_SB=hPPimPipPim_bcg->Integral();
@@ -762,14 +772,14 @@ int fitL1520andSigmaandURQMD(void)
   h_theta_data_clean->Add(h_theta_bcg,-1);
   TH1F* h_w_data_clean=h_w_data->Clone("h_w_data_clean");
   h_w_data_clean->Add(h_w_bcg,-1);
-TH1F* h_p_data_clean=h_p_data->Clone("h_p_data_clean");
+  TH1F* h_p_data_clean=h_p_data->Clone("h_p_data_clean");
   h_p_data_clean->Add(h_p_bcg,-1);
 
   //CS estimation
   double intmin=1480;//1400;
   double intmax=1560;//1620;
+  double L1520_cs=(CalcIntegral(hPPimPipPim_data_clean,intmin,intmax)-CalcIntegral(hPPimPipPim_urqmd,intmin,intmax)-CalcIntegral(hPPimPipPim_Ss,intmin,intmax))/(lum*L1520_eff/3)*1000.*100./6.666;// \mu barn
   //double L1520_cs=(CalcIntegral(hPPimPipPim_data_clean,intmin,intmax)-CalcIntegral(hPPimPipPim_urqmd,intmin,intmax)-CalcIntegral(hPPimPipPim_Ss,intmin,intmax))/(lum*L1520_eff/3)*1000.*100./6.666;// \mu barn
-  double L1520_cs=CalcIntegral(hPPimPipPim_L1520,1400,1620)/(lum*L1520_eff/3)*1000.*100./6.666;// \mu barn
  
   cout<<"URQMD integral:"<<endl;
   cout<<CalcIntegral(hPPimPipPim_urqmd,intmin,intmax)<<endl;
@@ -986,6 +996,7 @@ TH1F* h_p_data_clean=h_p_data->Clone("h_p_data_clean");
   setStyleSum(h_pt_sum_clean);
   h_pt_urqmd->Draw("samehist");
   setStyleDpp(h_pt_urqmd);
+  hPP_pt->Draw("same");
   
   cPtY_clean->cd(2);
   h_w_data_clean->Draw("e1");
@@ -1003,7 +1014,8 @@ TH1F* h_p_data_clean=h_p_data->Clone("h_p_data_clean");
   setStyleSum(h_w_sum_clean);
   h_w_urqmd->Draw("samehist");
   setStyleDpp(h_w_urqmd);
-
+  hPP_w->Draw("same");
+  
   TCanvas* cThetaP_clean=new TCanvas("cThetaP_clean");
   cThetaP_clean->Divide(2);
   cThetaP_clean->cd(1);
@@ -1040,11 +1052,16 @@ TH1F* h_p_data_clean=h_p_data->Clone("h_p_data_clean");
   h_p_urqmd->Draw("samehist");
   setStyleDpp(h_p_urqmd);
 
-  
-  TCanvas* cComparison=new TCanvas("cComparison");
+  TH1F *hPPimPipPim_data_URQMD_substructed=(TH1F*)hPPimPipPim_data_clean->Clone("hPPimPipPim_data_URQMD_substructed");
+  hPPimPipPim_data_URQMD_substructed->Add(hPPimPipPim_urqmd, -1);
+  TCanvas* cComparison=new TCanvas("cComparison","cComparison");
   cComparison->cd();
   hPPimPipPim_data_clean->Draw();
-  hPP_L1520->Scale(hPPimPipPim_data_clean->GetBinContent(hPPimPipPim_data_clean->GetMaximumBin())/hPP_L1520->GetBinContent(hPP_L1520->GetMaximumBin()));
+  hPP_L1520->Scale(hPPimPipPim_data_URQMD_substructed->GetBinContent(hPPimPipPim_data_URQMD_substructed->GetMaximumBin())/hPP_L1520->GetBinContent(hPP_L1520->GetMaximumBin()));
+  hPPimPipPim_data_URQMD_substructed->Draw("same");
+  hPPimPipPim_data_URQMD_substructed->SetLineColor(kRed);
+  hPPimPipPim_data_URQMD_substructed->SetMarkerColor(kRed);
+  hPPimPipPim_data_URQMD_substructed->SetLineWidth(3);
   hPP_L1520->Draw("same");
   hPP_L1520->SetLineColor(kGray+2);
   hPP_L1520->SetMarkerColor(kGray+2);

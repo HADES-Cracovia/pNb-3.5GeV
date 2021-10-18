@@ -283,7 +283,7 @@ void createHistos::Loop(char* output)
 	 ||m_inv_pip_pim>410 //replaced by graphical cut
 	 ||dist_ver_to_ver<dist_cut
 	 ||(oa_lambda>oa_cut)
-	 //||m_inv_p_pip>1200
+	 ||m_inv_p_pip>1200
 	 //||!(graph_cut->IsInside(miss_mass_kp,m_inv_pip_pim))
 	 //||p_theta>20 //to clean up proton sample
 	 //||dist_pip_pim>5
