@@ -1,3 +1,9 @@
+void set2Range(TH2* h2)
+{
+  h2->GetXaxis()->SetRangeUser(0,1600);
+  h2->GetYaxis()->SetRangeUser(0,1.6);
+}
+
 void rescaleHist(TH1F* h,double scale=1, double shift=0)
 {
   TH1F* temp=(TH1F*)h->Clone("temp");
@@ -34,7 +40,11 @@ int EfficiencyCorrection(void)
   h2PtvsYPluto->SetName("h2PtvsYPluto");
   TH2F* h2PtvsYEff=h2PtvsYFinal->Clone("h2PtvsYFinal");
   h2PtvsYEff->SetName("h2PtvsYEff");
-  
+
+  set2Range(h2PtvsYFinal);
+  set2Range(h2PtvsYPluto);
+  set2Range(h2PtvsYEff);
+    
   hPtL1520Pluto->Sumw2();
   hPtL1520Final->Sumw2();
   hPtL1520Eff->Sumw2();
@@ -66,6 +76,25 @@ int EfficiencyCorrection(void)
   cEff->cd(2);
   hYL1520Eff->Draw();
 
+  TCanvas* cEff2D=new TCanvas("cEff2D");
+  h2PtvsYEff->Draw("colz");
+  
+  
+  TCanvas* cDistribution=new TCanvas("cDistribution","Simulated vs reconstructed events");
+  double y_rapidity=1.11788; //cm rapidity
+  TLine* particleY=new TLine(0,y_rapidity,1600,y_rapidity);
+  particleY->SetLineWidth(2);
+  particleY->SetLineColor(kRed);
+  
+  cDistribution->Divide(2);
+  cDistribution->cd(1);
+  h2PtvsYPluto->Draw("colz");
+  
+  particleY->Draw("same");
+  cDistribution->cd(2);
+  h2PtvsYFinal->Draw("colz");
+  particleY->Draw("same");
+  
   TCanvas *cPtvsY=new TCanvas("cPtvsY","cPtvsY");
   cPtvsY->Divide(2,2);
   cPtvsY->cd(1);
@@ -75,12 +104,16 @@ int EfficiencyCorrection(void)
   cPtvsY->cd(3);
   h2PtvsYEff->Draw("colz");
   h2PtvsYEff->Rebin2D(2,2);
+  h2PtvsYEff->Scale(1/4.);
   cPtvsY->cd(4);
   
   cPt->Write();
   cY->Write();
   cEff->Write();
-
+  cDistribution->Write();
+  cEff2D->Write();
+  cPtvsY->Write();
+  
   hPtL1520Pluto->Write();
   hYL1520Pluto->Write();
   hPtL1520Final->Write();

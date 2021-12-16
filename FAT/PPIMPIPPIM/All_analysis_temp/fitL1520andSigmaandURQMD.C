@@ -72,6 +72,7 @@ void setStyleData(TH1* h1)
   h1->SetMarkerColor(h1->GetLineColor());
   h1->SetMarkerStyle(8);
   h1->SetMarkerSize(1.2);
+  h1->SetLineWidth(2);
 }
 void setStyleSB(TH1* h1)
 {
@@ -83,14 +84,14 @@ void setStyleSB(TH1* h1)
 
 void setStyleLs(TH1* h1)
 {
-  h1->SetLineColor(kMagenta);
-  h1->SetLineWidth(2);
+  h1->SetLineColor(kGreen+2);
+  h1->SetLineWidth(3);
   h1->SetLineStyle(7);
 }
 
 void setStyleSs(TH1* h1)
 {
-  h1->SetLineColor(kRed+2);
+  h1->SetLineColor(kOrange-3);
   h1->SetLineWidth(2);
   h1->SetLineStyle(7);
 }
@@ -105,18 +106,25 @@ void setStyleSsp(TH1* h1)
 
 void setStyleSum(TH1* h1)
 {
-  h1->SetLineColor(kYellow-3);
-  h1->SetLineWidth(4);
+  h1->SetLineColor(kMagenta+1);
+  h1->SetLineWidth(3);
   h1->SetLineStyle(1);  
 }
 
 void setStyleDpp(TH1* h1)
 {
-  h1->SetLineColor(kBlack);
-  h1->SetLineWidth(2);
+  h1->SetLineColor(kRed);
+  h1->SetLineWidth(3);
   h1->SetLineStyle(7);
 }
 
+void setStylePP(TH1* h1)
+{
+  h1->SetLineWidth(2);
+  h1->SetLineColor(kGray+1);
+  h1->SetFillStyle(3003);
+  h1->SetFillColor(h1->GetLineColor());
+}
 
 int fitL1520andSigmaandURQMD(void)
 {
@@ -138,6 +146,7 @@ int fitL1520andSigmaandURQMD(void)
   //TFile *fL1520_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1116.root","read");
   //TFile *fL1520_perfect_L1520=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/L1520_125_600_true_L1520.root","read");
   //TFile *fSsPimKz_perfect_L1116=new TFile("/lustre/hades/user/knowakow/PP/FAT/PPIMPIPPIM_sim/TMVAeval_DD/SsPimKz_real_L1116.root","read");
+  //TFile *fPPdata=new TFile("../../../../PP/FAT/PPIMPIPPIM/All_analysis_wo_miss_mass/final_output_10_27_0.58_20.0_5.0.root");
   TFile *fPPdata=new TFile("../../../../PP/FAT/PPIMPIPPIM/All_analysis_wo_miss_mass/final_output_10_27_0.58_20.0_5.0.root");
   
   TFile *fout=new TFile("fitL1520andSigmaandURQMD_output.root","recreate");
@@ -281,30 +290,30 @@ int fitL1520andSigmaandURQMD(void)
   h_pt_SDppKz->SetName("h_pt_SDppKz");
   h_pt_SDppKz->Rebin(rebin4);
 
-  //theta   histogram
+  //cos theta   histogram
   
-  TH1F* h_theta_data=(TH1F*)fData_SB->Get("hL1520_theta");
+  TH1F* h_theta_data=(TH1F*)fData_SB->Get("hL1520_cos_theta");
   h_theta_data->SetName("h_theta_data");
   h_theta_data->Rebin(rebin5);
-  TH1F* h_theta_bcg=(TH1F*)fData_SB->Get("hL1520_theta_SB");
+  TH1F* h_theta_bcg=(TH1F*)fData_SB->Get("hL1520_cos_theta_SB");
   h_theta_bcg->SetName("h_theta_bcg");
   h_theta_bcg->Rebin(rebin5);
-  TH1F* h_theta_L1520=(TH1F*)fL1520_SB->Get("hL1520_theta");
+  TH1F* h_theta_L1520=(TH1F*)fL1520_SB->Get("hL1520_cos_theta");
   h_theta_L1520->SetName("h_theta_L1520");
   h_theta_L1520->Rebin(rebin5);
-  TH1F* h_theta_Ss=(TH1F*)fSsPimKz_SB->Get("hL1520_theta");
+  TH1F* h_theta_Ss=(TH1F*)fSsPimKz_SB->Get("hL1520_cos_theta");
   h_theta_Ss->SetName("h_theta_Ss");
   h_theta_Ss->Rebin(rebin5);
-  TH1F* h_theta_Ssp=(TH1F*)fSsPipKz_SB->Get("hL1520_theta");
+  TH1F* h_theta_Ssp=(TH1F*)fSsPipKz_SB->Get("hL1520_cos_theta");
   h_theta_Ssp->SetName("h_theta_Ssp");
   h_theta_Ssp->Rebin(rebin5);
-  TH1F* h_theta_urqmd=(TH1F*)furqmd_SB->Get("hL1520_theta");
+  TH1F* h_theta_urqmd=(TH1F*)furqmd_SB->Get("hL1520_cos_theta");
   h_theta_urqmd->SetName("h_theta_urqmd");
   h_theta_urqmd->Rebin(rebin5);
-  TH1F* h_theta_urqmd_bcg=(TH1F*)furqmd_SB->Get("hL1520_theta_SB");
+  TH1F* h_theta_urqmd_bcg=(TH1F*)furqmd_SB->Get("hL1520_cos_theta_SB");
   h_theta_urqmd_bcg->SetName("h_theta_urqmd_bcg");
   h_theta_urqmd_bcg->Rebin(rebin5);
-  TH1F* h_theta_SDppKz=(TH1F*)fSDppK0_SB->Get("hL1520_theta");
+  TH1F* h_theta_SDppKz=(TH1F*)fSDppK0_SB->Get("hL1520_cos_theta");
   h_theta_SDppKz->SetName("h_theta_SDppKz");
   h_theta_SDppKz->Rebin(rebin5);
 
@@ -377,14 +386,19 @@ int fitL1520andSigmaandURQMD(void)
 
   //Data from PP
   TH1F* hPP_L1520=(TH1F*)fPPdata->Get("hclean_experiment");
-  
+  TH1F* hPP_pt=(TH1F*)fPPdata->Get("hclean_pt_experiment");
+  TH1F* hPP_p=(TH1F*)fPPdata->Get("hclean_p_experiment");
+  TH1F* hPP_w=(TH1F*)fPPdata->Get("hclean_w_experiment");
+  TH1F* hPP_theta=(TH1F*)fPPdata->Get("hclean_cos_theta_experiment");
+ 
 
   //sum
   TH1F* LPPimPipPim_sum=hPPimPipPim_bcg->Clone("LPPimPipPim_sum");
   TH1F* LPPimPip_sum=hPPimPip_bcg->Clone("LPPimPip_sum");
   TH1F* LPPimPim_sum=hPPimPim_bcg->Clone("LPPimPim_sum");
   TH1F* LPPip_sum=hPPip_bcg->Clone("LPPip_sum");
-	     
+
+  
   //normalizacja symulacji do 1/2 widma PPimPipPim
   double int_data=hPPimPipPim_data->Integral();
   double int_SB=hPPimPipPim_bcg->Integral();
@@ -773,7 +787,7 @@ int fitL1520andSigmaandURQMD(void)
   double intmin=1480;//1400;
   double intmax=1560;//1620;
   double L1520_cs=(CalcIntegral(hPPimPipPim_data_clean,intmin,intmax)-CalcIntegral(hPPimPipPim_urqmd,intmin,intmax)-CalcIntegral(hPPimPipPim_Ss,intmin,intmax))/(lum*L1520_eff/3)*1000.*100./6.666;// \mu barn
-  //double L1520_cs=CalcIntegral(hPPimPipPim_L1520,1400,1620)/(lum*L1520_eff/3)*1000.*100./6.666;// \mu barn
+  //double L1520_cs=(CalcIntegral(hPPimPipPim_data_clean,intmin,intmax)-CalcIntegral(hPPimPipPim_urqmd,intmin,intmax)-CalcIntegral(hPPimPipPim_Ss,intmin,intmax))/(lum*L1520_eff/3)*1000.*100./6.666;// \mu barn
  
   cout<<"URQMD integral:"<<endl;
   cout<<CalcIntegral(hPPimPipPim_urqmd,intmin,intmax)<<endl;
@@ -805,12 +819,12 @@ int fitL1520andSigmaandURQMD(void)
   optymal_3D->SetMinimum(ch2_opt);
   optymal_3D->Draw("BOX2 Z");
   
-  TCanvas* cSpectra=new TCanvas("cSpectra");
-  cSpectra->Divide(2,2);
-  cSpectra->cd(1);
+  TCanvas* cSpectrum=new TCanvas("cSpectrum");
+
+  //cSpectrum->cd(1);
   hPPimPipPim_data->Draw("e1");
   setStyleData(hPPimPipPim_data);
-  hPPimPipPim_data->GetXaxis()->SetRangeUser(1300,2000);
+  hPPimPipPim_data->GetXaxis()->SetRangeUser(1350,1700);
   hPPimPipPim_bcg->Draw("same");
   setStyleSB(hPPimPipPim_bcg);
   hPPimPipPim_L1520->Draw("samehist");
@@ -823,8 +837,11 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(hPPimPipPim_sum);
   hPPimPipPim_urqmd->Draw("samehist");
   setStyleDpp(hPPimPipPim_urqmd);
-  
-  cSpectra->cd(2);
+
+  TCanvas* cSpectra=new TCanvas("cSpectra");
+  cSpectra->Divide(2);
+
+  cSpectra->cd(1);
   hPPimPip_data->Draw("e1");
   setStyleData(hPPimPip_data);
   hPPimPip_data->GetXaxis()->SetRangeUser(1220,1500);
@@ -840,9 +857,8 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(hPPimPip_sum);
   hPPimPip_urqmd->Draw("samehist");
   setStyleDpp(hPPimPip_urqmd);
- 
-  
-  cSpectra->cd(3);
+   
+  cSpectra->cd(2);
   hPPimPim_data->Draw("e1");
   setStyleData(hPPimPim_data);
   hPPimPim_data->GetXaxis()->SetRangeUser(1220,1500);
@@ -858,16 +874,11 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(hPPimPim_sum);
   hPPimPim_urqmd->Draw("samehist");
   setStyleDpp(hPPimPim_urqmd);
- 
-  
-  cSpectra->cd(4);
 
-  TCanvas* cSpectra_clean=new TCanvas("cSpectra_clean");
-  cSpectra_clean->Divide(2,2);
-  cSpectra_clean->cd(1);
+  TCanvas* cSpectrum_clean=new TCanvas("cSpectrum_clean");
   hPPimPipPim_data_clean->Draw("e1");
   setStyleData(hPPimPipPim_data_clean);
-  hPPimPipPim_data_clean->GetXaxis()->SetRangeUser(1300,2000);
+  hPPimPipPim_data_clean->GetXaxis()->SetRangeUser(1350,1700);
   //hPPimPipPim_bcg->Draw("same");
   //setStyleSB(hPPimPipPim_bcg);
   hPPimPipPim_L1520->Draw("samehist");
@@ -881,7 +892,10 @@ int fitL1520andSigmaandURQMD(void)
   hPPimPipPim_urqmd->Draw("samehist");
   setStyleDpp(hPPimPipPim_urqmd);
   
-  cSpectra_clean->cd(2);
+  
+  TCanvas* cSpectra_clean=new TCanvas("cSpectra_clean");
+  cSpectra_clean->Divide(2);
+  cSpectra_clean->cd(1);
   hPPimPip_data_clean->Draw("e1");
   setStyleData(hPPimPip_data_clean);
   hPPimPip_data_clean->GetXaxis()->SetRangeUser(1220,1500);
@@ -899,7 +913,7 @@ int fitL1520andSigmaandURQMD(void)
   setStyleDpp(hPPimPip_urqmd);
  
   
-  cSpectra_clean->cd(3);
+  cSpectra_clean->cd(2);
   hPPimPim_data_clean->Draw("e1");
   setStyleData(hPPimPim_data_clean);
   hPPimPim_data_clean->GetXaxis()->SetRangeUser(1220,1500);
@@ -916,10 +930,6 @@ int fitL1520andSigmaandURQMD(void)
   hPPimPim_urqmd->Draw("samehist");
   setStyleDpp(hPPimPim_urqmd);
  
-  
-  cSpectra_clean->cd(4);
-  
-  
   TCanvas* cPPip=new TCanvas("cPPip");
   hPPip_data->Draw("e1");
   setStyleData(hPPip_data);
@@ -990,6 +1000,8 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(h_pt_sum_clean);
   h_pt_urqmd->Draw("samehist");
   setStyleDpp(h_pt_urqmd);
+  hPP_pt->Draw("samehist");
+  setStylePP(hPP_pt);  
   
   cPtY_clean->cd(2);
   h_w_data_clean->Draw("e1");
@@ -1007,13 +1019,16 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(h_w_sum_clean);
   h_w_urqmd->Draw("samehist");
   setStyleDpp(h_w_urqmd);
-
+  hPP_w->Draw("samehist");
+  setStylePP(hPP_w);
+  
   TCanvas* cThetaP_clean=new TCanvas("cThetaP_clean");
   cThetaP_clean->Divide(2);
   cThetaP_clean->cd(1);
   h_theta_data_clean->Draw("e1");
+  h_theta_data_clean->GetXaxis()->SetTitle("cos #theta_{CM}");
   setStyleData(h_theta_data_clean);
-  //h_theta_data_clean->GetXaxis()->SetRangeUser(1300,2000);
+  h_theta_data_clean->GetXaxis()->SetRangeUser(-1,0.4);
   //h_theta_bcg->Draw("same");
   //setStyleSB(h_theta_bcg);
   h_theta_L1520->Draw("samehist");
@@ -1026,6 +1041,8 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(h_theta_sum_clean);
   h_theta_urqmd->Draw("samehist");
   setStyleDpp(h_theta_urqmd);
+  hPP_theta->Draw("samehist");
+  setStylePP(hPP_theta);
   
   cThetaP_clean->cd(2);
   h_p_data_clean->Draw("e1");
@@ -1043,9 +1060,12 @@ int fitL1520andSigmaandURQMD(void)
   setStyleSum(h_p_sum_clean);
   h_p_urqmd->Draw("samehist");
   setStyleDpp(h_p_urqmd);
-
+  hPP_p->Draw("samehist");
+  setStylePP(hPP_p);
+  
   TH1F *hPPimPipPim_data_URQMD_substructed=(TH1F*)hPPimPipPim_data_clean->Clone("hPPimPipPim_data_URQMD_substructed");
   hPPimPipPim_data_URQMD_substructed->Add(hPPimPipPim_urqmd, -1);
+
   TCanvas* cComparison=new TCanvas("cComparison","cComparison");
   cComparison->cd();
   hPPimPipPim_data_clean->Draw();
@@ -1060,6 +1080,8 @@ int fitL1520andSigmaandURQMD(void)
 
   cOpt->Write();
   cSpectra->Write();
+  cSpectrum_clean->Write();
+  cSpectrum->Write();
   cSpectra_clean->Write();
   cPtY_clean->Write();
   cThetaP_clean->Write();

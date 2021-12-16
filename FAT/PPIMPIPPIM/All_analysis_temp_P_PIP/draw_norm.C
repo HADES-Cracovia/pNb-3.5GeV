@@ -630,7 +630,7 @@ int draw_norm(void)
      9.26/1000*scale/(nsim*downscale)*nuc_factor,//SDpp
      29.45/1000*scale/(nsim*downscale)*nuc_factor,//LDpp
      5.6/1000*scale/(100*100000*downscale)*nuc_factor,//L(1520)pK+->Lpi+pi-pK+
-     (1.35+3.5+2.3+2.57+5.0+14.05+9.26+29.45)/1000*scale/(100*100000*downscale)*0.5*nuc_factor//L K0 p pi+ (0.5 because of Ks i Kl)
+     (1.35 + 3.5 + 2.3 + 2.57 + 5.0 + 14.05 + 9.26 + 29.45)/1000*scale/(100*100000*downscale)*0.5*nuc_factor//L K0 p pi+ (0.5 because of Ks i Kl)
     };
   double err[5]=
     {2.25/14.05,//S1385
@@ -1700,7 +1700,8 @@ int draw_norm(void)
   L_sim_bg->Draw("same");
 
   TLatex *printFormula4 = new TLatex();
-  double nuc_cs=(3.5+2.57+14.05+9.26+29.45+5.0+3.5+2.3+14)*0.5*nuc_factor;
+  double nuc_cs=(2.57 + 14.05 + 9.26 + 29.45 + 5.0 + 3.5 + 2.3 + 1.35)*nuc_factor;
+  
   double high4=0.85;
   double cs_L_sim,cs_L,cs_L_err;
   cs_L=hsigL_pure->IntegralAndError(hsigL_pure->FindBin(1100),hsigL_pure->FindBin(1130),cs_L_err);
@@ -1708,7 +1709,7 @@ int draw_norm(void)
   //cout<<cs_L_sim<<" "<<cs_L<<" "<<cs_L_err<<endl;
   char text15[10000];
   char text16[10000];
-  sprintf(text15, " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.0f #pm %0.0f #mu b",nuc_cs,err_sum[4]);
+  sprintf(text15, " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.0f #pm %0.0f #mu b",nuc_cs, err[4]);
   sprintf(text16, "#sigma_{exp} = %.0f #pm %.0f #mu b",nuc_cs*cs_L/cs_L_sim,nuc_cs*cs_L_err/cs_L_sim);
   printFormula4->SetNDC();
   printFormula4->SetTextFont(32);
@@ -1740,7 +1741,7 @@ int draw_norm(void)
       
   char text17[10000];
   char text18[10000];
-  sprintf(text17,  " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.0f #pm %0.0f #mu b",nuc_cs,err_sum[4]);
+  sprintf(text17,  " #sigma_{simul} = #sigma_{pp} A^{2/3} =%.0f #pm %0.0f #mu b",nuc_cs,err[4]);
   sprintf(text18, "#sigma_{exp} = %.0f #pm %.0f #mu b",nuc_cs*cs_K0/cs_K0_sim,nuc_cs*cs_K0_err/cs_K0_sim);
   printFormula5->SetNDC();
   printFormula5->SetTextFont(32);
